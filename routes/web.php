@@ -1,0 +1,54 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Filesystem\Cloud;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // send notification
+    Route::post('/send-notification', function () {
+        // Get request data
+        $data = [
+            'device_token' => request('device_token'),
+            'title' => request('title'),
+            'body' => request('body'),
+            'action_to' => request('action_to'),
+        ];
+
+        // Send notification to device
+        $message = CloudMessage::withTarget('token', $data['device_token'])
+            ->withNotification(Notification::create($data['title'], $data['body']))
+            ->withData(['action_to' => $data['action_to']]);
+
+
+        $messaging = app('firebase.messaging');
+
+        $messaging->send($message);
+
+        return back()->banner('Notification sent!');
+    })->name('send-notification');
+});
