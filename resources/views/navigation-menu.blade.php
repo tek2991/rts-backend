@@ -15,6 +15,23 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @hasrole('administrator')
+                        {{-- User Management --}}
+                        <x-nav-dropdown-button data-dropdown-toggle="user_management_dropdownNavbar">
+                            {{ __('Admin Menu') }}
+                        </x-nav-dropdown-button>
+                        <x-nav-dropdown-wrapper id="user_management_dropdownNavbar">
+                            {{-- Users --}}
+                            <x-nav-dropdown-item :href="route('user.index')" :active="request()->routeIs('user.*')">
+                                {{ __('Users') }}
+                            </x-nav-dropdown-item>
+                            {{-- Roles --}}
+                            <x-nav-dropdown-item :href="route('role.index')" :active="request()->routeIs('role.*')">
+                                {{ __('Roles') }}
+                            </x-nav-dropdown-item>
+                        </x-nav-dropdown-wrapper>
+                    @endhasrole
                 </div>
             </div>
 
@@ -142,6 +159,28 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @hasrole('administrator')
+                {{-- User Management --}}
+                <x-nav-dropdown-button-responsive data-dropdown-toggle="user_management_dropdownNavbar_responsive">
+                    {{ __('Admin Menu') }}
+                </x-nav-dropdown-button-responsive>
+                <style>
+                    #user_management_dropdownNavbar_responsive {
+                        transform: translate3d(10px, 166px, 0px) !important;
+                    }
+                </style>
+                <x-nav-dropdown-wrapper id="user_management_dropdownNavbar_responsive">
+                    {{-- Users --}}
+                    <x-nav-dropdown-item :href="route('user.index')" :active="request()->routeIs('user.*')">
+                        {{ __('Users') }}
+                    </x-nav-dropdown-item>
+                    {{-- Roles --}}
+                    <x-nav-dropdown-item :href="route('role.index')" :active="request()->routeIs('role.*')">
+                        {{ __('Roles') }}
+                    </x-nav-dropdown-item>
+                </x-nav-dropdown-wrapper>
+            @endhasrole
         </div>
 
         <!-- Responsive Settings Options -->
