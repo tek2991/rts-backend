@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use Illuminate\Contracts\Filesystem\Cloud;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -28,6 +29,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // users
+    Route::resource('user', UserController::class);
+
+    // roles
+    Route::resource('role', RoleController::class);
 
     // send notification
     Route::post('/send-notification', function () {
