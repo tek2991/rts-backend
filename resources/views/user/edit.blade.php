@@ -24,29 +24,6 @@
                             <x-input id="email" class="block mt-1 w-full" type="email" disabled
                                 value="{{ $user->email }}" />
                         </div>
-                        <div>
-                            <x-label for="office_id" :value="__('Office')" />
-                            <x-input-select id="office_id" class="block mt-1 w-full" name="office_id">
-                                <option value="">Select Office</option>
-                                @foreach ($offices as $office)
-                                    <option value="{{ $office->id }}"
-                                        {{ $user->office_id == $office->id ? 'selected' : '' }}>
-                                        {{ $office->name }}</option>
-                                @endforeach
-                            </x-input-select>
-                        </div>
-                        <div class="col-start-1">
-                            <x-label for="office_id" :value="__('Manager of Offices:')" />
-                            <ul class="list-disc pl-6 mt-2">
-                                @if ($user->managerOfOffices->count() > 0)
-                                    @foreach ($user->managerOfOffices as $office)
-                                        <li class="text-sm">{{ $office->name }}</li>
-                                    @endforeach
-                                @else
-                                    <li class="text-sm">No offices assigned</li>
-                                @endif
-                            </ul>
-                        </div>
                     </div>
                     <div class="flex justify-end mt-4">
                         <x-button class="ml-4">
