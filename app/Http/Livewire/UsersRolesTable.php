@@ -3,11 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
-use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
 final class UsersRolesTable extends PowerGridComponent
@@ -16,12 +17,7 @@ final class UsersRolesTable extends PowerGridComponent
     use WithExport;
 
     // Set the user variable
-    public $user;
-
-    public function __construct()
-    {
-        $this->user = auth()->user();
-    }
+    public User $user;
 
     /*
     |--------------------------------------------------------------------------
@@ -98,6 +94,9 @@ final class UsersRolesTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
+            ->addColumn('name')
+            ->addColumn('name_lower', fn (Role $model) => strtolower(e($model->name)))
+            ->addColumn('created_at')
             ->addColumn('created_at_formatted', fn (Role $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
@@ -119,9 +118,9 @@ final class UsersRolesTable extends PowerGridComponent
     {
         return [
             Column::make('Id', 'id'),
-            Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->sortable(),
-
+            Column::make('Name', 'name')
+                ->sortable()
+                ->searchable(),
         ];
     }
 
@@ -151,25 +150,14 @@ final class UsersRolesTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('role.edit', function(\App\Models\Role $model) {
-                    return $model->id;
-               }),
-
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('role.destroy', function(\App\Models\Role $model) {
-                    return $model->id;
-               })
-               ->method('delete')
+        return [
+            Button::make('destroy', 'Remove')
+                ->class('bg-red-500 cursor-pointer text-white px-2.5 py-1.5 m-1 rounded text-sm')
+                ->openModal('confirm-detatch-modal', ['route' => 'user.detatchRole', 'model_id' => $this->user->id, 'model_name' => 'User', 'detatching_model_id' => 'id', 'detatching_model_name' => 'Role', 'action' => 'detatch'])
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------

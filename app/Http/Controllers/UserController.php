@@ -65,8 +65,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
-        return view('user.edit', compact('user', 'roles'));
+        $this->authorize('update', $user);
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -83,5 +83,40 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+
+    public function detatchRole(User $user, Role $role)
+    {
+        // Do not allow users who are not admins to detatch roles
+        if (!auth()->user()->hasRole('administrator')) {
+            return redirect()->back()->dangerBanner('You do not have permission to do that.');
+        }
+
+        // Do not allow detatching fixed roles
+        if ($role->isFixed()) {
+            return redirect()->back()->dangerBanner('You cannot detatch a fixed role.');
+        }
+        $user->roles()->detach($role);
+        return redirect()->route('user.edit', $user)->banner('Role detached');
+    }
+
+    public function attachRole(Request $request, User $user)
+    {
+        // Do not allow users who are not admins to attach roles
+        if (!auth()->user()->hasRole('administrator')) {
+            return redirect()->back()->dangerBanner('You do not have permission to do that.');
+        }
+        $role = Role::find($request->role_id);
+        // Do not allow attaching the fixed roles
+        if ($role->isFixed()) {
+            return redirect()->back()->dangerBanner('You cannot attach a fixed role.');
+        }
+        // Do not allow attaching the same role twice
+        if ($user->roles->contains($role)) {
+            return redirect()->back()->dangerBanner('User already has this role');
+        }
+        $user->roles()->attach($role);
+        return redirect()->route('user.edit', $user)->banner('Role attached');
     }
 }

@@ -32,6 +32,8 @@ Route::middleware([
 
     // users
     Route::resource('user', UserController::class);
+    Route::delete('user/{user}/detatch-role/{role}', [UserController::class, 'detatchRole'])->name('user.detatchRole');
+    Route::put('user/{user}/attach-role', [UserController::class, 'attachRole'])->name('user.attachRole');
 
     // roles
     Route::resource('role', RoleController::class);
