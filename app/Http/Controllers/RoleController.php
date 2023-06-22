@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -12,6 +13,7 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Role::class);
         return view('role.index');
     }
 
@@ -20,7 +22,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', Role::class);
+        $permissions = Permission::all();
+        return view('role.create', compact('permissions'));
     }
 
     /**
@@ -28,7 +32,21 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Role::class);
+        $request['name'] = strtolower($request->name);
+        $request->validate([
+            'name' => 'required|unique:roles,name',
+            'permission_ids.*' => 'required|exists:permissions,id'
+        ]);
+
+        $role = Role::firstOrCreate([
+            'name' => $request->name,
+            'guard_name' => 'web'
+        ]);
+
+        $role->permissions()->attach($request->permission_ids);
+
+        return redirect()->route('role.index')->with('success', 'Role created successfully');
     }
 
     /**
@@ -44,7 +62,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        $this->authorize('update', $role);
+        return view('role.edit', compact('role'));
     }
 
     /**
@@ -61,5 +80,45 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         //
+    }
+
+    public function detatchPermission(Role $role, Permission $permission)
+    {
+        $this->authorize('update', $role);
+        // Do not allow users who are not admins to detatch permissions
+        if (!auth()->user()->hasRole('administrator')) {
+            return redirect()->back()->dangerBanner('You do not have permission to do that.');
+        }
+
+        // Prevent modification of fixed roles
+        if ($role->isFixed()) {
+            return redirect()->back()->dangerBanner('You cannot modify fixed roles.');
+        }
+
+        $role->revokePermissionTo($permission->name);
+        return redirect()->route('role.edit', $role)->banner('Permission detatched.');
+    }
+
+    public function attachPermission(Request $request, Role $role)
+    {
+        $this->authorize('update', $role);
+        // Do not allow users who are not admins to attach roles
+        if (!auth()->user()->hasRole('administrator')) {
+            return redirect()->back()->dangerBanner('You do not have permission to do that.');
+        }
+
+        // Prevent modification of fixed roles
+        if ($role->isFixed()) {
+            return redirect()->back()->dangerBanner('You cannot modify fixed roles.');
+        }
+
+        $permission = Permission::find($request->permission_id);
+        // Do not allow attaching the same permission twice
+        if ($role->hasPermissionTo($permission->name)) {
+            return redirect()->back()->dangerBanner('That permission is already attached to this role.');
+        }
+
+        $role->givePermissionTo($permission->name);
+        return redirect()->route('role.edit', $role)->banner('Permission attached.');
     }
 }

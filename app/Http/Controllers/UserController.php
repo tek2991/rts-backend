@@ -13,6 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
         return view('user.index');
     }
 
@@ -21,6 +22,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         $roles = Role::all();
         return view('user.create', compact('roles'));
     }
@@ -30,6 +32,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users,email'],
@@ -88,6 +91,7 @@ class UserController extends Controller
 
     public function detatchRole(User $user, Role $role)
     {
+        $this->authorize('update', $user);
         // Do not allow users who are not admins to detatch roles
         if (!auth()->user()->hasRole('administrator')) {
             return redirect()->back()->dangerBanner('You do not have permission to do that.');
@@ -103,6 +107,7 @@ class UserController extends Controller
 
     public function attachRole(Request $request, User $user)
     {
+        $this->authorize('update', $user);
         // Do not allow users who are not admins to attach roles
         if (!auth()->user()->hasRole('administrator')) {
             return redirect()->back()->dangerBanner('You do not have permission to do that.');

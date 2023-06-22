@@ -38,6 +38,8 @@ Route::middleware([
 
     // roles
     Route::resource('role', RoleController::class);
+    Route::delete('role/{role}/detatch-permission/{permission}', [RoleController::class, 'detatchPermission'])->name('role.detatchPermission');
+    Route::put('role/{role}/attach-permission', [RoleController::class, 'attachPermission'])->name('role.attachPermission');
 
     // send notification
     Route::post('/send-notification', function () {

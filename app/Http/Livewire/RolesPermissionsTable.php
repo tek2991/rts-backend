@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
@@ -10,10 +10,12 @@ use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class RoleTable extends PowerGridComponent
+final class RolesPermissionsTable extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
+
+    public $role;
 
     /*
     |--------------------------------------------------------------------------
@@ -48,11 +50,12 @@ final class RoleTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Role>
+     * @return Builder<\App\Models\Permission>
      */
     public function datasource(): Builder
     {
-        return Role::query();
+        $permission_ids = $this->role->permissions->pluck('id')->toArray();
+        return Permission::query()->whereIn('id', $permission_ids);
     }
 
     /*
@@ -88,10 +91,7 @@ final class RoleTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name')
-            ->addColumn('name_lower', fn (Role $model) => strtolower(e($model->name)))
-            ->addColumn('permissions', fn (Role $model) => $model->permissions->pluck('name')->implode(', '))
-            ->addColumn('created_at_formatted', fn (Role $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('name');
     }
 
     /*
@@ -111,11 +111,13 @@ final class RoleTable extends PowerGridComponent
     public function columns(): array
     {
         return [
+            Column::make('ID', 'id')
+                ->searchable()
+                ->sortable(),
+
             Column::make('Name', 'name')
                 ->searchable()
                 ->sortable(),
-            Column::make('Permissions', 'permissions')
-                ->bodyAttribute('text-justify', 'white-space: normal !important;')
         ];
     }
 
@@ -140,7 +142,7 @@ final class RoleTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Role Action Buttons.
+     * PowerGrid Permission Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -149,10 +151,9 @@ final class RoleTable extends PowerGridComponent
     public function actions(): array
     {
         return [
-            Button::make('edit', 'Edit')
-                ->class('bg-indigo-500 cursor-pointer text-white px-2.5 py-1 m-1 rounded text-sm')
-                ->route('role.edit', ['role' => 'id'])
-                ->target(''),
+            Button::make('destroy', 'Remove')
+                ->class('bg-red-500 cursor-pointer text-white px-2.5 py-1.5 m-1 rounded text-sm')
+                ->openModal('confirm-detatch-modal', ['route' => 'role.detatchPermission', 'model_id' => $this->role->id, 'model_name' => 'Role', 'detatching_model_id' => 'id', 'detatching_model_name' => 'Permission', 'action' => 'detatch'])
         ];
     }
 
@@ -166,7 +167,7 @@ final class RoleTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Role Action Rules.
+     * PowerGrid Permission Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -178,7 +179,7 @@ final class RoleTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($role) => $role->id === 1)
+                ->when(fn($permission) => $permission->id === 1)
                 ->hide(),
         ];
     }
