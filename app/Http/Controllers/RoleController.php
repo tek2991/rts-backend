@@ -84,7 +84,6 @@ class RoleController extends Controller
 
     public function detatchPermission(Role $role, Permission $permission)
     {
-        $this->authorize('update', $role);
         // Do not allow users who are not admins to detatch permissions
         if (!auth()->user()->hasRole('administrator')) {
             return redirect()->back()->dangerBanner('You do not have permission to do that.');
@@ -101,7 +100,6 @@ class RoleController extends Controller
 
     public function attachPermission(Request $request, Role $role)
     {
-        $this->authorize('update', $role);
         // Do not allow users who are not admins to attach roles
         if (!auth()->user()->hasRole('administrator')) {
             return redirect()->back()->dangerBanner('You do not have permission to do that.');

@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasPermissionTo('create user');
+        return $user->hasRole('admin') || $user->hasPermissionTo('add user');
     }
 
     /**
