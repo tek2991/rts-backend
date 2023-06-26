@@ -18,14 +18,26 @@ use Kreait\Firebase\Messaging\Notification;
 |
 */
 
+// Import Jetstream routes jetsream.php
+// require_once base_path('routes/jetstream.php');
+
+// Import Fortify routes fortify.php
+// require_once base_path('routes/fortify.php');
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Mobile Number Verification...
+Route::get('/mobile-verification-notice', function () {
+    return view('auth.verify-mobile-number');
+})->middleware(['auth'])->name('mobile-verification-notice');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified',
+    'verified.mobile',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');

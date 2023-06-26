@@ -81,6 +81,29 @@
                 @endif
             @endif
         </div>
+
+        <!-- Mobile Number -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="mobile_number" value="{{ __('Mobile Number (+91)') }}" />
+            <x-input id="mobile_number" type="text" class="mt-1 block w-full" wire:model.defer="state.mobile_number" autocomplete="mobile_number" />
+            <x-input-error for="mobile_number" class="mt-2" />
+
+            @if (! $this->user->hasVerifiedMobileNumber())
+                <p class="text-sm mt-2">
+                    {{ __('Your mobile number is unverified.') }}
+
+                    <button type="button" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" wire:click.prevent="sendOTP">
+                        {{ __('Click here to re-send the verification SMS.') }}
+                    </button>
+                </p>
+
+                @if ($this->otpSent)
+                    <p class="mt-2 font-medium text-sm text-green-600">
+                        {{ __('A new OTP has been sent to your mobile number.') }}
+                    </p>
+                @endif
+            @endif
+        </div>
     </x-slot>
 
     <x-slot name="actions">

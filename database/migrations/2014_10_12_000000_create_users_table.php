@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('mobile_number')->nullable();
+            $table->string('otp')->nullable();
             $table->timestamp('mobile_number_verified_at')->nullable();
             $table->string('device_id')->nullable();
             $table->string('device_token')->nullable();

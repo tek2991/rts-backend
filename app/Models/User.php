@@ -65,4 +65,17 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function sendMobileNumberVerificationNotification()
+    {
+        $otp = rand(100000, 999999);
+        $this->otp = $otp;
+        $this->save();
+        return $otp;
+    }
+
+    public function hasVerifiedMobileNumber()
+    {
+        return !is_null($this->mobile_number_verified_at);
+    }
 }
