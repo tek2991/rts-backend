@@ -74,6 +74,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $otp;
     }
 
+    public function verifyMobileNumber($otp)
+    {
+        if ($this->otp == $otp) {
+            $this->mobile_number_verified_at = now();
+            $this->save();
+            return true;
+        }
+        return false;
+    }
+
     public function hasVerifiedMobileNumber()
     {
         return !is_null($this->mobile_number_verified_at);

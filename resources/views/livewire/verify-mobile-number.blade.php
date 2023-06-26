@@ -2,26 +2,41 @@
 
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Before continuing, could you verify your mobile number by entering the OTP we just sent to you? If you didn\'t receive the SMS, we will gladly send you another.') }}
+
+        <div class="my-4">
+            OTP: {{ Auth::user()->otp }}
+        </div>
     </div>
 
-    @if (session('status') == 'otp-sent')
+    @if ($otpSent == true)
         <div class="mb-4 font-medium text-sm text-green-600">
             {{ __('A new verification OTP has been sent to the mobile number you provided in your profile settings.') }}
-            <br>
-            {{ Auth::user()->otp }}
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="">
-            @csrf
+    @if (Auth::user()->otp)
+    <form wire:submit.prevent="submit">
+        <div>
+            <x-label for="otp" value="{{ __('OTP') }}" />
+            @error('otp')
+                <div class="text-red-600">{{ $message }}</div>
+            @enderror
+            <x-input id="otp" class="block mt-1 w-full" type="text" name="otp" wire:model="otp" required maxlength="6" autofocus autocomplete=""
+                autofocus autocomplete="" />
+        </div>
 
-            <div>
-                <x-button type="submit">
-                    {{ __('Resend Verification OTP') }}
-                </x-button>
-            </div>
-        </form>
+        <x-button class="mt-4" wire:click="submit">
+            {{ __('Submit') }}
+        </x-button>
+    </form>
+    @endif
+
+    <div class="mt-4 flex items-center justify-between">
+        <div>
+            <button wire:click="sendOTP">
+                {{ __('Resend Verification OTP') }}
+            </button>
+        </div>
 
         <div>
             <a href="{{ route('profile.show') }}"

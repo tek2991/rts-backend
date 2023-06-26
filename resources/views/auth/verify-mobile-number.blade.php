@@ -5,4 +5,5 @@
         </x-slot>
         @livewire('verify-mobile-number')
     </x-authentication-card>
+    @livewireScripts
 </x-guest-layout>
