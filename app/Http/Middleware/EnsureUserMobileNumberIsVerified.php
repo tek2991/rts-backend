@@ -30,6 +30,11 @@ class EnsureUserMobileNumberIsVerified
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
     {
+        // Pass is user is administator
+        if ($request->user()->hasRole('administrator')) {
+            return $next($request);
+        }
+        
         if (! $request->user() ||
             ! $request->user()->hasVerifiedMobileNumber()) {
             return redirect()->route('mobile-verification-notice');

@@ -78,6 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->otp == $otp) {
             $this->mobile_number_verified_at = now();
+            $this->otp = null;
             $this->save();
             return true;
         }

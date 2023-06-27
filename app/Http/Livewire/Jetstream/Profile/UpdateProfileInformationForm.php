@@ -41,6 +41,8 @@ class UpdateProfileInformationForm extends Component
 
     public $otp = '';
 
+    public $currentotp = '';
+
     /**
      * Prepare the component.
      *
@@ -53,6 +55,9 @@ class UpdateProfileInformationForm extends Component
         $this->state = array_merge([
             'email' => $user->email,
         ], $user->withoutRelations()->toArray());
+
+        // Remove otp from state
+        unset($this->state['otp']);
     }
 
     /**
@@ -112,9 +117,9 @@ class UpdateProfileInformationForm extends Component
      */
     public function sendOTP()
     {
-        $otp  = Auth::user()->sendMobileNumberVerificationNotification();
+        $currentotp  = Auth::user()->sendMobileNumberVerificationNotification();
         $this->otpSent = true;
-        $this->otp = $otp;
+        $this->currentotp = $currentotp;
     }
 
     /**
