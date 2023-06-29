@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CouponModel extends Model
+class Coupon extends Model
 {
     protected $fillable = [
         'code',
@@ -21,6 +21,11 @@ class CouponModel extends Model
 
     public function package()
     {
-        return $this->belongsTo(PackageModel::class);
+        return $this->belongsTo(Package::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
     }
 }

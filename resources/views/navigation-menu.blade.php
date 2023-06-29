@@ -16,10 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @hasrole('administrator')
+                    @hasanyrole('administrator|manager')
                         {{-- User Management --}}
+
                         <x-nav-dropdown-button data-dropdown-toggle="user_management_dropdownNavbar">
-                            {{ __('Admin Menu') }}
+                            {{ __('Menu') }}
                         </x-nav-dropdown-button>
                         <x-nav-dropdown-wrapper id="user_management_dropdownNavbar">
                             {{-- Users --}}
@@ -30,8 +31,14 @@
                             <x-nav-dropdown-item :href="route('role.index')" :active="request()->routeIs('role.*')">
                                 {{ __('Roles') }}
                             </x-nav-dropdown-item>
+                            @can('viewAny', App\Models\Package::class)
+                            {{-- Packages --}}
+                            <x-nav-dropdown-item href="{{ route('package.index') }}" :active="request()->routeIs('package.*')">
+                                {{ __('Packages') }}
+                            </x-nav-dropdown-item>
+                        @endcan
                         </x-nav-dropdown-wrapper>
-                    @endhasrole
+                    @endhasanyrole
                 </div>
             </div>
 

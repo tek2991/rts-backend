@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ActivationCodeModel extends Model
+class ActivationCode extends Model
 {
     protected $fillable = [
         'code',
@@ -23,11 +23,11 @@ class ActivationCodeModel extends Model
 
     public function user()
     {
-        return $this->belongsTo(UserModel::class);
+        return $this->belongsTo(User::class);
     }
 
     public function subscriptions()
     {
-        return $this->morphMany(SubscriptionModel::class, 'subscribable');
+        return $this->hasMany(Subscription::class);
     }
 }

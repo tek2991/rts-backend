@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PackageModel extends Model
+class Package extends Model
 {
     protected $fillable = [
         'name',
@@ -17,13 +17,8 @@ class PackageModel extends Model
         'is_active' => 'boolean',
     ];
 
-    public function coupons()
-    {
-        return $this->hasMany(CouponModel::class);
-    }
-
     public function subscriptions()
     {
-        return $this->morphMany(SubscriptionModel::class, 'subscribable');
+        return $this->hasMany(Subscription::class);
     }
 }

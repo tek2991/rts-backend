@@ -30,7 +30,7 @@ class EnsureUserMobileNumberIsVerified
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
     {
-        // Pass is user is administator
+        // Pass if user is administator
         if ($request->user()->hasRole('administrator')) {
             return $next($request);
         }

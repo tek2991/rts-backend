@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Contracts\Filesystem\Cloud;
+use App\Http\Controllers\PackageController;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 
@@ -52,6 +53,9 @@ Route::middleware([
     Route::resource('role', RoleController::class);
     Route::delete('role/{role}/detatch-permission/{permission}', [RoleController::class, 'detatchPermission'])->name('role.detatchPermission');
     Route::put('role/{role}/attach-permission', [RoleController::class, 'attachPermission'])->name('role.attachPermission');
+
+    // package
+    Route::resource('package', PackageController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
     // send notification
     Route::post('/send-notification', function () {
