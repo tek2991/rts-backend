@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Package;
+use App\Models\ActivationCode;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
@@ -10,7 +10,7 @@ use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class PackageTable extends PowerGridComponent
+final class ActivationCodeTable extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
@@ -48,11 +48,12 @@ final class PackageTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Package>
+     * @return Builder<\App\Models\ActivationCode>
      */
     public function datasource(): Builder
     {
-        return Package::query();
+        return ActivationCode::query()
+        ->with('user');
     }
 
     /*
@@ -88,15 +89,18 @@ final class PackageTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('code')
 
            /** Example of custom column using a closure **/
-            ->addColumn('name_lower', fn (Package $model) => strtolower(e($model->name)))
+            ->addColumn('code_lower', fn (ActivationCode $model) => strtolower(e($model->code)))
 
             ->addColumn('duration_in_days')
             ->addColumn('price')
-            ->addColumn('is_active')
-            ->addColumn('created_at_formatted', fn (Package $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('user_id')
+            ->addColumn('user_name', fn (ActivationCode $model) => $model->user->name)
+            ->addColumn('expires_at_formatted', fn (ActivationCode $model) => Carbon::parse($model->expires_at)->format('d/m/Y H:i'))
+            ->addColumn('used_at_formatted', fn (ActivationCode $model) => $model->used_at ? Carbon::parse($model->used_at)->format('d/m/Y H:i') : '')
+            ->addColumn('created_at_formatted', fn (ActivationCode $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i'));
     }
 
     /*
@@ -116,15 +120,19 @@ final class PackageTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
-            Column::make('Name', 'name')
+            // Column::make('Id', 'id'),
+            Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
 
             Column::make('Duration in days', 'duration_in_days'),
             Column::make('Price', 'price'),
-            Column::make('Is active', 'is_active')
-                ->toggleable(),
+            Column::make('User', 'user_name'),
+            Column::make('Expires at', 'expires_at_formatted', 'expires_at')
+                ->sortable(),
+
+            Column::make('Used at', 'used_at_formatted', 'used_at')
+                ->sortable(),
 
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable(),
@@ -140,8 +148,9 @@ final class PackageTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name')->operators(['contains']),
-            Filter::boolean('is_active'),
+            Filter::inputText('code')->operators(['contains']),
+            Filter::datetimepicker('expires_at'),
+            Filter::datetimepicker('used_at'),
             Filter::datetimepicker('created_at'),
         ];
     }
@@ -155,22 +164,30 @@ final class PackageTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Package Action Buttons.
+     * PowerGrid ActivationCode Action Buttons.
      *
      * @return array<int, Button>
      */
 
-    
+    /*
     public function actions(): array
     {
        return [
            Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1.5 m-1 rounded text-sm')
-               ->route('package.edit', ['package' => 'id'])
-               ->target(''),
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('activation-code.edit', function(\App\Models\ActivationCode $model) {
+                    return $model->id;
+               }),
+
+           Button::make('destroy', 'Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('activation-code.destroy', function(\App\Models\ActivationCode $model) {
+                    return $model->id;
+               })
+               ->method('delete')
         ];
     }
-    
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -181,22 +198,21 @@ final class PackageTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Package Action Rules.
+     * PowerGrid ActivationCode Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-    
+    /*
     public function actionRules(): array
     {
        return [
+
+           //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(
-                    // If user can't update
-                    fn (Package $package) => !auth()->user()->can('update', $package)
-                )
+                ->when(fn($activation-code) => $activation-code->id === 1)
                 ->hide(),
         ];
     }
-    
+    */
 }

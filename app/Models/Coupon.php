@@ -9,7 +9,6 @@ class Coupon extends Model
     protected $fillable = [
         'code',
         'promoter_name',
-        'package_id',
         'max_use',
         'discount_percentage',
     ];
@@ -18,11 +17,6 @@ class Coupon extends Model
         'max_use' => 'integer',
         'discount_percentage' => 'integer',
     ];
-
-    public function package()
-    {
-        return $this->belongsTo(Package::class);
-    }
 
     public function subscriptions()
     {

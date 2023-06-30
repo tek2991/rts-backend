@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->string('promoter_name');
-            $table->foreignId('package_id')->constrained();
             $table->integer('max_use');
             $table->integer('discount_percentage');
             $table->timestamps();

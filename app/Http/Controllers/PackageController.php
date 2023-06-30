@@ -62,7 +62,7 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        return view('package.edit', compact('package'));
     }
 
     /**
@@ -70,7 +70,21 @@ class PackageController extends Controller
      */
     public function update(Request $request, Package $package)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'duration' => 'required|integer|min:1',
+            'price' => 'required|integer|min:1',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $package->update([
+            'name' => $request->name,
+            'duration_in_days' => $request->duration,
+            'price' => $request->price,
+            'is_active' => $request->is_active,
+        ]);
+
+        return redirect()->route('package.index')->banner('Package updated successfully: ' . $request->name);
     }
 
     /**

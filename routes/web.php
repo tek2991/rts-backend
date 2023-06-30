@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CouponController;
 use Illuminate\Contracts\Filesystem\Cloud;
 use App\Http\Controllers\PackageController;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
+use App\Http\Controllers\ActivationCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +58,12 @@ Route::middleware([
 
     // package
     Route::resource('package', PackageController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+
+    // coupon
+    Route::resource('coupon', CouponController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+
+    // activation code
+    Route::resource('activation-code', ActivationCodeController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
     // send notification
     Route::post('/send-notification', function () {

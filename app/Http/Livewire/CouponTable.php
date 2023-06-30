@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Package;
+use App\Models\Coupon;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
@@ -10,7 +10,7 @@ use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class PackageTable extends PowerGridComponent
+final class CouponTable extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
@@ -48,11 +48,11 @@ final class PackageTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Package>
+     * @return Builder<\App\Models\Coupon>
      */
     public function datasource(): Builder
     {
-        return Package::query();
+        return Coupon::query();
     }
 
     /*
@@ -88,15 +88,15 @@ final class PackageTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('code')
 
-           /** Example of custom column using a closure **/
-            ->addColumn('name_lower', fn (Package $model) => strtolower(e($model->name)))
+            /** Example of custom column using a closure **/
+            ->addColumn('code_lower', fn (Coupon $model) => strtolower(e($model->code)))
 
-            ->addColumn('duration_in_days')
-            ->addColumn('price')
-            ->addColumn('is_active')
-            ->addColumn('created_at_formatted', fn (Package $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('promoter_name')
+            ->addColumn('max_use')
+            ->addColumn('discount_percentage')
+            ->addColumn('created_at_formatted', fn (Coupon $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -108,24 +108,25 @@ final class PackageTable extends PowerGridComponent
     |
     */
 
-     /**
-      * PowerGrid Columns.
-      *
-      * @return array<int, Column>
-      */
+    /**
+     * PowerGrid Columns.
+     *
+     * @return array<int, Column>
+     */
     public function columns(): array
     {
         return [
             Column::make('Id', 'id'),
-            Column::make('Name', 'name')
+            Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Duration in days', 'duration_in_days'),
-            Column::make('Price', 'price'),
-            Column::make('Is active', 'is_active')
-                ->toggleable(),
+            Column::make('Promoter name', 'promoter_name')
+                ->sortable()
+                ->searchable(),
 
+            Column::make('Max use', 'max_use'),
+            Column::make('Discount percentage', 'discount_percentage'),
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable(),
 
@@ -140,8 +141,8 @@ final class PackageTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name')->operators(['contains']),
-            Filter::boolean('is_active'),
+            Filter::inputText('code')->operators(['contains']),
+            Filter::inputText('promoter_name')->operators(['contains']),
             Filter::datetimepicker('created_at'),
         ];
     }
@@ -155,22 +156,22 @@ final class PackageTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Package Action Buttons.
+     * PowerGrid Coupon Action Buttons.
      *
      * @return array<int, Button>
      */
 
-    
+
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1.5 m-1 rounded text-sm')
-               ->route('package.edit', ['package' => 'id'])
-               ->target(''),
+        return [
+            Button::make('edit', 'Edit')
+                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1.5 m-1 rounded text-sm')
+                ->route('coupon.edit', ['coupon' => 'id'])
+                ->target(''),
         ];
     }
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -181,22 +182,18 @@ final class PackageTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Package Action Rules.
+     * PowerGrid Coupon Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-    
+
     public function actionRules(): array
     {
-       return [
+        return [
             Rule::button('edit')
-                ->when(
-                    // If user can't update
-                    fn (Package $package) => !auth()->user()->can('update', $package)
-                )
+                ->when(fn ($coupon) => !auth()->user()->can('update', $coupon))
                 ->hide(),
         ];
     }
-    
 }
