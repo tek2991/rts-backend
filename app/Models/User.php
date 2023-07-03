@@ -89,4 +89,26 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return !is_null($this->mobile_number_verified_at);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function hasSubscription()
+    {
+        if($this->subscriptions()->count() < 1) {
+            return false;
+        }
+
+        // Check if any subscription is active
+        $current_date = now();
+        $active_subscription = $this->subscriptions()->where('expires_at', '>', $current_date)->where('started_at', '<', $current_date)->where('status', 'active')->first();
+
+        if($active_subscription) {
+            return true;
+        }
+
+        return false;
+    }
 }
