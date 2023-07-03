@@ -22,7 +22,7 @@ class VerifiedClientHasSubscription
         
         // If user has no subscription, redirect to subscription page
         if (!$request->user()->hasSubscription()) {
-            return redirect()->route('subscription');
+            return redirect()->route('subscription.create');
         }
 
         return $next($request);

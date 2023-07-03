@@ -44,7 +44,7 @@ Route::middleware([
     Route::middleware(['verified.client.has.subscription', 'verified.mobile'])->prefix('client')->name('client.')->group(function () {
         // Client routes
         Route::get('/dashboard', function () {
-            return view('dashboard');
+            return view('client.dashboard');
         })->name('dashboard');
     });
 
