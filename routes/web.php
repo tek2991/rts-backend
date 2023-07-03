@@ -9,6 +9,7 @@ use App\Http\Controllers\PackageController;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use App\Http\Controllers\ActivationCodeController;
+use App\Http\Controllers\Client\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,12 +41,19 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'verified.mobile',
 ])->group(function () {
-    Route::middleware(['verified.client.has.subscription', 'verified.mobile'])->prefix('client')->name('client.')->group(function () {
-        // Client routes
-        Route::get('/dashboard', function () {
-            return view('client.dashboard');
-        })->name('dashboard');
+    
+    Route::prefix('client')->name('client.')->group(function () {
+        Route::get('subscription/expired', [SubscriptionController::class, 'subscriptionExpired'])->name('subscription.expired');
+        Route::resource('subscription', SubscriptionController::class)->only(['index', 'show', 'create']);
+
+        Route::middleware(['verified.client.has.subscription'])->group(function () {
+            // Client routes
+            Route::get('/dashboard', function () {
+                return view('client.dashboard');
+            })->name('dashboard');
+        });
     });
 
     Route::middleware(['redirect.if.client', 'role:administrator|manager'])->group(function () {
