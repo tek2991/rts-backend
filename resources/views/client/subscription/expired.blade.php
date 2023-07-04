@@ -14,7 +14,7 @@
                 </h2>
 
                 <div class="mt-8 flex items-center justify-center">
-                    <a href="{{ route('client.packages') }}" class="bg-blue-500 hover:bg-blue-600 shadow-md text-white rounded-md px-4 py-2.5">Buy Subscription</a>
+                    <a href="{{ route('client.package.index') }}" class="bg-blue-500 hover:bg-blue-600 shadow-md text-white rounded-md px-4 py-2.5">Buy Subscription</a>
                 </div>
             </div>
         </div>

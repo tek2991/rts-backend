@@ -10,7 +10,7 @@ class ClientPackageController extends Controller
 {
     public function index()
     {
-        $packages = Package::all();
+        $packages = Package::where('is_active', true)->get();
         return view('client.package.index', compact('packages'));
     }
 }

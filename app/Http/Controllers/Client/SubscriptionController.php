@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Package;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 
@@ -24,9 +25,10 @@ class SubscriptionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($package_id)
     {
-        return view('client.subscription.create');
+        $package = Package::where('id', $package_id)->where('is_active', true)->firstOrFail();
+        return view('client.subscription.create', compact('package'));
     }
 
     /**
