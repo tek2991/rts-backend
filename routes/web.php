@@ -10,6 +10,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Client\SubscriptionController;
+use App\Http\Controllers\Client\ClientPackageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,7 @@ Route::middleware([
     
     Route::prefix('client')->name('client.')->group(function () {
         Route::get('subscription/expired', [SubscriptionController::class, 'subscriptionExpired'])->name('subscription.expired');
+        Route::get('packages', [ClientPackageController::class, 'index'])->name('packages');
         Route::resource('subscription', SubscriptionController::class)->only(['index', 'show', 'create']);
 
         Route::middleware(['verified.client.has.subscription'])->group(function () {
