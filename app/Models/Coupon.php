@@ -22,4 +22,14 @@ class Coupon extends Model
     {
         return $this->hasMany(Subscription::class);
     }
+
+    public function usage()
+    {
+        return $this->subscriptions()->count();
+    }
+
+    public function isExpired()
+    {
+        return $this->max_use <= $this->usage();
+    }
 }
