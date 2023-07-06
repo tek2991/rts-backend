@@ -30,7 +30,7 @@ use App\Http\Controllers\Client\ClientPackageController;
 // require_once base_path('routes/fortify.php');
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Mobile Number Verification...
