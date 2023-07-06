@@ -13,28 +13,52 @@
     </x-slot>
 
     <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
             <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-                    {{ $package->name }}
+                    Confirm Payment
                 </h2>
                 <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
-                    Best option for personal use & for your next project.
+                    This is thetransaction page. PayU Money payment gateway may be integrated here.
                 </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        Validity: <span class="font-semibold">{{ $package->duration_in_days }} days</span>
-                    </div>
-                    <div>
-                        Price: <span class="font-semibold">Rs {{ $package->price }}/-</span>
-                    </div>
-                    <div>
-                        Devices: <span class="font-semibold">1</span>
-                    </div>
+                {{-- Package name --}}
+                <div>
+                    Package Name: <span class="font-semibold">{{ $package->name }}</span>
                 </div>
+                {{-- Package price --}}
+                <div>
+                    Price: <span class="font-semibold">Rs {{ $package->price }}/-</span>
+                </div>
+                {{-- Coupon --}}
+                @if ($coupon)
+                    <div>
+                        Coupon: <span class="font-semibold">{{ $coupon->code }}</span>
+                    </div>
+                    {{-- Discount Amount --}}
+                    <div>
+                        Discount Amount: <span class="font-semibold">Rs {{ $discount_amount }}/-</span>
+                    </div>
+                @endif
+                {{-- Total Amount --}}
+                <div>
+                    Total Amount: <span class="font-semibold">Rs {{ $cost }}/-</span>
+                </div>
+
+                {{-- Payment Button --}}
+                <form action="{{ route('client.subscription.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="package_id" value="{{ $package->id }}">
+                    <input type="hidden" name="coupon_id" value="{{ $coupon->id ?? null }}">
+                    <input type="hidden" name="cost" value="{{ $cost }}">
+                    <div class="max-w-xs items-center mx-auto">
+                        <div class="mt-4">
+                            <button type="submit"
+                                class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">Pay
+                                Now</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            @livewire('client.calculate-subscription-cost', ['package' => $package])
         </div>
     </section>
 </x-app-layout>

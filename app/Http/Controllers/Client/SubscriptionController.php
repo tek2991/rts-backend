@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Package;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
     public function subscriptionExpired()
     {
+        if(Auth::user()->hasActiveSubscription()) {
+            return redirect()->route('client.dashboard');
+        }
         return view('client.subscription.expired');
     }
 
@@ -19,16 +24,36 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        return view('client.subscription.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create($package_id)
+    public function create()
     {
-        $package = Package::where('id', $package_id)->where('is_active', true)->firstOrFail();
-        return view('client.subscription.create', compact('package'));
+        // Check subscription_data in session
+        if (session()->has('subscription_data')) {
+            $package = Package::find(session('subscription_data.package_id'));
+            $coupon = session('subscription_data.coupon_id') ? Coupon::find(session('subscription_data.coupon_id')) : false;
+            if ($package) {
+                if ($coupon) {
+                    if ($coupon->isExpired()) {
+                        session()->forget('subscription_data');
+                        return redirect()->route('client.subscription.expired');
+                    }
+                }
+            } else {
+                session()->forget('subscription_data');
+                return redirect()->route('client.subscription.expired');
+            }
+            $discount_amount = $coupon ? $package->price * $coupon->discount_percentage / 100 : 0;
+            $cost = $package->price - $discount_amount;
+        } else {
+            return abort(404, 'Package not found.');
+        }
+
+        return view('client.subscription.create', compact('package', 'coupon', 'discount_amount', 'cost'));
     }
 
     /**
@@ -36,7 +61,40 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $subscription_data = session('subscription_data');
+        $package = Package::find($subscription_data['package_id']);
+        $coupon = $subscription_data['coupon_id'] ? Coupon::find($subscription_data['coupon_id']) : false;
+        $discount_amount = $coupon ? $package->price * $coupon->discount_percentage / 100 : 0;
+        $cost = $package->price - $discount_amount;
+        $user = auth()->user();
+
+        $started_at = $user->subscribedUpto() ? $user->subscribedUpto()->addDay() : now();
+        $expires_at = clone $started_at;
+        $expires_at->addDays($package->duration_in_days);
+
+        $subscription = Subscription::create([
+            'user_id' => $user->id,
+            'package_id' => $package->id,
+            'coupon_id' => $coupon ? $coupon->id : null,
+            'started_at' => $started_at,
+            'expires_at' => $expires_at,
+            'payment_method' => 'cash',
+            'gross_amount' => $package->price,
+            'discount_amount' => $discount_amount,
+            'net_amount' => $cost,
+            'status' => 'paid',
+        ]);
+
+        // Send notification to admin
+        // $this->sendNotificationToAdmin($subscription);
+
+        // Send notification to client
+        // $this->sendNotificationToClient($subscription);
+
+        // Remove subscription_data from session
+        session()->forget('subscription_data');
+
+        return redirect()->route('client.subscription.show', $subscription);
     }
 
     /**
@@ -44,7 +102,7 @@ class SubscriptionController extends Controller
      */
     public function show(Subscription $subscription)
     {
-        //
+        return view('client.subscription.show', compact('subscription'));
     }
 
     /**

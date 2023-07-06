@@ -40,7 +40,7 @@
                                 <span>Validity: <span class="font-semibold">{{ $package->duration_in_days }} days</span></span>
                             </li>
                         </ul>
-                        <a href="{{ route('client.subscription.create', $package->id) }}"
+                        <a href="{{ route('client.package.show', $package->id) }}"
                             class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition">Get
                             started</a>
                     </div>

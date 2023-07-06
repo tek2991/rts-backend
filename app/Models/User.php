@@ -95,7 +95,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Subscription::class);
     }
 
-    public function hasSubscription()
+    public function activationCodes()
+    {
+        return $this->hasMany(ActivationCode::class);
+    }
+
+    public function hasActiveSubscription()
     {
         if($this->subscriptions()->count() < 1) {
             return false;
@@ -103,10 +108,25 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Check if any subscription is active
         $current_date = now();
-        $active_subscription = $this->subscriptions()->where('expires_at', '>', $current_date)->where('started_at', '<', $current_date)->where('status', 'active')->first();
+        $active_subscription = $this->subscriptions()->where('expires_at', '>', $current_date)->where('started_at', '<', $current_date)->where('status', 'paid')->first();
 
         if($active_subscription) {
             return true;
+        }
+
+        return false;
+    }
+
+    public function subscribedUpto()
+    {
+        $current_date = now();
+        if($this->subscriptions()->count() < 1) {
+            return false;
+        }
+        $latest_subscription = $this->subscriptions()->orderBy('expires_at', 'desc')->first();
+
+        if($current_date < $latest_subscription->expires_at) {
+            return $latest_subscription->expires_at;
         }
 
         return false;

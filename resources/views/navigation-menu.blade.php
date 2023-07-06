@@ -16,6 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    @hasrole('client')
+                    <x-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
+                        {{ __('My Subscriptions') }}
+                    </x-nav-link>
+                    @endhasanyrole
+
                     @hasanyrole('administrator|manager')
                         {{-- User Management --}}
 

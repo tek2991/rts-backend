@@ -77,7 +77,16 @@ class CalculateSubscriptionCost extends Component
 
     public function payNow()
     {
+        $data = [
+            'package_id' => $this->package->id,
+            'coupon_id' => $this->coupon ? $this->coupon->id : null,
+        ];
 
+        // Save the data to session
+        session()->put('subscription_data', $data);
+
+        // Redirect to payment page
+        return redirect()->route('client.subscription.create');
     }
 
     public function render()

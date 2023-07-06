@@ -21,7 +21,7 @@ class VerifiedClientHasSubscription
         }
         
         // If user has no subscription, redirect to subscription page
-        if (!$request->user()->hasSubscription()) {
+        if (!$request->user()->hasActiveSubscription()) {
             return redirect()->route('client.subscription.expired');
         }
 
