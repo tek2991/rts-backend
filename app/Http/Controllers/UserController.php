@@ -36,6 +36,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users,email'],
+            'mobile' => ['required', 'string', 'unique:users,mobile'],
             'role_ids' => ['required', 'array'],
             'role_ids.*' => ['required', 'exists:roles,id'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -44,7 +45,10 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'mobile_number' => $validated['mobile'],
             'password' => bcrypt($validated['password']),
+            'email_verified_at' => now(),
+            'mobile_number_verified_at' => now(),
         ]);
 
         $user->roles()->attach($validated['role_ids']);

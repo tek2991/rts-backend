@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('code');
             $table->integer('duration_in_days');
             $table->integer('price');
-            $table->foreignId('user_id')->constrained();
             $table->dateTime('expires_at');
             $table->dateTime('used_at')->nullable();
             $table->timestamps();

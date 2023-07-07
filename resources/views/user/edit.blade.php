@@ -7,28 +7,22 @@
 
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mb-12">
         <h2 class="text-xl font-regular pt-2 pb-4">User details</h2>
+        <p class="text-sm text-red-500 mb-4">User details cannot be edited.</p>
         <x-validation-errors class="mb-4" />
-        <form action="{{ route('user.update', $user) }}" method="post">
-            @csrf
-            @method('PUT')
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <x-label for="name" :value="__('Name')" />
-                    <x-input id="name" class="block mt-1 w-full" type="text" disabled
-                        value="{{ $user->name }}" />
-                </div>
-                <div>
-                    <x-label for="email" :value="__('Email')" />
-                    <x-input id="email" class="block mt-1 w-full" type="email" disabled
-                        value="{{ $user->email }}" />
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <x-label for="name" :value="__('Name')" />
+                <x-input id="name" class="block mt-1 w-full" type="text" disabled value="{{ $user->name }}" />
             </div>
-            <div class="flex justify-end mt-4">
-                <x-button class="ml-4">
-                    {{ __('Update') }}
-                </x-button>
+            <div>
+                <x-label for="email" :value="__('Email')" />
+                <x-input id="email" class="block mt-1 w-full" type="email" disabled value="{{ $user->email }}" />
             </div>
-        </form>
+            <div>
+                <x-label for="mobile" :value="__('Mobile')" />
+                <x-input id="mobile" class="block mt-1 w-full" type="text" disabled value="{{ $user->mobile }}" />
+            </div>
+        </div>
     </div>
 
 

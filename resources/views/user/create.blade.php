@@ -22,6 +22,11 @@
                         value="{{ old('email') }}" />
                 </div>
                 <div>
+                    <x-label for="mobile" :value="__('Mobile')" />
+                    <x-input id="mobile" class="block mt-1 w-full" type="text" required name="mobile"
+                        value="{{ old('mobile') }}" />
+                </div>
+                <div>
                     <x-label for="role_ids" :value="__('Roles')" />
                     <x-input-select id="role_ids" name="role_ids[]" multiple size="5">
                         @foreach ($roles as $role)

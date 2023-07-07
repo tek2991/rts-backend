@@ -10,7 +10,6 @@ class ActivationCode extends Model
         'code',
         'duration_in_days',
         'price',
-        'user_id',
         'expires_at',
         'used_at',
     ];
@@ -18,16 +17,22 @@ class ActivationCode extends Model
     protected $casts = [
         'duration_in_days' => 'integer',
         'price' => 'integer',
-        'user_id' => 'integer',
+        'expires_at' => 'datetime',
     ];
+
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOneThrough(User::class, Subscription::class);
     }
 
-    public function subscriptions()
+    public function isValid()
     {
-        return $this->hasMany(Subscription::class);
+        return $this->used_at === null && $this->expires_at > now() && $this->subscription === null;
     }
 }

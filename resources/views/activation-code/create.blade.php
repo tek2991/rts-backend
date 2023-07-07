@@ -29,12 +29,6 @@
                     <x-input id="price" class="block mt-1 w-full" type="number" required name="price"
                         value="{{ old('price') }}" />
                 </div>
-                {{-- User Mobile Number --}}
-                <div>
-                    <x-label for="user_mobile_number" :value="__('User Mobile Number')" />
-                    <x-input id="user_mobile_number" class="block mt-1 w-full" type="text" required name="user_mobile_number"
-                        value="{{ old('user_mobile_number') }}" />
-                </div>
                 {{-- Expires at --}}
                 <div>
                     <x-label for="expires_at" :value="__('Expires At')" />

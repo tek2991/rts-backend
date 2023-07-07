@@ -39,6 +39,11 @@ class CouponController extends Controller
             'discount_percentage' => 'required|integer|min:1',
         ]);
 
+        // Capitalize the code
+        $request->merge([
+            'code' => strtoupper($request->code),
+        ]);
+
         Coupon::create([
             'code' => $request->code,
             'promoter_name' => $request->promoter_name,
@@ -78,6 +83,11 @@ class CouponController extends Controller
             'promoter_name' => 'required|string|max:255',
             'max_use' => 'required|integer|min:1',
             'discount_percentage' => 'required|integer|min:1',
+        ]);
+
+        // Capitalize the code
+        $request->merge([
+            'code' => strtoupper($request->code),
         ]);
 
         $coupon->update([

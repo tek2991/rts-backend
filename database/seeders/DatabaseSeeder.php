@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RoleSeeder::class,
+            PackageSeeder::class,
+            CouponSeeder::class,
+            ActivationCodeSeeder::class,
         ]);
     }
 }

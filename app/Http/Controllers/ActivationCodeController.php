@@ -37,8 +37,12 @@ class ActivationCodeController extends Controller
             'code' => 'required|string|max:255|unique:activation_codes',
             'duration' => 'required|integer|min:1',
             'price' => 'required|integer|min:1',
-            'user_mobile_number' => 'required|exists:users,mobile_number',
             'expires_at' => 'required|date|after:today',
+        ]);
+
+        // Capitalize the code
+        $request->merge([
+            'code' => strtoupper($request->code),
         ]);
 
 
@@ -46,7 +50,6 @@ class ActivationCodeController extends Controller
             'code' => $request->code,
             'duration_in_days' => $request->duration,
             'price' => $request->price,
-            'user_id' => User::where('mobile_number', $request->user_mobile_number)->first()->id,
             'expires_at' => $request->expires_at,
         ]);
 

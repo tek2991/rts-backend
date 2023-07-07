@@ -52,8 +52,7 @@ final class ActivationCodeTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return ActivationCode::query()
-        ->with('user');
+        return ActivationCode::query();
     }
 
     /*
@@ -96,8 +95,6 @@ final class ActivationCodeTable extends PowerGridComponent
 
             ->addColumn('duration_in_days')
             ->addColumn('price')
-            ->addColumn('user_id')
-            ->addColumn('user_name', fn (ActivationCode $model) => $model->user->name)
             ->addColumn('expires_at_formatted', fn (ActivationCode $model) => Carbon::parse($model->expires_at)->format('d/m/Y H:i'))
             ->addColumn('used_at_formatted', fn (ActivationCode $model) => $model->used_at ? Carbon::parse($model->used_at)->format('d/m/Y H:i') : '')
             ->addColumn('created_at_formatted', fn (ActivationCode $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i'));
@@ -127,7 +124,6 @@ final class ActivationCodeTable extends PowerGridComponent
 
             Column::make('Duration in days', 'duration_in_days'),
             Column::make('Price', 'price'),
-            Column::make('User', 'user_name'),
             Column::make('Expires at', 'expires_at_formatted', 'expires_at')
                 ->sortable(),
 

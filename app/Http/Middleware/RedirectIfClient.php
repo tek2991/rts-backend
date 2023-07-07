@@ -15,13 +15,11 @@ class RedirectIfClient
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // If user has administrator or manager role, let them through
-        if ($request->user()->hasAnyRole('administrator', 'manager')) {
-            return $next($request);
-        }
         // Redirect to client dashboard if user has client role
         if ($request->user()->hasRole('client')) {
             return redirect()->route('client.dashboard');
         }
+
+        return $next($request);
     }
 }
