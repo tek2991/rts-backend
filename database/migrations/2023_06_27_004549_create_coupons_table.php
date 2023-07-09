@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('promoter_name');
             $table->integer('max_use');
             $table->integer('discount_percentage');
+            $table->dateTime('expires_at');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

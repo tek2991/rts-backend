@@ -165,25 +165,24 @@ final class ActivationCodeTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
+    
     public function actions(): array
     {
        return [
            Button::make('edit', 'Edit')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('activation-code.edit', function(\App\Models\ActivationCode $model) {
-                    return $model->id;
-               }),
+               ->route('activation-code.edit',['activation_code' => 'id'])
+               ->target(''),
 
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('activation-code.destroy', function(\App\Models\ActivationCode $model) {
-                    return $model->id;
-               })
-               ->method('delete')
+        //    Button::make('destroy', 'Delete')
+        //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+        //        ->route('activation-code.destroy', function(\App\Models\ActivationCode $model) {
+        //             return $model->id;
+        //        })
+        //        ->method('delete')
         ];
     }
-    */
+    
 
     /*
     |--------------------------------------------------------------------------

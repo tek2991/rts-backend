@@ -47,7 +47,7 @@ class ActivationCodePolicy
     public function update(User $user, ActivationCode $activationCode): Response
     {
         // Only administrator role and user with permission "edit activation code" can update a activation code
-        return $user->hasRole('administrator') || $user->can('edit activation code') ?
+        return ($user->hasRole('administrator') || $user->can('edit activation code')) && $activationCode->isValid() ?
             Response::allow()
             : Response::deny('You can\'t update this activation code.');
     }

@@ -96,7 +96,10 @@ final class CouponTable extends PowerGridComponent
             ->addColumn('promoter_name')
             ->addColumn('max_use')
             ->addColumn('discount_percentage')
-            ->addColumn('created_at_formatted', fn (Coupon $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('expires_at')
+            ->addColumn('expires_at_formatted', fn (Coupon $model) => Carbon::parse($model->expires_at)->format('d/m/Y H:i'))
+            ->addColumn('is_active')
+            ->addColumn('created_at_formatted', fn (Coupon $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i'));
     }
 
     /*
@@ -116,7 +119,7 @@ final class CouponTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
+            // Column::make('Id', 'id'),
             Column::make('Code', 'code')
                 ->sortable()
                 ->searchable(),
@@ -126,7 +129,12 @@ final class CouponTable extends PowerGridComponent
                 ->searchable(),
 
             Column::make('Max use', 'max_use'),
-            Column::make('Discount percentage', 'discount_percentage'),
+            Column::make('Discount %', 'discount_percentage'),
+            Column::make('Expires at', 'expires_at_formatted', 'expires_at')
+                ->sortable(),
+
+            Column::make('Is active', 'is_active')
+                ->toggleable(),
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable(),
 

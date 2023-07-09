@@ -8,7 +8,6 @@
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mb-12">
         <h2 class="text-xl font-regular pt-2 pb-4">User details</h2>
         <p class="text-sm text-red-500 mb-4">User details cannot be edited.</p>
-        <x-validation-errors class="mb-4" />
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
                 <x-label for="name" :value="__('Name')" />
@@ -23,6 +22,30 @@
                 <x-input id="mobile" class="block mt-1 w-full" type="text" disabled value="{{ $user->mobile }}" />
             </div>
         </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mb-12">
+        <h2 class="text-xl font-regular pt-2 pb-4">Reset user Password</h2>
+        <p class="text-sm text-blue-500 mb-4">
+            Reset to default password <span class="font-semibold">Password@ddmmyyyy</span>
+        </p>
+        <form action="{{ route('user.resetPassword', $user) }}" method="post">
+            @csrf
+            @method('PUT')
+            <x-validation-errors class="mb-4" />
+            <div class="grid grid-cols-1 md:w-1/2 gap-6">
+                {{-- Confirm checkbox --}}
+                <div class="flex items-center">
+                    <x-input id="confirm" class="block" type="checkbox" required name="confirm" value="1" />
+                    <x-label for="confirm" class="pl-2" :value="__('Confirm')" />
+                </div>
+            </div>
+            <div class="flex justify-end mt-4">
+                <x-button class="ml-4">
+                    {{ __('Reset Password') }}
+                </x-button>
+            </div>
+        </form>
     </div>
 
 

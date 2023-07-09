@@ -8,6 +8,7 @@ use Livewire\Component;
 class CalculateSubscriptionCost extends Component
 {
     public $package;
+    public $coupons = [];
     public $coupon = false;
     public $discount_amount = 0;
     public $cost;
@@ -16,6 +17,7 @@ class CalculateSubscriptionCost extends Component
     public function mount($package)
     {
         $this->package = $package;
+        $this->coupons = Coupon::where('is_active', true)->get();
         $this->calculateCost();
     }
 
@@ -43,8 +45,8 @@ class CalculateSubscriptionCost extends Component
     public function calculateSubscriptionCost()
     {
         $coupon = Coupon::where('code', $this->toUpper($this->coupon_code))->first() ?? false;
-        if($coupon) {
-            if($coupon->isExpired()) {
+        if ($coupon) {
+            if ($coupon->isExpired()) {
                 $this->addError('coupon_code', 'Coupon code is expired.');
                 return;
             }
@@ -61,6 +63,12 @@ class CalculateSubscriptionCost extends Component
         } else {
             $this->addError('coupon_code', 'Invalid coupon code.');
         }
+    }
+
+    public function applySelectedCoupon($code)
+    {
+        $this->coupon_code = $code;
+        $this->calculateSubscriptionCost();
     }
 
     public function applyCoupon()

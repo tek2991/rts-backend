@@ -126,4 +126,24 @@ class UserController extends Controller
         $user->roles()->attach($role);
         return redirect()->route('user.edit', $user)->banner('Role attached');
     }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        // Do not allow users who are not admins to reset passwords
+        if (!auth()->user()->hasRole('administrator')) {
+            return redirect()->back()->dangerBanner('You do not have permission to do that.');
+        }
+        $request->validate([
+            'confirm' => 'required|boolean',
+        ]);
+
+        if (!$request->confirm) {
+            return redirect()->back()->dangerBanner('You must confirm to reset the password.');
+        }
+
+        $password = 'Password@' . now()->format('dmY');
+        $user->password = bcrypt($password);
+        $user->save();
+        return redirect()->route('user.edit', $user)->banner('Password reset');
+    }
 }

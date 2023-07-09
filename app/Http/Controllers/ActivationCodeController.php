@@ -69,7 +69,8 @@ class ActivationCodeController extends Controller
      */
     public function edit(ActivationCode $activationCode)
     {
-        //
+        $this->authorize('update', $activationCode);
+        return view('activation-code.edit', compact('activationCode'));
     }
 
     /**

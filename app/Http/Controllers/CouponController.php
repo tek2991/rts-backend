@@ -37,6 +37,8 @@ class CouponController extends Controller
             'promoter_name' => 'required|string|max:255',
             'max_use' => 'required|integer|min:1',
             'discount_percentage' => 'required|integer|min:1',
+            'expires_at' => 'required|date|after:today',
+            'is_active' => 'required|boolean',
         ]);
 
         // Capitalize the code
@@ -49,6 +51,8 @@ class CouponController extends Controller
             'promoter_name' => $request->promoter_name,
             'max_use' => $request->max_use,
             'discount_percentage' => $request->discount_percentage,
+            'expires_at' => $request->expires_at,
+            'is_active' => $request->is_active,
         ]);
 
         return redirect()->route('coupon.index')->banner('Coupon created successfully: ' . $request->code);
@@ -83,6 +87,8 @@ class CouponController extends Controller
             'promoter_name' => 'required|string|max:255',
             'max_use' => 'required|integer|min:1',
             'discount_percentage' => 'required|integer|min:1',
+            'expires_at' => 'required|date|after:today',
+            'is_active' => 'required|boolean',
         ]);
 
         // Capitalize the code
@@ -95,6 +101,8 @@ class CouponController extends Controller
             'promoter_name' => $request->promoter_name,
             'max_use' => $request->max_use,
             'discount_percentage' => $request->discount_percentage,
+            'expires_at' => $request->expires_at,
+            'is_active' => $request->is_active,
         ]);
 
         return redirect()->route('coupon.index')->banner('Coupon updated successfully: ' . $request->code);

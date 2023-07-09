@@ -17,7 +17,7 @@
                     <x-input id="code" class="block mt-1 w-full" type="text" required name="code"
                         value="{{ old('code') }}" />
                 </div>
-                
+
                 {{-- Promoter name --}}
                 <div>
                     <x-label for="promoter_name" :value="__('Promoter Name')" />
@@ -37,6 +37,22 @@
                     <x-label for="discount" :value="__('Discount %')" />
                     <x-input id="discount" class="block mt-1 w-full" type="number" required name="discount_percentage"
                         value="{{ old('discount') }}" />
+                </div>
+
+                {{-- Expires at --}}
+                <div>
+                    <x-label for="expires_at" :value="__('Expires at')" />
+                    <x-input id="expires_at" class="block mt-1 w-full" type="date" required name="expires_at"
+                        value="{{ old('expires_at') }}" />
+                </div>
+
+                {{-- Status --}}
+                <div>
+                    <x-label for="status" :value="__('Status')" />
+                    <select name="is_active" id="status" class="block mt-1 w-full">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
                 </div>
             </div>
             <div class="flex justify-end mt-4">

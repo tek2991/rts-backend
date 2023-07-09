@@ -24,6 +24,8 @@ class CouponSeeder extends Seeder
                 'promoter_name' => $randomPromoterName,
                 'max_use' => $randomMaxUse,
                 'discount_percentage' => $randomDiscount,
+                'expires_at' => now()->addDays(30),
+                'is_active' => true,
             ];
         }
 

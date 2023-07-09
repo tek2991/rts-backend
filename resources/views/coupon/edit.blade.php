@@ -34,6 +34,20 @@
                     <x-input id="discount" class="block mt-1 w-full" type="number" name="discount_percentage"
                         value="{{ $coupon->discount_percentage }}" />
                 </div>
+
+                <div>
+                    <x-label for="expires_at" :value="__('Expires at')" />
+                    <x-input id="expires_at" class="block mt-1 w-full" type="date" name="expires_at"
+                        value="{{ $coupon->expires_at->format('Y-m-d') }}" />
+                </div>
+
+                <div>
+                    <x-label for="status" :value="__('Status')" />
+                    <select name="is_active" id="status" class="block mt-1 w-full">
+                        <option value="1" {{ $coupon->is_active ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ !$coupon->is_active ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
             </div>
             <div class="flex justify-end mt-4">
                 <x-button class="ml-4">

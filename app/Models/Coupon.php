@@ -11,11 +11,15 @@ class Coupon extends Model
         'promoter_name',
         'max_use',
         'discount_percentage',
+        'expires_at',
+        'is_active',
     ];
 
     protected $casts = [
         'max_use' => 'integer',
         'discount_percentage' => 'integer',
+        'expires_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     public function subscriptions()
