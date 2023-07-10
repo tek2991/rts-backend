@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('gross_amount');
             $table->integer('discount_amount')->default(0);
             $table->integer('net_amount');
+            $table->integer('tax')->default(0);
+            $table->integer('price');
             $table->string('status');
             $table->timestamps();
         });

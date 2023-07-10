@@ -17,6 +17,8 @@ class Subscription extends Model
         'gross_amount',
         'discount_amount',
         'net_amount',
+        'tax',
+        'price',
         'status',
     ];
 

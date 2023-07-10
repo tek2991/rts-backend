@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PackageSeeder::class,
             CouponSeeder::class,
             ActivationCodeSeeder::class,
+            GstSeeder::class,
         ]);
     }
 }

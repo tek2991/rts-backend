@@ -21,7 +21,9 @@ class ActivationCodeSeeder extends Seeder
             $data[] = [
                 'code' => $randomCode,
                 'duration_in_days' => $randomDuration,
-                'price' => $randomPrice,
+                'net_amount' => $randomPrice,
+                'tax' => $randomPrice * 0.18,
+                'price' => $randomPrice * 1.18,
                 'expires_at' => now()->addDays(30),
             ];
         }

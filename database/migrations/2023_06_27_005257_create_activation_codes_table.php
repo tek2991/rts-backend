@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->integer('duration_in_days');
+            $table->integer('net_amount');
+            $table->integer('tax')->default(0);
             $table->integer('price');
             $table->dateTime('expires_at');
             $table->dateTime('used_at')->nullable();

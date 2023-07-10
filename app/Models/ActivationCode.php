@@ -9,6 +9,8 @@ class ActivationCode extends Model
     protected $fillable = [
         'code',
         'duration_in_days',
+        'net_amount',
+        'tax',
         'price',
         'expires_at',
         'used_at',

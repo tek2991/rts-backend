@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('duration_in_days');
+            $table->integer('net_amount');
+            $table->integer('tax')->default(0);
             $table->integer('price');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

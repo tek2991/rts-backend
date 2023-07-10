@@ -16,19 +16,25 @@ class PackageSeeder extends Seeder
             [
                 'name' => 'Basic',
                 'duration_in_days' => 30,
-                'price' => 100,
+                'net_amount' => 100,
+                'tax' => 18,
+                'price' => 118,
                 'is_active' => true,
             ],
             [
                 'name' => 'Premium',
                 'duration_in_days' => 90,
-                'price' => 250,
+                'net_amount' => 200,
+                'tax' => 36,
+                'price' => 236,
                 'is_active' => true,
             ],
             [
                 'name' => 'Platinum',
                 'duration_in_days' => 180,
-                'price' => 500,
+                'net_amount' => 500,
+                'tax' => 90,
+                'price' => 590,
                 'is_active' => true,
             ],
         ];

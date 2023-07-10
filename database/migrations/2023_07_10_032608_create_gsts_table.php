@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('gsts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('percentage');
+            $table->integer('rate');
             $table->timestamps();
         });
     }
