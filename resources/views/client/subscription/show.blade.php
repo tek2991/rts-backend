@@ -15,24 +15,48 @@
     <section class="bg-white dark:bg-gray-900">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-                    {{ $subscription->package->name }}
-                </h2>
-                <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
-                    Best option for personal use & for your next project.
-                </p>
+                @if ($subscription->package)
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                        {{ $subscription->package->name }}
+                    </h2>
+                    <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                        Best option for personal use & for your next project.
+                    </p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        Validity: <span class="font-semibold">{{ $subscription->package->duration_in_days }} days</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            Validity: <span class="font-semibold">{{ $subscription->package->duration_in_days }}
+                                days</span>
+                        </div>
+                        <div>
+                            Price: <span class="font-semibold">Rs {{ $subscription->package->price }}/-</span>
+                        </div>
+                        <div>
+                            Devices: <span class="font-semibold">1</span>
+                        </div>
                     </div>
-                    <div>
-                        Price: <span class="font-semibold">Rs {{ $subscription->package->price }}/-</span>
+                @endif
+                @if ($subscription->activationCode)
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                        {{ $subscription->activationCode->code }}
+                    </h2>
+                    <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                        Activation Code
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            Validity: <span class="font-semibold">{{ $subscription->activationCode->duration_in_days }}
+                                days</span>
+                        </div>
+                        <div>
+                            Price: <span class="font-semibold">Rs {{ $subscription->activationCode->price }}/-</span>
+                        </div>
+                        <div>
+                            Devices: <span class="font-semibold">1</span>
+                        </div>
                     </div>
-                    <div>
-                        Devices: <span class="font-semibold">1</span>
-                    </div>
-                </div>
+                @endif
             </div>
             <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">

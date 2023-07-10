@@ -11,6 +11,7 @@ use Kreait\Firebase\Messaging\Notification;
 use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Client\SubscriptionController;
 use App\Http\Controllers\Client\ClientPackageController;
+use App\Http\Controllers\Client\ClientActivationCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,8 @@ Route::middleware([
         Route::resource('subscription', SubscriptionController::class)->only(['index', 'show', 'create', 'store']);
         Route::get('packages', [ClientPackageController::class, 'index'])->name('package.index');
         Route::get('packages/{package}', [ClientPackageController::class, 'show'])->name('package.show');
+
+        Route::get('activation-code', [ClientActivationCodeController::class, 'start'])->name('activation-code.start');
 
         Route::middleware(['verified.client.has.subscription'])->group(function () {
             // Client routes

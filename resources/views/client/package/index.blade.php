@@ -47,5 +47,11 @@
                 @endforeach
             </div>
         </div>
+        {{-- Link to Activation Code --}}
+        <div class="flex justify-center items-center">
+            <a href="{{ route('client.activation-code.index') }}"
+                class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition">Activation
+                Code</a>
+        </div>
     </section>
 </x-app-layout>
