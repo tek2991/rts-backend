@@ -58,6 +58,13 @@
                                     {{ __('Activation Codes') }}
                                 </x-nav-dropdown-item>
                             @endcan
+
+                            {{-- Gst --}}
+                            @can('update', App\Models\Gst::class)
+                                <x-nav-dropdown-item href="{{ route('gst.index') }}" :active="request()->routeIs('gst.*')">
+                                    {{ __('Gst') }}
+                                </x-nav-dropdown-item>
+                            @endcan
                         </x-nav-dropdown-wrapper>
                     @endhasanyrole
                 </div>
