@@ -61,7 +61,7 @@ class CreatePackage extends Component
         $this->state['price'] = $this->state['net_amount'] + $this->state['tax'];
     }
 
-    public function createPackage()
+    public function save()
     {
         $this->validate([
             'state.name' => 'required|string|max:255',

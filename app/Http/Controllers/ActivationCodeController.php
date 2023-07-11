@@ -31,29 +31,7 @@ class ActivationCodeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', ActivationCode::class);
-        
-        $request->validate([
-            'code' => 'required|string|max:255|unique:activation_codes',
-            'duration' => 'required|integer|min:1',
-            'price' => 'required|integer|min:1',
-            'expires_at' => 'required|date|after:today',
-        ]);
-
-        // Capitalize the code
-        $request->merge([
-            'code' => strtoupper($request->code),
-        ]);
-
-
-        ActivationCode::create([
-            'code' => $request->code,
-            'duration_in_days' => $request->duration,
-            'price' => $request->price,
-            'expires_at' => $request->expires_at,
-        ]);
-
-        return redirect()->route('activation-code.index')->banner('Activation code created successfully: ' . $request->code);
+        // 
     }
 
     /**
