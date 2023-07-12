@@ -9,25 +9,42 @@ class Subscription extends Model
     protected $fillable = [
         'user_id',
         'package_id',
+        'package_name',
         'coupon_id',
+        'coupon_code',
+        'coupon_promoter_name',
         'activation_code_id',
+        'activation_code',
+        'plan_net_amount',
+        'plan_tax',
         'started_at',
         'expires_at',
-        'payment_method',
-        'gross_amount',
+        'duration_in_days',
+        'gross_price',
         'discount_amount',
         'net_amount',
         'tax',
         'price',
+        'payment_method',
         'status',
     ];
 
     protected $casts = [
         'started_at' => 'datetime',
         'expires_at' => 'datetime',
-        'gross_amount' => 'integer',
+        'started_at' => 'datetime',
+        'expires_at' => 'datetime',
+        
+        'plan_net_amount' => 'integer',
+        'plan_tax' => 'integer',
+        
+        
+        'duration_in_days' => 'integer',
+        'gross_price' => 'integer',
         'discount_amount' => 'integer',
         'net_amount' => 'integer',
+        'tax' => 'integer',
+        'price' => 'integer',
     ];
 
     public function user()
@@ -48,10 +65,5 @@ class Subscription extends Model
     public function activationCode()
     {
         return $this->belongsTo(ActivationCode::class);
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
     }
 }

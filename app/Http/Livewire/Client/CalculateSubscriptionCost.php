@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Client;
 
 use App\Models\Coupon;
+use App\Models\Gst;
 use Livewire\Component;
 
 class CalculateSubscriptionCost extends Component
@@ -10,14 +11,21 @@ class CalculateSubscriptionCost extends Component
     public $package;
     public $coupons = [];
     public $coupon = false;
+    public $cgst;
+    public $sgst;
+
     public $discount_amount = 0;
     public $cost;
     public $coupon_code = '';
+    public $net_cost;
+    public $tax;
 
     public function mount($package)
     {
         $this->package = $package;
         $this->coupons = Coupon::where('is_active', true)->get();
+        $this->sgst = Gst::where('name', 'SGST')->first()->rate;
+        $this->cgst = Gst::where('name', 'CGST')->first()->rate;
         $this->calculateCost();
     }
 
@@ -29,6 +37,20 @@ class CalculateSubscriptionCost extends Component
             $this->cost = $this->cost - ($this->cost * $this->coupon->discount_percentage / 100);
             $this->discount_amount = $this->package->price - $this->cost;
         }
+
+        $this->calculateTax();
+        $this->calculateNetCost();
+    }
+
+    public function calculateNetCost()
+    {
+        $this->net_cost = $this->cost - $this->tax;
+    }
+
+    public function calculateTax()
+    {
+        $tax_rate = $this->sgst + $this->cgst;
+        $this->tax = $this->cost * ($tax_rate / (100 + $tax_rate));
     }
 
     // Auto cap the coupon code to uppercase

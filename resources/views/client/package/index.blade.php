@@ -37,7 +37,8 @@
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                <span>Validity: <span class="font-semibold">{{ $package->duration_in_days }} days</span></span>
+                                <span>Validity: <span class="font-semibold">{{ $package->duration_in_days }}
+                                        days</span></span>
                             </li>
                         </ul>
                         <a href="{{ route('client.package.show', $package->id) }}"
@@ -48,10 +49,13 @@
             </div>
         </div>
         {{-- Link to Activation Code --}}
-        <div class="flex justify-center items-center">
-            <a href="{{ route('client.activation-code.index') }}"
-                class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition">Activation
-                Code</a>
+        <div class="p-6">
+            <span class="text-lg">
+                Have an activation code? &nbsp;
+                <a href="{{ route('client.activation-code.start') }}" class="text-green-500 hover:text-green-600 hover:underline transition">
+                    Click here to activate your account.    
+                </a>
+            </span>
         </div>
     </section>
 </x-app-layout>

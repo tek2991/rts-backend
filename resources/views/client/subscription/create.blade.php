@@ -23,7 +23,7 @@
                 </p>
                 {{-- Package name --}}
                 <div>
-                    Package Name: <span class="font-semibold">{{ $package->name }}</span>
+                    Package Name: <span class="font-semibold">{{ $package->name }} ({{ $package->duration_in_days }} days)</span>
                 </div>
                 {{-- Package price --}}
                 <div>
@@ -39,9 +39,17 @@
                         Discount Amount: <span class="font-semibold">Rs {{ $discount_amount }}/-</span>
                     </div>
                 @endif
+                {{-- Taxable --}}
+                <div>
+                    Taxable: <span class="font-semibold">Rs {{ $net_amount }}/-</span>
+                </div>
+                {{-- Tax --}}
+                <div>
+                    Tax (GST {{ $tax_rate }}%): <span class="font-semibold">Rs {{ $tax }}/-</span>
+                </div>
                 {{-- Total Amount --}}
                 <div>
-                    Total Amount: <span class="font-semibold">Rs {{ $cost }}/-</span>
+                    Total Payable: <span class="font-semibold">Rs {{ $gross_amount }}/-</span>
                 </div>
 
                 {{-- Payment Button --}}
@@ -49,7 +57,6 @@
                     @csrf
                     <input type="hidden" name="package_id" value="{{ $package->id }}">
                     <input type="hidden" name="coupon_id" value="{{ $coupon->id ?? null }}">
-                    <input type="hidden" name="cost" value="{{ $cost }}">
                     <div class="max-w-xs items-center mx-auto">
                         <div class="mt-4">
                             <button type="submit"

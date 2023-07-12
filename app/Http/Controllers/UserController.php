@@ -47,14 +47,14 @@ class UserController extends Controller
             'email' => $validated['email'],
             'mobile_number' => $validated['mobile'],
             'password' => bcrypt($validated['password']),
-            'email_verified_at' => now(),
-            'mobile_number_verified_at' => now(),
         ]);
 
         $user->roles()->attach($validated['role_ids']);
 
-        // Send verification email to the user
-        $user->sendEmailVerificationNotification();
+        $user->forceFill([
+            'email_verified_at' => now(),
+            'mobile_number_verified_at' => now(),
+        ])->save();
 
         return redirect()->route('user.index')->banner('User created!');
     }
