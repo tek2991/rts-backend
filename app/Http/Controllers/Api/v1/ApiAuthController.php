@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
@@ -8,11 +8,55 @@ use App\Http\Controllers\Controller;
 class ApiAuthController extends Controller
 {
     /**
-     * Handle an incoming authentication request using email and password.
+     * Log in a user using email and password.
      *
-     * @return \Illuminate\Http\Response
+     * @group Authentication
+     * 
+     * @bodyParam email string required User's email address.
+     * @bodyParam password string required User's password.
+     * 
+     * @response {
+     *    "status": true,
+     *    "message": "Login Success",
+     *    "errors": {},
+     *    "data": {
+     *        "name": "John Doe",
+     *        "email": "john@example.com",
+     *        "email_verified": true,
+     *        "mobile_number": "1234567890",
+     *        "mobile_number_verified": true,
+     *        "has_active_subscription": true,
+     *        "subscribed_upto": "2023-12-31",
+     *        "purchase_url": "in-app-purchase-url",
+     *        "device_id": "ABC123",
+     *        "device_token": "XYZ789",
+     *        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjI2MzM2MzE3LCJleHAiOjE2MjYzMzY5MTd9.sX5EBhtd4IM2AtS-7HErAtX5umc6AdncEa4fUcF6zGw"
+     *    }
+     * }
+     * 
+     * @response 401 {
+     *    "status": false,
+     *    "message": "Login Failed",
+     *    "errors": {
+     *        "email": [
+     *            "Invalid email or password"
+     *        ]
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @response 500 {
+     *    "status": false,
+     *    "message": "Login Failed",
+     *    "errors": {
+     *        "exception": "Exception message",
+     *        "trace": "Exception trace"
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @return \Illuminate\Http\JsonResponse
      */
-
     public function emailLogin()
     {
         // Validate the request...
@@ -70,9 +114,43 @@ class ApiAuthController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request for generating mobile OTP.
+     * Send OTP to mobile number for verification.
      *
-     * @return \Illuminate\Http\Response
+     * @group Authentication
+     * 
+     * @bodyParam mobile_number int required User's mobile number.
+     * 
+     * @response {
+     *    "status": true,
+     *    "message": "OTP Sent",
+     *    "errors": {},
+     *    "data": {
+     *        "otp": "123456"
+     *    }
+     * }
+     * 
+     * @response 404 {
+     *    "status": false,
+     *    "message": "User not found",
+     *    "errors": {
+     *        "mobile_number": [
+     *            "User not found"
+     *        ]
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @response 500 {
+     *    "status": false,
+     *    "message": "OTP Failed",
+     *    "errors": {
+     *        "exception": "Exception message",
+     *        "trace": "Exception trace"
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @return \Illuminate\Http\JsonResponse
      */
     public function mobileOtp()
     {
@@ -122,9 +200,65 @@ class ApiAuthController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request using mobile number and OTP.
+     * Verify OTP for mobile number.
      *
-     * @return \Illuminate\Http\Response
+     * @group Authentication
+     * 
+     * @bodyParam mobile_number int required User's mobile number.
+     * @bodyParam otp string required OTP for verification.
+     * 
+     * @response {
+     *    "status": true,
+     *    "message": "Login Success",
+     *    "errors": {},
+     *    "data": {
+     *        "name": "John Doe",
+     *        "email": "john@example.com",
+     *        "email_verified": true,
+     *        "mobile_number": "1234567890",
+     *        "mobile_number_verified": true,
+     *        "has_active_subscription": true,
+     *        "subscribed_upto": "2023-12-31",
+     *        "purchase_url": "in-app-purchase-url",
+     *        "device_id": "ABC123",
+     *        "device_token": "XYZ789",
+     *        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjI2MzM2MzE3LCJleHAiOjE2MjYzMzY5MTd9.sX5EBhtd4IM2AtS-7HErAtX5umc6AdncEa4fUcF6zGw"
+     *    }
+     * }
+     * 
+     * @response 401 {
+     *    "status": false,
+     *    "message": "OTP verification failed",
+     *    "errors": {
+     *        "otp": [
+     *            "OTP verification failed"
+     *        ]
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @response 404 {
+     *    "status": false,
+     *    "message": "User not found",
+     *    "errors": {
+     *        "mobile_number": [
+     *            "User not found"
+     *        ]
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @response 500 {
+     *    "status": false,
+     *    "message": "Login Failed",
+     *    "errors": {
+     *        "exception": "Exception message",
+     *        "trace": "Exception trace"
+     *    },
+     *    "data": {}
+     * }
+     * 
+     * @return \Illuminate\Http\JsonResponse
      */
     public function mobileOtpVerify()
     {
@@ -160,8 +294,6 @@ class ApiAuthController extends Controller
                 ], 401);
             }
 
-            // Sign in user
-            // auth()->login($user);
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([

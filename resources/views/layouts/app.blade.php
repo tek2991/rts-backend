@@ -42,6 +42,10 @@
                 </div>
             </div>
         </main>
+
+        @php
+            dd(auth()->user());
+        @endphp
     </div>
 
     @stack('modals')
