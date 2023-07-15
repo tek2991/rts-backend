@@ -20,7 +20,7 @@
                     <x-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
                         {{ __('My Subscriptions') }}
                     </x-nav-link>
-                    @endhasanyrole
+                    @endhasrole
 
                     @hasanyrole('administrator|manager')
                         {{-- User Management --}}
@@ -67,6 +67,12 @@
                             @endcan
                         </x-nav-dropdown-wrapper>
                     @endhasanyrole
+
+                    @hasrole('administrator')
+                    <x-nav-link href="{{ route('scribe') }}">
+                        {{ __('API docs') }}
+                    </x-nav-link>
+                    @endhasrole
                 </div>
             </div>
 
