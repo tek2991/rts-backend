@@ -87,7 +87,20 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasVerifiedMobileNumber()
     {
-        return !is_null($this->mobile_number_verified_at);
+        if(is_null($this->mobile_number_verified_at)) {
+            return false;
+        }
+
+        return $this->mobile_number_verified_at->lte(now());
+    }
+
+    public function hasVerifiedEmail()
+    {
+        if(is_null($this->email_verified_at)) {
+            return false;
+        }
+
+        return $this->email_verified_at->lte(now());
     }
 
     public function subscriptions()

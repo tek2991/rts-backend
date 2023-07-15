@@ -17,6 +17,11 @@ use App\Http\Controllers\Api\ApiAuthController;
 
 // Email and password authentication
 Route::post('/email-login', [ApiAuthController::class, 'emailLogin'])->name('login.email');
+// Generate mobile OTP
+Route::post('/mobile-otp', [ApiAuthController::class, 'mobileOtp'])->name('mobile.otp');
+// Verify mobile OTP and login
+Route::post('/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify'])->name('mobile.otp.verify');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
