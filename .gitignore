@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 .firebase-credentials.json
 /.scribe
+/resources/views/scribe/index.blade.php
