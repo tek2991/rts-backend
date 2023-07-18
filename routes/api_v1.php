@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\SyncController;
 use App\Http\Controllers\Api\v1\ApiAuthController;
 
 /*
@@ -22,7 +23,10 @@ Route::post('/mobile-otp', [ApiAuthController::class, 'mobileOtp'])->name('mobil
 // Verify mobile OTP and login
 Route::post('/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify'])->name('mobile.otp.verify');
 
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    // Logout
+    Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // Sync user data
+    Route::post('/sync', [SyncController::class, 'sync'])->name('sync');
 });

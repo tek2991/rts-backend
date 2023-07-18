@@ -139,7 +139,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $latest_subscription = $this->subscriptions()->orderBy('expires_at', 'desc')->first();
 
         if($current_date < $latest_subscription->expires_at) {
-            return $latest_subscription->expires_at;
+            return $latest_subscription->expires_at->format('Y-m-d');
         }
 
         return false;

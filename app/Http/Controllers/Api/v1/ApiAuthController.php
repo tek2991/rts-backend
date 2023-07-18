@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Request;
 
 class ApiAuthController extends Controller
 {
@@ -49,20 +50,24 @@ class ApiAuthController extends Controller
      *    "status": false,
      *    "message": "Login Failed",
      *    "errors": {
-     *        "exception": "Exception message",
-     *        "trace": "Exception trace"
+     *        "exception": ["Exception message"],
+     *        "trace": ["Exception trace", "Exception trace 2", ...]
      *    },
      *    "data": {}
      * }
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function emailLogin()
+    public function emailLogin(Request $request)
     {
         // Validate the request...
-        $credentials = request(['email', 'password']);
+        $credentials = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string',
+        ]);
 
         try {
+            throw new \Exception('Exception message');
             if (!auth()->attempt($credentials)) {
                 return response()->json([
                     'status' => false,
@@ -100,7 +105,7 @@ class ApiAuthController extends Controller
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
-                    'exception' => $e->getMessage(),
+                    'exception' => [$e->getMessage()],
                     'trace' => $e->getTrace(),
                 ];
             }
@@ -144,18 +149,20 @@ class ApiAuthController extends Controller
      *    "status": false,
      *    "message": "OTP Failed",
      *    "errors": {
-     *        "exception": "Exception message",
-     *        "trace": "Exception trace"
+     *        "exception": ["Exception message"],
+     *        "trace": ["Exception trace", "Exception trace 2", ...]
      *    },
      *    "data": {}
      * }
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function mobileOtp()
+    public function mobileOtp(Request $request)
     {
         // Validate the request...
-        $credentials = request(['mobile_number']);
+        $credentials = $request->validate([
+            'mobile_number' => 'required|numeric|exists:users,mobile_number',
+        ]);
 
         try {
             // Check if user with mobile number exists
@@ -186,7 +193,7 @@ class ApiAuthController extends Controller
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
-                    'exception' => $e->getMessage(),
+                    'exception' => [$e->getMessage()],
                     'trace' => $e->getTrace(),
                 ];
             }
@@ -252,18 +259,21 @@ class ApiAuthController extends Controller
      *    "status": false,
      *    "message": "Login Failed",
      *    "errors": {
-     *        "exception": "Exception message",
-     *        "trace": "Exception trace"
+     *        "exception": ["Exception message"],
+     *        "trace": ["Exception trace", "Exception trace 2", ...]
      *    },
      *    "data": {}
      * }
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function mobileOtpVerify()
+    public function mobileOtpVerify(Request $request)
     {
         // Validate the request...
-        $credentials = request(['mobile_number', 'otp']);
+        $credentials = $request->validate([
+            'mobile_number' => 'required|numeric|exists:users,mobile_number',
+            'otp' => 'required|string',
+        ]);
 
         try {
             // Check if user with mobile number exists
@@ -318,13 +328,101 @@ class ApiAuthController extends Controller
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
-                    'exception' => $e->getMessage(),
+                    'exception' => [$e->getMessage()],
                     'trace' => $e->getTrace(),
                 ];
             }
             return response()->json([
                 'status' => false,
                 'message' => 'Login Failed',
+                'errors' => $errors,
+                'data' => (object)[],
+            ], 500);
+        }
+    }
+
+    /**
+     * Logout user and delete access tokens.
+     *
+     * @group Authentication
+     * @authenticated
+     *
+     * @bodyParam device_id string required The device ID of the user.
+     * @bodyParam device_token string required The device token of the user.
+     *
+     * @response 200 {
+     *    "status": true,
+     *    "message": "Logout Success",
+     *    "errors": {},
+     *    "data": {}
+     * }
+     *
+     * @response 404 {
+     *    "status": false,
+     *    "message": "User not found",
+     *    "errors": {
+     *        "device_id": [
+     *            "User not found"
+     *        ]
+     *    },
+     *    "data": {}
+     * }
+     *
+     * @response 500 {
+     *    "status": false,
+     *    "message": "Logout Failed",
+     *    "errors": {
+     *        "exception": ["Exception message"],
+     *        "trace": ["Exception trace", "Exception trace 2", ...]
+     *    },
+     *    "data": {}
+     * }
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        // Validate the request...
+        $credentials = $request->validate([
+            'device_id' => 'required|string|exists:users,device_id',
+            'device_token' => 'required|string|exists:users,device_token',
+        ]);
+
+        try {
+            // Check if user with the device id and token exists
+            $user = User::where('device_id', $credentials['device_id'])->where('device_token', $credentials['device_token'])->first();
+
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found',
+                    'errors' => (object)[
+                        'device_id' => ['User not found'],
+                    ],
+                    'data' => (object)[],
+                ], 404);
+            }
+
+            // Logout user
+            $user->tokens()->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Logout Success',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ]);
+        } catch (\Exception $e) {
+            $errors = (object)[];
+            if (config('app.debug')) {
+                $errors = (object)[
+                    'exception' => [$e->getMessage()],
+                    'trace' => $e->getTrace(),
+                ];
+            }
+            return response()->json([
+                'status' => false,
+                'message' => 'Logout Failed',
                 'errors' => $errors,
                 'data' => (object)[],
             ], 500);
