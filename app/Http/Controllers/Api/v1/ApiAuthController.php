@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Request;
 
 class ApiAuthController extends Controller
 {
@@ -67,7 +67,6 @@ class ApiAuthController extends Controller
         ]);
 
         try {
-            throw new \Exception('Exception message');
             if (!auth()->attempt($credentials)) {
                 return response()->json([
                     'status' => false,
