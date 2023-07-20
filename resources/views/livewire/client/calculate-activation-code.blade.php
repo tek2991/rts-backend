@@ -45,6 +45,33 @@
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:bg-slate-100"
                         disabled>
                 </div>
+
+                {{-- Net cost --}}
+                <div class="mt-4">
+                    <label for="net_cost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Net
+                        Amount</label>
+                    <input type="text" id="net_cost"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        disabled value="Rs {{ $net_cost }}/-">
+                </div>
+
+                {{-- Tax --}}
+                <div class="mt-4">
+                    <label for="tax" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tax (GST
+                        {{ $sgst + $cgst }}%)</label>
+                    <input type="text" id="tax"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        disabled value="Rs {{ $tax }}/-">
+                </div>
+
+                {{-- Total Amount --}}
+                <div class="mt-4">
+                    <label for="amount_payable" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Amount Payable</label>
+                    <input type="text" id="amount_payable"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        disabled value="Rs {{ $cost }}/-">
+                </div>
             @endif
         </div>
 

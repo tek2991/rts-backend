@@ -50,7 +50,8 @@ class CalculateSubscriptionCost extends Component
     public function calculateTax()
     {
         $tax_rate = $this->sgst + $this->cgst;
-        $this->tax = $this->cost * ($tax_rate / (100 + $tax_rate));
+        $tax = $this->cost * ($tax_rate / (100 + $tax_rate));
+        $this->tax = round($tax, 2);
     }
 
     // Auto cap the coupon code to uppercase
