@@ -7,6 +7,7 @@ use App\Models\Coupon;
 use App\Models\Package;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -81,7 +82,7 @@ class SubscriptionController extends Controller
         $tax_rate = $sgst + $cgst;
 
         $user = auth()->user();
-        $started_at = $user->subscribedUpto() ? $user->subscribedUpto()->addDay() : now();
+        $started_at = $user->subscribedUpto() ? Carbon::createFromFormat('Y-m-d', $user->subscribedUpto())->addDay() : now();
         $expires_at = clone $started_at;
         $expires_at->addDays($package->duration_in_days);
 

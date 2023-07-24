@@ -20,6 +20,9 @@
                     <x-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
                         {{ __('My Subscriptions') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('client.package.index') }}" :active="request()->routeIs('client.package.*')">
+                        {{ __('Buy Subscription') }}
+                    </x-nav-link>
                     @endhasrole
 
                     @hasanyrole('administrator|manager')
