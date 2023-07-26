@@ -48,7 +48,7 @@ class SyncController extends Controller
      *    "data": {}
      * }
      *
-     * @response 401 {
+     * @response 409 {
      *    "status": false,
      *    "message": "Duplicate device",
      *    "errors": {},
@@ -116,6 +116,6 @@ class SyncController extends Controller
             'message' => 'Duplicate device',
             'errors' => (object)[],
             'data' => (object)[],
-        ], 401);
+        ], 409);
     }
 }
