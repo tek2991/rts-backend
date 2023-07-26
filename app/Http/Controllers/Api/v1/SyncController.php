@@ -18,7 +18,7 @@ class SyncController extends Controller
      * @bodyParam mobile_number int required The mobile number of the user.
      * @bodyParam device_id string nullable The device ID of the user.
      * @bodyParam device_token string nullable The device token of the user.
-     * @bodyParam force_scan boolean required Flag indicating whether to force a device scan.
+     * @bodyParam force_sync boolean required Flag indicating whether to force a device sync.
      *
      * @response 200 {
      *    "status": true,
@@ -65,7 +65,7 @@ class SyncController extends Controller
             'mobile_number' => 'required|numeric|exists:users,mobile_number',
             'device_id' => 'nullable|string',
             'device_token' => 'nullable|string',
-            'force_scan' => 'required|boolean',
+            'force_sync' => 'required|boolean',
         ]);
 
         // Check if authenticated user has the same email and mobile number
@@ -86,7 +86,7 @@ class SyncController extends Controller
         }
 
         // If device_id and device_token are empty or force_scan is true, then update the device_id and device_token
-        if ((empty($user->device_id) && empty($user->device_token)) || $data['force_scan']) {
+        if ((empty($user->device_id) && empty($user->device_token)) || $data['force_sync']) {
             $user->device_id = $data['device_id'];
             $user->device_token = $data['device_token'];
             $user->save();
