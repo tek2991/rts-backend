@@ -11,6 +11,7 @@
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^3.2",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.15",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.11",
         "openspout/openspout": "^4.14",
