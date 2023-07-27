@@ -85,12 +85,14 @@ class SyncController extends Controller
             ], 202);
         }
 
-        // If device_id and device_token are empty or force_scan is true, then update the device_id and device_token
-        if ((empty($user->device_id) && empty($user->device_token)) || $data['force_sync']) {
+        if ($data['force_sync']) {
             $user->device_id = $data['device_id'];
             $user->device_token = $data['device_token'];
             $user->save();
+        }
 
+        // If device_id and device_token are empty or force_scan is true, then update the device_id and device_token
+        if ((empty($user->device_id) && empty($user->device_token)) || ($user->device_id == $data['device_id'] && $user->device_token == $data['device_token'])) {
             return response()->json([
                 'status' => true,
                 'message' => 'Sync successful',
