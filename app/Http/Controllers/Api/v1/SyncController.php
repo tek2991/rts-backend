@@ -127,6 +127,6 @@ class SyncController extends Controller
                 'device_id' => "test",
                 'device_token' => "test",
             ],
-        ], 301);
+        ], 202);
     }
 }
