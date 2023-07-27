@@ -115,7 +115,18 @@ class SyncController extends Controller
             'status' => false,
             'message' => 'Duplicate device',
             'errors' => (object)[],
-            'data' => (object)[],
+            'data' => (object)[
+                'name' => "test",
+                'email' => "test",
+                'email_verified' => "test",
+                'mobile_number' => "test",
+                'mobile_number_verified' => "test",
+                'has_active_subscription' => "test",
+                'subscribed_upto' => "test",
+                'purchase_url' => 'in-app-purchase-url',
+                'device_id' => "test",
+                'device_token' => "test",
+            ],
         ], 409);
     }
 }
