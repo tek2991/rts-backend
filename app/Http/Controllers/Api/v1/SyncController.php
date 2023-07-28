@@ -38,7 +38,7 @@ class SyncController extends Controller
      *    }
      * }
      *
-     * @response 202 {
+     * @response 401 {
      *    "status": false,
      *    "message": "Unauthorized",
      *    "errors": {
@@ -48,7 +48,7 @@ class SyncController extends Controller
      *    "data": {}
      * }
      *
-     * @response 202 {
+     * @response 409 {
      *    "status": false,
      *    "message": "Duplicate device",
      *    "errors": {},
@@ -82,7 +82,7 @@ class SyncController extends Controller
                     'mobile_number' => ['The email and mobile number does not match.'],
                 ],
                 'data' => (object)[],
-            ], 202);
+            ], 401);
         }
 
         if ($data['force_sync']) {
@@ -118,6 +118,6 @@ class SyncController extends Controller
             'message' => 'Duplicate device',
             'errors' => (object)[],
             'data' => (object)[],
-        ], 202);
+        ], 409);
     }
 }
