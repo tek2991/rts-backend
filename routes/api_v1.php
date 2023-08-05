@@ -25,7 +25,7 @@ Route::post('/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify'])
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // Logout
-    Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [ApiAuthController::class, 'logout'])->name('mobile.logout');
 
     // Sync user data
     Route::post('/sync', [SyncController::class, 'sync'])->name('sync');
