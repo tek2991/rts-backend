@@ -120,4 +120,75 @@ class SyncController extends Controller
             'data' => (object)[],
         ], 409);
     }
+
+    /**
+     * Update device status.
+     *
+     * @group User Management
+     * @authenticated
+     *
+     * @bodyParam email string required The email of the user.
+     * @bodyParam mobile_number int required The mobile number of the user.
+     * @bodyParam device_id string required The device ID of the user.
+     * @bodyParam device_status json required The device status of the user.
+     *
+     * @response 200 {
+     *    "status": true,
+     *    "message": "Device status updated",
+     *    "errors": {},
+     *    "data": {}
+     * }
+     *
+     * @response 401 {
+     *    "status": false,
+     *    "message": "Unauthorized",
+     *    "errors": {
+     *        "email": ["The email and mobile number do not match."],
+     *        "mobile_number": ["The email and mobile number do not match."]
+     *    },
+     *    "data": {}
+     * }
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deviceStatus(Request $request)
+    {
+        // Validate the request...
+        $data = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'mobile_number' => 'required|numeric|exists:users,mobile_number',
+            'device_id' => 'required|string',
+            'device_status' => 'required|json',
+        ]);
+
+        // Check if authenticated user has the same email and mobile number
+        $user = User::where('email', $data['email'])
+            ->where('mobile_number', $data['mobile_number'])
+            ->firstOrFail();
+
+        if (auth()->user()->id != $user->id) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized',
+                'errors' => (object)[
+                    'email' => ['The email and mobile number does not match.'],
+                    'mobile_number' => ['The email and mobile number does not match.'],
+                ],
+                'data' => (object)[],
+            ], 401);
+        }
+
+        // Convert device_status to array
+        $data['device_status'] = json_decode($data['device_status'], true);
+        $user->device_status = $data['device_status'];
+        $user->device_status_updated_at = now();
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Device status updated',
+            'errors' => (object)[],
+            'data' => (object)[],
+        ], 200);
+    }
 }

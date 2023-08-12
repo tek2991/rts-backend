@@ -46,7 +46,7 @@ Route::middleware([
     'verified',
     'verified.mobile',
 ])->group(function () {
-    
+
     Route::prefix('client')->name('client.')->group(function () {
         Route::get('subscription/expired', [SubscriptionController::class, 'subscriptionExpired'])->name('subscription.expired');
         Route::resource('subscription', SubscriptionController::class)->only(['index', 'show', 'create', 'store']);
@@ -55,11 +55,14 @@ Route::middleware([
 
         Route::get('activation-code', [ClientActivationCodeController::class, 'start'])->name('activation-code.start');
 
+        Route::get('/dashboard', function () {
+            return view('client.dashboard');
+        })->name('dashboard');
+
+        // Client routes protected by verified.client.has.subscription middleware
         Route::middleware(['verified.client.has.subscription'])->group(function () {
-            // Client routes
-            Route::get('/dashboard', function () {
-                return view('client.dashboard');
-            })->name('dashboard');
+            // Control Phone
+            Route::get('control-phone', [App\Http\Controllers\Client\ControlPhoneController::class, 'index'])->name('control-phone');
         });
     });
 
@@ -67,6 +70,11 @@ Route::middleware([
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->name('dashboard');
+
+        // Test API
+        Route::get('/test-api', function () {
+            return view('test-api');
+        })->name('test-api');
 
         // gst
         Route::resource('gst', GstController::class)->only(['index']);

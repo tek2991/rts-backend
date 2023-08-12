@@ -17,17 +17,19 @@
                     </x-nav-link>
 
                     @hasrole('client')
-                    <x-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
-                        {{ __('My Subscriptions') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('client.package.index') }}" :active="request()->routeIs('client.package.*')">
-                        {{ __('Buy Subscription') }}
-                    </x-nav-link>
+                        <x-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
+                            {{ __('My Subscriptions') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('client.package.index') }}" :active="request()->routeIs('client.package.*')">
+                            {{ __('Buy Subscription') }}
+                        </x-nav-link>
                     @endhasrole
 
                     @hasanyrole('administrator|manager')
+                        <x-nav-link href="{{ route('test-api') }}" :active="request()->routeIs('test-api')">
+                            {{ __('Test API') }}
+                        </x-nav-link>
                         {{-- User Management --}}
-
                         <x-nav-dropdown-button data-dropdown-toggle="user_management_dropdownNavbar">
                             {{ __('Menu') }}
                         </x-nav-dropdown-button>
@@ -72,9 +74,9 @@
                     @endhasanyrole
 
                     @hasrole('administrator')
-                    <x-nav-link href="{{ route('scribe') }}">
-                        {{ __('API docs') }}
-                    </x-nav-link>
+                        <x-nav-link href="{{ route('scribe') }}">
+                            {{ __('API docs') }}
+                        </x-nav-link>
                     @endhasrole
                 </div>
             </div>

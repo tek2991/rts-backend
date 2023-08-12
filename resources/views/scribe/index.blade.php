@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Laravel Documentation</title>
+    <title>RTS Documentation</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -93,6 +93,9 @@
                                                     <li class="tocify-item level-2" data-unique="user-management-POSTapi-v1-sync">
                                 <a href="#user-management-POSTapi-v1-sync">Sync user data.</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="user-management-POSTapi-v1-device-status">
+                                <a href="#user-management-POSTapi-v1-device-status">Update device status.</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -104,7 +107,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 18, 2023</li>
+        <li>Last updated: August 12, 2023</li>
     </ul>
 </div>
 
@@ -145,8 +148,8 @@ You can switch the language used with the tabs at the top right (or from the nav
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"terrill.ferry@example.org\",
-    \"password\": \"8aEjjuBb(T&gt;U\"
+    \"email\": \"shodkiewicz@example.net\",
+    \"password\": \"Di-CF&gt;oq57\\\\.g\"
 }"
 </code></pre></div>
 
@@ -162,8 +165,8 @@ const headers = {
 };
 
 let body = {
-    "email": "terrill.ferry@example.org",
-    "password": "8aEjjuBb(T&gt;U"
+    "email": "shodkiewicz@example.net",
+    "password": "Di-CF&gt;oq57\\.g"
 };
 
 fetch(url, {
@@ -307,10 +310,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-v1-email-login"
-               value="terrill.ferry@example.org"
+               value="shodkiewicz@example.net"
                data-component="body">
     <br>
-<p>User's email address. Example: <code>terrill.ferry@example.org</code></p>
+<p>User's email address. Example: <code>shodkiewicz@example.net</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -318,10 +321,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-v1-email-login"
-               value="8aEjjuBb(T>U"
+               value="Di-CF>oq57\.g"
                data-component="body">
     <br>
-<p>User's password. Example: <code>8aEjjuBb(T&gt;U</code></p>
+<p>User's password. Example: <code>Di-CF&gt;oq57\.g</code></p>
         </div>
         </form>
 
@@ -342,7 +345,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"mobile_number\": 20
+    \"mobile_number\": 2
 }"
 </code></pre></div>
 
@@ -358,7 +361,7 @@ const headers = {
 };
 
 let body = {
-    "mobile_number": 20
+    "mobile_number": 2
 };
 
 fetch(url, {
@@ -492,10 +495,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="mobile_number"                data-endpoint="POSTapi-v1-mobile-otp"
-               value="20"
+               value="2"
                data-component="body">
     <br>
-<p>User's mobile number. Example: <code>20</code></p>
+<p>User's mobile number. Example: <code>2</code></p>
         </div>
         </form>
 
@@ -516,8 +519,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"mobile_number\": 20,
-    \"otp\": \"in\"
+    \"mobile_number\": 19,
+    \"otp\": \"reprehenderit\"
 }"
 </code></pre></div>
 
@@ -533,8 +536,8 @@ const headers = {
 };
 
 let body = {
-    "mobile_number": 20,
-    "otp": "in"
+    "mobile_number": 19,
+    "otp": "reprehenderit"
 };
 
 fetch(url, {
@@ -694,10 +697,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="mobile_number"                data-endpoint="POSTapi-v1-mobile-otp-verify"
-               value="20"
+               value="19"
                data-component="body">
     <br>
-<p>User's mobile number. Example: <code>20</code></p>
+<p>User's mobile number. Example: <code>19</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>otp</code></b>&nbsp;&nbsp;
@@ -705,10 +708,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="otp"                data-endpoint="POSTapi-v1-mobile-otp-verify"
-               value="in"
+               value="reprehenderit"
                data-component="body">
     <br>
-<p>OTP for verification. Example: <code>in</code></p>
+<p>OTP for verification. Example: <code>reprehenderit</code></p>
         </div>
         </form>
 
@@ -731,8 +734,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"device_id\": \"dolor\",
-    \"device_token\": \"est\"
+    \"device_id\": \"est\",
+    \"device_token\": \"ipsam\"
 }"
 </code></pre></div>
 
@@ -749,8 +752,8 @@ const headers = {
 };
 
 let body = {
-    "device_id": "dolor",
-    "device_token": "est"
+    "device_id": "est",
+    "device_token": "ipsam"
 };
 
 fetch(url, {
@@ -893,10 +896,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="device_id"                data-endpoint="POSTapi-v1-logout"
-               value="dolor"
+               value="est"
                data-component="body">
     <br>
-<p>The device ID of the user. Example: <code>dolor</code></p>
+<p>The device ID of the user. Example: <code>est</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>device_token</code></b>&nbsp;&nbsp;
@@ -904,10 +907,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="device_token"                data-endpoint="POSTapi-v1-logout"
-               value="est"
+               value="ipsam"
                data-component="body">
     <br>
-<p>The device token of the user. Example: <code>est</code></p>
+<p>The device token of the user. Example: <code>ipsam</code></p>
         </div>
         </form>
 
@@ -934,11 +937,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"jade.conroy@example.net\",
-    \"mobile_number\": 4,
-    \"device_id\": \"porro\",
-    \"device_token\": \"autem\",
-    \"force_scan\": true
+    \"email\": \"iabernathy@example.org\",
+    \"mobile_number\": 12,
+    \"device_id\": \"est\",
+    \"device_token\": \"dolorum\",
+    \"force_sync\": false
 }"
 </code></pre></div>
 
@@ -955,11 +958,11 @@ const headers = {
 };
 
 let body = {
-    "email": "jade.conroy@example.net",
-    "mobile_number": 4,
-    "device_id": "porro",
-    "device_token": "autem",
-    "force_scan": true
+    "email": "iabernathy@example.org",
+    "mobile_number": 12,
+    "device_id": "est",
+    "device_token": "dolorum",
+    "force_sync": false
 };
 
 fetch(url, {
@@ -1014,7 +1017,7 @@ fetch(url, {
 }</code>
  </pre>
             <blockquote>
-            <p>Example response (401):</p>
+            <p>Example response (409):</p>
         </blockquote>
                 <pre>
 
@@ -1113,10 +1116,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-v1-sync"
-               value="jade.conroy@example.net"
+               value="iabernathy@example.org"
                data-component="body">
     <br>
-<p>The email of the user. Example: <code>jade.conroy@example.net</code></p>
+<p>The email of the user. Example: <code>iabernathy@example.org</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>mobile_number</code></b>&nbsp;&nbsp;
@@ -1124,10 +1127,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="mobile_number"                data-endpoint="POSTapi-v1-sync"
-               value="4"
+               value="12"
                data-component="body">
     <br>
-<p>The mobile number of the user. Example: <code>4</code></p>
+<p>The mobile number of the user. Example: <code>12</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>device_id</code></b>&nbsp;&nbsp;
@@ -1135,10 +1138,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="device_id"                data-endpoint="POSTapi-v1-sync"
-               value="porro"
+               value="est"
                data-component="body">
     <br>
-<p>nullable The device ID of the user. Example: <code>porro</code></p>
+<p>nullable The device ID of the user. Example: <code>est</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>device_token</code></b>&nbsp;&nbsp;
@@ -1146,31 +1149,244 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="device_token"                data-endpoint="POSTapi-v1-sync"
-               value="autem"
+               value="dolorum"
                data-component="body">
     <br>
-<p>nullable The device token of the user. Example: <code>autem</code></p>
+<p>nullable The device token of the user. Example: <code>dolorum</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>force_scan</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>force_sync</code></b>&nbsp;&nbsp;
 <small>boolean</small>&nbsp;
  &nbsp;
                 <label data-endpoint="POSTapi-v1-sync" style="display: none">
-            <input type="radio" name="force_scan"
+            <input type="radio" name="force_sync"
                    value="true"
                    data-endpoint="POSTapi-v1-sync"
                    data-component="body"             >
             <code>true</code>
         </label>
         <label data-endpoint="POSTapi-v1-sync" style="display: none">
-            <input type="radio" name="force_scan"
+            <input type="radio" name="force_sync"
                    value="false"
                    data-endpoint="POSTapi-v1-sync"
                    data-component="body"             >
             <code>false</code>
         </label>
     <br>
-<p>Flag indicating whether to force a device scan. Example: <code>true</code></p>
+<p>Flag indicating whether to force a device sync. Example: <code>false</code></p>
+        </div>
+        </form>
+
+                    <h2 id="user-management-POSTapi-v1-device-status">Update device status.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-POSTapi-v1-device-status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/api/v1/device-status" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"email\": \"karelle98@example.org\",
+    \"mobile_number\": 12,
+    \"device_id\": \"voluptas\",
+    \"device_status\": \"qui\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/v1/device-status"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "karelle98@example.org",
+    "mobile_number": 12,
+    "device_id": "voluptas",
+    "device_status": "qui"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-device-status">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: true,
+    &quot;message&quot;: &quot;Device status updated&quot;,
+    &quot;errors&quot;: {},
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: false,
+    &quot;message&quot;: &quot;Unauthorized&quot;,
+    &quot;errors&quot;: {
+        &quot;email&quot;: [
+            &quot;The email and mobile number do not match.&quot;
+        ],
+        &quot;mobile_number&quot;: [
+            &quot;The email and mobile number do not match.&quot;
+        ]
+    },
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-device-status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-device-status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-device-status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-device-status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-device-status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-device-status" data-method="POST"
+      data-path="api/v1/device-status"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-device-status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-device-status"
+                    onclick="tryItOut('POSTapi-v1-device-status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-device-status"
+                    onclick="cancelTryOut('POSTapi-v1-device-status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-device-status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/device-status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-v1-device-status"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-device-status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-device-status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="email"                data-endpoint="POSTapi-v1-device-status"
+               value="karelle98@example.org"
+               data-component="body">
+    <br>
+<p>The email of the user. Example: <code>karelle98@example.org</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>mobile_number</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="mobile_number"                data-endpoint="POSTapi-v1-device-status"
+               value="12"
+               data-component="body">
+    <br>
+<p>The mobile number of the user. Example: <code>12</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>device_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="device_id"                data-endpoint="POSTapi-v1-device-status"
+               value="voluptas"
+               data-component="body">
+    <br>
+<p>The device ID of the user. Example: <code>voluptas</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>device_status</code></b>&nbsp;&nbsp;
+<small>json</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="device_status"                data-endpoint="POSTapi-v1-device-status"
+               value="qui"
+               data-component="body">
+    <br>
+<p>The device status of the user. Example: <code>qui</code></p>
         </div>
         </form>
 

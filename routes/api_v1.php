@@ -29,4 +29,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Sync user data
     Route::post('/sync', [SyncController::class, 'sync'])->name('sync');
+
+    // Sync device status
+    Route::post('/device-status', [SyncController::class, 'deviceStatus'])->name('device.status');
 });

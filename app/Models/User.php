@@ -8,6 +8,8 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -33,6 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'mobile_number',
         'device_id',
         'device_token',
+        'device_status',
+        'device_status_updated_at',
     ];
 
     /**
@@ -55,6 +59,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'mobile_number_verified_at' => 'datetime',
+        'device_status' => AsCollection::class,
+        'device_status_updated_at' => 'datetime',
     ];
 
     /**
@@ -143,5 +149,20 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return false;
+    }
+
+    public function formattedDeviceStatus()
+    {
+        $device_status = $this->device_status;
+
+        if(is_null($device_status)) {
+            return null;
+        }
+
+        $device_status_updated_at = $this->device_status_updated_at->diffForHumans();
+
+        $formatted_device_status = $device_status['brand'] . " " . $device_status['model'] . " | V-" . $device_status['android-version']. " | Bat-" . $device_status['battery'] . "% | " . $device_status_updated_at;
+
+        return $formatted_device_status;
     }
 }
