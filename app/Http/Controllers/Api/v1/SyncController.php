@@ -63,9 +63,9 @@ class SyncController extends Controller
         $data = $request->validate([
             'email' => 'required|email|exists:users,email',
             'mobile_number' => 'required|numeric|exists:users,mobile_number',
-            'device_id' => 'nullable|string',
-            'device_token' => 'nullable|string',
             'force_sync' => 'required|boolean',
+            'device_id' => 'nullable|string|required_if:force_sync,true',
+            'device_token' => 'nullable|string|required_if:force_sync,true',
         ]);
 
         // Check if authenticated user has the same email and mobile number
@@ -85,40 +85,40 @@ class SyncController extends Controller
             ], 401);
         }
 
-        if ($data['force_sync']) {
+        // If device_id and device_token are not empty and force_scan is false, then return error
+        if (!$data['force_sync'] && (!empty($user->device_id) || !empty($user->device_token)) && ($user->device_id != $data['device_id'] || $user->device_token != $data['device_token'])) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Duplicate device',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 409);
+        }
+
+        // If device_id or device_token are empty or force_scan is true, then update the device_id and device_token
+        if ($data['force_sync'] || empty($user->device_id) || empty($user->device_token)) {
             $user->device_id = $data['device_id'];
             $user->device_token = $data['device_token'];
             $user->save();
         }
 
-        // If device_id and device_token are empty or force_scan is true, then update the device_id and device_token
-        if ((empty($user->device_id) && empty($user->device_token)) || ($user->device_id == $data['device_id'] && $user->device_token == $data['device_token'])) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Sync successful',
-                'errors' => (object)[],
-                'data' => (object)[
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'email_verified' => $user->hasVerifiedEmail(),
-                    'mobile_number' => $user->mobile_number,
-                    'mobile_number_verified' => $user->hasVerifiedMobileNumber(),
-                    'has_active_subscription' => $user->hasActiveSubscription(),
-                    'subscribed_upto' => $user->subscribedUpto(),
-                    'purchase_url' => 'in-app-purchase-url',
-                    'device_id' => $user->device_id,
-                    'device_token' => $user->device_token,
-                ],
-            ], 200);
-        }
-
-        // If device_id and device_token are not empty and force_scan is false, then return error
         return response()->json([
-            'status' => false,
-            'message' => 'Duplicate device',
+            'status' => true,
+            'message' => 'Sync successful',
             'errors' => (object)[],
-            'data' => (object)[],
-        ], 409);
+            'data' => (object)[
+                'name' => $user->name,
+                'email' => $user->email,
+                'email_verified' => $user->hasVerifiedEmail(),
+                'mobile_number' => $user->mobile_number,
+                'mobile_number_verified' => $user->hasVerifiedMobileNumber(),
+                'has_active_subscription' => $user->hasActiveSubscription(),
+                'subscribed_upto' => $user->subscribedUpto(),
+                'purchase_url' => 'in-app-purchase-url',
+                'device_id' => $user->device_id,
+                'device_token' => $user->device_token,
+            ],
+        ], 200);
     }
 
     /**
