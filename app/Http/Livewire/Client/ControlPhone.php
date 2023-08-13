@@ -34,6 +34,15 @@ class ControlPhone extends Component
 
     public function sendNotification($action_to)
     {
+        // If device token is empty
+        if (empty($this->device_token)) {
+            $this->dispatchBrowserEvent('banner-message', [
+                'style' => 'danger',
+                'message' => 'No Device token! Please register your device first',
+            ]);
+            return;
+        }
+
         $data = [
             'device_token' => $this->device_token,
             'title' => null,
