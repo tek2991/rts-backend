@@ -1,4 +1,4 @@
-<div class="py-12 max-w-7xl mx-auto">
+<div class="pb-12 max-w-7xl mx-auto">
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
         <div class="flex items-center">
             <div>

@@ -70,6 +70,9 @@ Route::middleware([
 
             // Camera
             Route::get('camera', [App\Http\Controllers\Client\CameraController::class, 'index'])->name('camera');
+
+            // Message
+            Route::get('message', [App\Http\Controllers\Client\MessageController::class, 'index'])->name('message');
         });
     });
 
