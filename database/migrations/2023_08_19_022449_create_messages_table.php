@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('message_id')->index();
             $table->string('number');
             $table->dateTime('date');
-            $table->text('body')
+            $table->text('body');
             $table->boolean('is_inbox'); // 1 = inbox, 0 = sent
             $table->timestamps();
         });
