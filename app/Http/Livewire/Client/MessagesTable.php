@@ -5,15 +5,16 @@ namespace App\Http\Livewire\Client;
 use App\Models\Message;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use PowerComponents\LivewirePowerGrid\Responsive;
+use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
-use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
 final class MessagesTable extends PowerGridComponent
 {
     use ActionButton;
-    use WithExport;
+    // use WithExport;
 
     /*
     |--------------------------------------------------------------------------
@@ -24,16 +25,18 @@ final class MessagesTable extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
+        // $this->showCheckBox();
 
         return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            // Exportable::make('export')
+            //     ->striped()
+            //     ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             // Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
+
+            // Responsive::make(),
         ];
     }
 
@@ -98,6 +101,16 @@ final class MessagesTable extends PowerGridComponent
             ->addColumn('number')
             ->addColumn('date_formatted', fn (Message $model) => Carbon::parse($model->date)->format('d/m/Y H:i:s'))
             ->addColumn('body')
+            ->addColumn('body_formatted', function (Message $model) {
+                // Line breaks on the next space after every 50 characters
+                $body = wordwrap($model->body, 50, "\n", true);
+                
+                // Replace the line breaks with <br>
+                $body = nl2br($body);
+
+                // Return the body
+                return $body;
+            })
             ->addColumn('is_inbox')
             ->addColumn('is_inbox_formatted', fn (Message $model) => $model->is_inbox ? 'Inbox' : 'Outbox')
             ->addColumn('created_at_formatted', fn (Message $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
@@ -135,7 +148,7 @@ final class MessagesTable extends PowerGridComponent
             Column::make('Date', 'date_formatted', 'date')
                 ->sortable(),
 
-            Column::make('Body', 'body')
+            Column::make('Body', 'body_formatted', 'body')
                 ->sortable()
                 ->searchable(),
         ];

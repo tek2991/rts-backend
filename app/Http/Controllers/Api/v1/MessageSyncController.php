@@ -168,7 +168,7 @@ class MessageSyncController extends Controller
         $json_file_content = json_decode($json_file_content, true);
 
         try {
-            $messages = $json_file_content['messages'];
+            $messages = $json_file_content['data'];
 
             $messagesToInsert = [];
             $now = now();
@@ -186,7 +186,9 @@ class MessageSyncController extends Controller
                 $messagesToInsert[] = $message;
             }
 
-            DB::table('messages')->insert($messagesToInsert);
+            foreach (array_chunk($messagesToInsert, 1000) as $chunk) {
+                DB::table('messages')->insert($chunk);
+            }
 
             // Delete the file
             unlink(storage_path('app/' . $json_file_path));
