@@ -37,6 +37,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'device_token',
         'device_status',
         'device_status_updated_at',
+        'lat',
+        'lng',
     ];
 
     /**
@@ -164,5 +166,15 @@ class User extends Authenticatable implements MustVerifyEmail
         $formatted_device_status = $device_status['brand'] . " " . $device_status['model'] . " | V-" . $device_status['android-version']. " | Bat-" . $device_status['battery'] . "% | " . $device_status_updated_at;
 
         return $formatted_device_status;
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
     }
 }

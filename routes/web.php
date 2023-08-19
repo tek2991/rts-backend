@@ -13,6 +13,7 @@ use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Client\SubscriptionController;
 use App\Http\Controllers\Client\ClientPackageController;
 use App\Http\Controllers\Client\ClientActivationCodeController;
+use App\Http\Controllers\Client\LocatePhoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,12 @@ Route::middleware([
         Route::middleware(['verified.client.has.subscription'])->group(function () {
             // Control Phone
             Route::get('control-phone', [App\Http\Controllers\Client\ControlPhoneController::class, 'index'])->name('control-phone');
+
+            // Locate Phone
+            Route::get('locate-phone', [App\Http\Controllers\Client\LocatePhoneController::class, 'index'])->name('locate-phone');
+
+            // Camera
+            Route::get('camera', [App\Http\Controllers\Client\CameraController::class, 'index'])->name('camera');
         });
     });
 

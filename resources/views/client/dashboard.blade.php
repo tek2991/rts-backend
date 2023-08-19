@@ -59,7 +59,7 @@
                 </div>
             </a>
             {{-- Find Phone --}}
-            <a href="#" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            <a href="{{ route('client.locate-phone') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -78,7 +78,7 @@
                 </div>
             </a>
             {{-- Camera --}}
-            <a href="#" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            <a href="{{ route('client.camera') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -97,7 +97,7 @@
                 </div>
             </a>
             {{-- Photos --}}
-            <a href="#" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            {{-- <a href="#" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -108,11 +108,11 @@
                     </div>
                     <div>
                         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                            Camera
+                            Photos
                         </p>
                     </div>
                 </div>
-            </a>
+            </a> --}}
             {{-- Control Phone --}}
             <a href="{{ route('client.control-phone') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">

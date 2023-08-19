@@ -6,12 +6,14 @@ use Livewire\Component;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 
-class ControlPhone extends Component
+class ControlCamera extends Component
 {
     public $device_id;
     public $device_token;
     public $formatted_device_status;
     public $device_status_updated_at;
+
+    public $images = [];
 
     public function mount()
     {
@@ -24,12 +26,15 @@ class ControlPhone extends Component
         $this->device_token = auth()->user()->device_token;
         $this->formatted_device_status = auth()->user()->formattedDeviceStatus();
         $this->device_status_updated_at = auth()->user()->device_status_updated_at;
+
+        $this->images = auth()->user()->images;
     }
 
     public function contRefresh()
     {
         $this->formatted_device_status = auth()->user()->formattedDeviceStatus();
         $this->device_status_updated_at = auth()->user()->device_status_updated_at;
+        $this->images = auth()->user()->images;
     }
 
     public function sendNotification($action_to)
@@ -76,44 +81,13 @@ class ControlPhone extends Component
         $this->sendNotification('device_status');
     }
 
-    public function lockDevice()
+    public function takePicture()
     {
-        $this->sendNotification('lock_device');
+        $this->sendNotification('take_picture');
     }
-
-    public function unlockDevice()
-    {
-        $this->sendNotification('unlock_device');
-    }
-
-    public function setAlarm()
-    {
-        $this->sendNotification('set_alarm');
-    }
-
-    public function stopAlarm()
-    {
-        $this->sendNotification('stop_alarm');
-    }
-
-    public function lostMessage()
-    {
-        $this->sendNotification('lost_message');
-    }
-
-    public function startService()
-    {
-        $this->sendNotification('start_service');
-    }
-
-    public function stopService()
-    {
-        $this->sendNotification('stop_service');
-    }
-    
 
     public function render()
     {
-        return view('livewire.client.control-phone');
+        return view('livewire.client.camera-control');
     }
 }

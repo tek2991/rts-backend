@@ -17,3 +17,5 @@ Alpine.plugin(focus);
 
 Alpine.start();
 
+import 'lightbox2/dist/js/lightbox.min.js';
+

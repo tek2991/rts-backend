@@ -19,6 +19,8 @@
     },
     "dependencies": {
         "flatpickr": "^4.6.13",
-        "flowbite": "^1.6.6"
+        "flowbite": "^1.6.6",
+        "jquery": "^3.7.0",
+        "lightbox2": "^2.11.4"
     }
 }

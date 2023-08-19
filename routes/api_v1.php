@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\SyncController;
 use App\Http\Controllers\Api\v1\ApiAuthController;
+use App\Http\Controllers\Api\v1\MessageSyncController;
+use App\Http\Controllers\Api\v1\UploadPhotoController;
+use App\Http\Controllers\Api\v1\UpdateLocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +35,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Sync device status
     Route::post('/device-status', [SyncController::class, 'deviceStatus'])->name('device.status');
+
+    // Get last message
+    Route::post('/last-message', [MessageSyncController::class, 'getLastMessage'])->name('last.message');
+
+    // Upload message
+    Route::post('/upload-message', [MessageSyncController::class, 'uploadMessages'])->name('upload.message');
+
+    // Update location
+    Route::post('/update-location', [UpdateLocationController::class, 'updateLocation'])->name('update.location');
+
+    // Upload Photo
+    Route::post('/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->name('upload.photo');
 });
