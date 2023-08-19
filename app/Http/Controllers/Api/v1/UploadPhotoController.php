@@ -7,6 +7,39 @@ use Illuminate\Http\Request;
 
 class UploadPhotoController extends Controller
 {
+    /**
+     * Upload and store a user's photo.
+     *
+     * Uploads and stores a photo for the authenticated user.
+     *
+     * @group Features
+     * @authenticated
+     *
+     * @bodyParam device_id string optional The device ID. If not provided, the user's default device ID will be used.
+     * @bodyParam photo file required The photo to upload (JPEG, PNG, JPG, GIF, SVG). Max size: 2048 KB.
+     *
+     * @response 200 {
+     *     "status": true,
+     *     "message": "Photo uploaded",
+     *     "errors": {},
+     *     "data": {}
+     * }
+     * @response 406 {
+     *     "status": false,
+     *     "message": "No device found",
+     *     "errors": {},
+     *     "data": {}
+     * }
+     * @response 500 {
+     *     "status": false,
+     *     "message": "Failed to upload photo",
+     *     "errors": {
+     *         "exception": ["Exception message"],
+     *         "trace": ["Exception trace"]
+     *     },
+     *     "data": {}
+     * }
+     */
     public function uploadPhoto(Request $request)
     {
         $request->validate([
