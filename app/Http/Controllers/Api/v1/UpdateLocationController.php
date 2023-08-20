@@ -40,6 +40,9 @@ class UpdateLocationController extends Controller
             'lng' => 'required',
         ]);
 
+        // Get user
+        $user = auth()->user();
+
         $device_id = $data['device_id'] ?? $user->device_id;
 
         if (!$device_id) {
