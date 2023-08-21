@@ -22,37 +22,36 @@
         </div>
     </div>
 
-    <div class="flex items-end justify-end mt-4">
-        {{-- Locate Phone Button --}}
-        <div class="mt-4 flex items-end justify-end">
-            <button wire:click="SyncInbox"
+    {{-- Text to speech form --}}
+    <div class="my-8 bg-white rounded-lg shadow-lg p-4">
+        <div class="my-4 w-full sm:max-w-xs">
+            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a
+                Language</label>
+            <select id="countries" wire:model="selected_language"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                @foreach ($languages as $language)
+                    <option value="{{ $language }}">{{ $language }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="my-4 w-full sm:max-w-xs">
+            <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Text ({{ $message_length }}/160)</label>
+            <textarea id="text" wire:model="message"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="160"
+                rows="3"></textarea>
+        </div>
+
+        {{-- Send Button --}}
+        <div class="flex items-center justify-end">
+            <button wire:click="sendTextToSpeech"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                </svg>
-                Sync Inbox
-            </button>
-            <button wire:click="SyncOutbox"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center ml-4">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                </svg>
-                Sync Outbox
+               Send
             </button>
         </div>
     </div>
 
-    <div class="mt-8">
-        @livewire('client.messages-table', ['user_id' => $user->id])
-    </div>
 
-    
     {{-- Hidden button to refresh --}}
     <button wire:click="contRefresh" class="hidden" id="cont-refresh-device-status"></button>
     <script>

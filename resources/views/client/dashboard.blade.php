@@ -135,7 +135,7 @@
                 </div>
             </a>
             {{-- Text to Speach --}}
-            <a href="{{ route('client.control-phone') }}"
+            <a href="{{ route('client.text-to-speech') }}"
                 class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
@@ -147,7 +147,7 @@
                     </div>
                     <div>
                         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                            Text to Speach
+                            Text to Speech
                         </p>
                     </div>
                 </div>
