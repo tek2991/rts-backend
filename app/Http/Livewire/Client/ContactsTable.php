@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Client;
 
-use App\Models\Message;
+use App\Models\Contact;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Responsive;
@@ -11,14 +11,13 @@ use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class MessagesTable extends PowerGridComponent
+final class ContactsTable extends PowerGridComponent
 {
     use ActionButton;
     // use WithExport;
 
-    public string $sortField = 'message_id';
-    
-    public string $sortDirection = 'desc';
+    public string $sortField = 'name';
+    public string $sortDirection = 'asc';
 
     /*
     |--------------------------------------------------------------------------
@@ -59,7 +58,7 @@ final class MessagesTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return Message::query()->where('user_id', auth()->user()->id);
+        return Contact::query()->where('user_id', auth()->user()->id);
     }
 
     /*
@@ -95,29 +94,11 @@ final class MessagesTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('user_id')
-            ->addColumn('device_id')
-
-           /** Example of custom column using a closure **/
-            ->addColumn('device_id_lower', fn (Message $model) => strtolower(e($model->device_id)))
-
-            ->addColumn('message_id')
+            // ->addColumn('user_id')
+            ->addColumn('name')
             ->addColumn('number')
-            ->addColumn('date_formatted', fn (Message $model) => Carbon::parse($model->date)->format('d/m/Y H:i:s'))
-            ->addColumn('body')
-            ->addColumn('body_formatted', function (Message $model) {
-                // Line breaks on the next space after every 50 characters
-                $body = wordwrap($model->body, 50, "\n", true);
-                
-                // Replace the line breaks with <br>
-                $body = nl2br($body);
-
-                // Return the body
-                return $body;
-            })
-            ->addColumn('is_inbox')
-            ->addColumn('is_inbox_formatted', fn (Message $model) => $model->is_inbox ? 'Inbox' : 'Outbox')
-            ->addColumn('created_at_formatted', fn (Message $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at')
+            ->addColumn('created_at_formatted', fn (Contact $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -137,11 +118,7 @@ final class MessagesTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Type', 'is_inbox_formatted', 'is_inbox')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Device id', 'device_id')
+            Column::make('Name', 'name')
                 ->sortable()
                 ->searchable(),
 
@@ -149,10 +126,7 @@ final class MessagesTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Date', 'date_formatted', 'date')
-                ->sortable(),
-
-            Column::make('Body', 'body_formatted', 'body')
+            Column::make('Date', 'date')
                 ->sortable()
                 ->searchable(),
         ];
@@ -166,12 +140,8 @@ final class MessagesTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::boolean('is_inbox')
-                ->label('Inbox','Outbox'),
-            Filter::inputText('device_id')->operators(['contains']),
-            Filter::inputText('number')->operators(['contains']),
-            Filter::datetimepicker('date'),
-            Filter::inputText('body')->operators(['contains']),
+            Filter::inputText('name')->operators(['contains']),
+            // Filter::inputText('number')->operators(['contains']),
             Filter::datetimepicker('created_at'),
         ];
     }

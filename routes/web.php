@@ -76,6 +76,9 @@ Route::middleware([
 
             // Text to Speech
             Route::get('text-to-speech', [App\Http\Controllers\Client\TextToSpeechController::class, 'index'])->name('text-to-speech');
+
+            // Contacts
+            Route::get('contact', [App\Http\Controllers\Client\ContactController::class, 'index'])->name('contact');
         });
     });
 

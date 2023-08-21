@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\SyncController;
 use App\Http\Controllers\Api\v1\ApiAuthController;
+use App\Http\Controllers\Api\v1\ContactSyncController;
 use App\Http\Controllers\Api\v1\MessageSyncController;
 use App\Http\Controllers\Api\v1\UploadPhotoController;
 use App\Http\Controllers\Api\v1\UpdateLocationController;
@@ -47,4 +48,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Upload Photo
     Route::post('/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->name('upload.photo');
+
+    // Upload Contacts
+    Route::post('/upload-contacts', [ContactSyncController::class, 'uploadContacts'])->name('upload.contacts');
+
 });
