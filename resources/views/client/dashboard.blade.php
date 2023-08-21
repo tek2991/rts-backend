@@ -8,7 +8,8 @@
     <div class="overflow-hidden py-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
             {{-- Message --}}
-            <a href="{{ route('client.message') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            <a href="{{ route('client.message') }}"
+                class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -59,7 +60,8 @@
                 </div>
             </a>
             {{-- Find Phone --}}
-            <a href="{{ route('client.locate-phone') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            <a href="{{ route('client.locate-phone') }}"
+                class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -78,7 +80,8 @@
                 </div>
             </a>
             {{-- Camera --}}
-            <a href="{{ route('client.camera') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            <a href="{{ route('client.camera') }}"
+                class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -114,7 +117,8 @@
                 </div>
             </a> --}}
             {{-- Control Phone --}}
-            <a href="{{ route('client.control-phone') }}" class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+            <a href="{{ route('client.control-phone') }}"
+                class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
                 <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
                     <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -126,6 +130,24 @@
                     <div>
                         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
                             Control Phone
+                        </p>
+                    </div>
+                </div>
+            </a>
+            {{-- Text to Speach --}}
+            <a href="{{ route('client.control-phone') }}"
+                class="bg-white rounded-lg shadow-lg hover:bg-green-50 transition-all">
+                <div class="flex items-center p-4 rounded-lg shadow-xs dark:bg-gray-800">
+                    <div class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                            Text to Speach
                         </p>
                     </div>
                 </div>

@@ -79,9 +79,14 @@ class Messages extends Component
         $this->sendNotification('device_status');
     }
 
-    public function SyncMessages()
+    public function SyncInbox()
     {
-        $this->sendNotification('sync_messages');
+        $this->sendNotification('sync_inbox');
+    }
+
+    public function SyncOutbox()
+    {
+        $this->sendNotification('sync_outbox');
     }
 
     public function render()
