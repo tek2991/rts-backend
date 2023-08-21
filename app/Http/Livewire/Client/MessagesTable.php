@@ -16,7 +16,7 @@ final class MessagesTable extends PowerGridComponent
     use ActionButton;
     // use WithExport;
 
-    public string $sortField = 'message_id';
+    public string $sortField = 'date';
     
     public string $sortDirection = 'desc';
 
