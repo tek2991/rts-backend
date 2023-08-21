@@ -21,11 +21,12 @@ class TextToSpeech extends Component
 
 
     public $languages = [
-        'English',
-        'Hindi',
+        'bn' => 'Bengali',
+        'en' => 'English',
+        'hi' => 'Hindi',
     ];
 
-    public $selected_language = 'English';
+    public $selected_language = 'en';
     
     public function mount()
     {
