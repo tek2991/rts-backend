@@ -74,8 +74,13 @@ class TextToSpeech extends Component
         // Send notification to device
         try {
             $message = CloudMessage::withTarget('token', $data['device_token'])
-                ->withNotification(Notification::create($data['title'], $data['body']))
-                ->withData(['action_to' => $data['action_to'], 'message' => $data['message'], 'language' => $data['language']]);
+                ->withNotification(Notification::create($data['title'], $data['body']));
+            
+            if($action_to == 'text_to_speech') {
+                $message->withData(['action_to' => $data['action_to'], 'message' => $data['message'], 'language' => $data['language']]);
+            } else {
+                $message->withData(['action_to' => $data['action_to']]);
+            }
 
             $messaging = app('firebase.messaging');
             $messaging->send($message);
