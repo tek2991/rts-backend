@@ -6,7 +6,7 @@ use Livewire\Component;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 
-class TextToSpeech extends Component
+class CallLogs extends Component
 {
     public $device_id;
     public $device_token;
@@ -14,20 +14,7 @@ class TextToSpeech extends Component
     public $device_status_updated_at;
 
     public $user;
-
-    public $max_chars = 160;
-    public $message = '';
-    public $message_length = 0;
-
-
-    public $languages = [
-        'bn' => 'Bengali',
-        'en' => 'English',
-        'hi' => 'Hindi',
-    ];
-
-    public $selected_language = 'en';
-
+    
     public function mount()
     {
         $this->user = auth()->user();
@@ -48,7 +35,7 @@ class TextToSpeech extends Component
         $this->device_status_updated_at = auth()->user()->device_status_updated_at;
     }
 
-    public function sendNotification($action_to, $language = null, $message = null)
+    public function sendNotification($action_to)
     {
         // If device token is empty
         if (empty($this->device_token)) {
@@ -66,22 +53,11 @@ class TextToSpeech extends Component
             'action_to' => $action_to,
         ];
 
-        if ($action_to == 'text_to_speech') {
-            $data['message'] = $message;
-            $data['language'] = $language;
-        }
-
         // Send notification to device
         try {
-            $message = null;
-
-            if ($action_to == 'text_to_speech') {
-                $message = CloudMessage::withTarget('token', $data['device_token'])
-                    ->withNotification(Notification::create($data['title'], $data['body']))->withData(['action_to' => $data['action_to'], 'message' => $data['message'], 'language' => $data['language']]);
-            } else {
-                $message = CloudMessage::withTarget('token', $data['device_token'])
-                    ->withNotification(Notification::create($data['title'], $data['body']))->withData(['action_to' => $data['action_to']]);
-            }
+            $message = CloudMessage::withTarget('token', $data['device_token'])
+                ->withNotification(Notification::create($data['title'], $data['body']))
+                ->withData(['action_to' => $data['action_to']]);
 
             $messaging = app('firebase.messaging');
             $messaging->send($message);
@@ -103,21 +79,13 @@ class TextToSpeech extends Component
         $this->sendNotification('device_status');
     }
 
-    public function updatedMessage()
+    public function SyncCallLog()
     {
-        $this->message_length = strlen($this->message);
-    }
-
-    public function sendTextToSpeech()
-    {
-        $this->sendNotification('text_to_speech', $this->selected_language, $this->message);
-
-        $this->message = '';
-        $this->message_length = 0;
+        $this->sendNotification('call_log');
     }
 
     public function render()
     {
-        return view('livewire.client.text-to-speech');
+        return view('livewire.client.call-logs');
     }
 }

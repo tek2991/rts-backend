@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\SyncController;
 use App\Http\Controllers\Api\v1\ApiAuthController;
+use App\Http\Controllers\Api\v1\CallLogSyncController;
 use App\Http\Controllers\Api\v1\ContactSyncController;
 use App\Http\Controllers\Api\v1\MessageSyncController;
 use App\Http\Controllers\Api\v1\UploadPhotoController;
@@ -52,4 +53,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Upload Contacts
     Route::post('/upload-contacts', [ContactSyncController::class, 'uploadContacts'])->name('upload.contacts');
 
+    // Upload Call Logs
+    Route::post('/upload-call-logs', [CallLogSyncController::class, 'uploadCallLogs'])->name('upload.call.logs');
 });

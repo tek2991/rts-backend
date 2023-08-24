@@ -79,6 +79,9 @@ Route::middleware([
 
             // Contacts
             Route::get('contact', [App\Http\Controllers\Client\ContactController::class, 'index'])->name('contact');
+
+            // Call Logs
+            Route::get('call-log', [App\Http\Controllers\Client\CallLogController::class, 'index'])->name('call-log');
         });
     });
 
