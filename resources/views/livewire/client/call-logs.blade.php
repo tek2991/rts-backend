@@ -25,7 +25,7 @@
     <div class="flex items-end justify-end mt-4">
         {{-- Locate Phone Button --}}
         <div class="mt-4 flex items-end justify-end">
-            <button wire:click="SyncInbox"
+            <button wire:click="SyncCallLog"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
