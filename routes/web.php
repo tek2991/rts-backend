@@ -91,6 +91,9 @@ Route::middleware([
 
             // Lost SMS
             Route::get('lost-sms', [App\Http\Controllers\Client\LostSmsController::class, 'index'])->name('lost-sms');
+
+            // Voice Recorder
+            Route::get('voice-recorder', [App\Http\Controllers\Client\VoiceRecorderController::class, 'index'])->name('voice-recorder');
         });
     });
 

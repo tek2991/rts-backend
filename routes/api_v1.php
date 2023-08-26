@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\v1\ContactSyncController;
 use App\Http\Controllers\Api\v1\MessageSyncController;
 use App\Http\Controllers\Api\v1\UploadPhotoController;
 use App\Http\Controllers\Api\v1\UpdateLocationController;
+use App\Http\Controllers\Api\v1\UploadRecordingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Upload Photo
     Route::post('/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->name('upload.photo');
+
+    // Upload Recording
+    Route::post('/upload-recording', [UploadRecordingController::class, 'uploadRecording'])->name('upload.recording');
 
     // Upload Contacts
     Route::post('/upload-contacts', [ContactSyncController::class, 'uploadContacts'])->name('upload.contacts');

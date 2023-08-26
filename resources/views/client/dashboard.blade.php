@@ -73,6 +73,19 @@
                 </a>
             </div>
 
+            {{-- Recording --}}
+            <div>
+                <a href="{{ route('client.voice-recorder') }}" class="flex justify-center items-center flex-col">
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/microphone-svgrepo-com.svg') }}" alt="Camera Logo">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Voice Recorder
+                    </p>
+                </a>
+            </div>
+
 
             {{-- Start Service --}}
             <div>
@@ -92,7 +105,7 @@
                 <a href="{{ route('client.text-to-speech') }}" class="flex justify-center items-center flex-col">
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
-                        <img src="{{ asset('icons/mic-sound-record-voice-svgrepo-com.svg') }}" alt="Control">
+                        <img src="{{ asset('icons/text-to-speech-svgrepo-com.svg') }}" alt="Control">
                     </div>
                     <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
                         Text to Speach

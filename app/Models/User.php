@@ -182,4 +182,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function recordings()
+    {
+        return $this->hasMany(Recording::class);
+    }
 }
