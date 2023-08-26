@@ -108,7 +108,7 @@
                         <img src="{{ asset('icons/text-to-speech-svgrepo-com.svg') }}" alt="Control">
                     </div>
                     <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
-                        Text to Speach
+                        Text to Speech
                     </p>
                 </a>
             </div>
