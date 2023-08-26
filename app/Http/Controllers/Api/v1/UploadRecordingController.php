@@ -44,7 +44,7 @@ class UploadRecordingController extends Controller
     {
         $request->validate([
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:2048',
+            'recording' => 'required|file|mimes:mp3,wav,ogg,aac,3gp|max:2048',
         ]);
 
         // Get user
