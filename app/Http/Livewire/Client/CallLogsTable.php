@@ -17,7 +17,7 @@ final class CallLogsTable extends PowerGridComponent
     // use WithExport;
 
     public string $sortField = 'date';
-    public string $sortDirection = 'asc';
+    public string $sortDirection = 'desc';
 
     /*
     |--------------------------------------------------------------------------

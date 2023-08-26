@@ -27,14 +27,14 @@ class ControlCamera extends Component
         $this->formatted_device_status = auth()->user()->formattedDeviceStatus();
         $this->device_status_updated_at = auth()->user()->device_status_updated_at;
 
-        $this->images = auth()->user()->images;
+        $this->images = auth()->user()->images->sortByDesc('created_at');
     }
 
     public function contRefresh()
     {
         $this->formatted_device_status = auth()->user()->formattedDeviceStatus();
         $this->device_status_updated_at = auth()->user()->device_status_updated_at;
-        $this->images = auth()->user()->images;
+        $this->images = auth()->user()->images->sortByDesc('created_at');
     }
 
     public function sendNotification($action_to)
