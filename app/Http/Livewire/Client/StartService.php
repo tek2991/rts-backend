@@ -6,7 +6,7 @@ use Livewire\Component;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 
-class ControlPhone extends Component
+class StartService extends Component
 {
     public $device_id;
     public $device_token;
@@ -75,32 +75,7 @@ class ControlPhone extends Component
     {
         $this->sendNotification('device_status');
     }
-
-    public function lockDevice()
-    {
-        $this->sendNotification('lock_device');
-    }
-
-    public function unlockDevice()
-    {
-        $this->sendNotification('unlock_device');
-    }
-
-    public function setAlarm()
-    {
-        $this->sendNotification('set_alarm');
-    }
-
-    public function stopAlarm()
-    {
-        $this->sendNotification('stop_alarm');
-    }
-
-    public function lostMessage()
-    {
-        $this->sendNotification('lost_message');
-    }
-
+    
     public function startService()
     {
         $this->sendNotification('start_service');
@@ -114,6 +89,6 @@ class ControlPhone extends Component
 
     public function render()
     {
-        return view('livewire.client.control-phone');
+        return view('livewire.client.start-service');
     }
 }

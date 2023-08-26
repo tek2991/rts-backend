@@ -63,7 +63,7 @@ Route::middleware([
         // Client routes protected by verified.client.has.subscription middleware
         Route::middleware(['verified.client.has.subscription'])->group(function () {
             // Control Phone
-            Route::get('control-phone', [App\Http\Controllers\Client\ControlPhoneController::class, 'index'])->name('control-phone');
+            Route::get('start-service', [App\Http\Controllers\Client\StartServiceController::class, 'index'])->name('start-service');
 
             // Locate Phone
             Route::get('locate-phone', [App\Http\Controllers\Client\LocatePhoneController::class, 'index'])->name('locate-phone');
@@ -82,6 +82,15 @@ Route::middleware([
 
             // Call Logs
             Route::get('call-log', [App\Http\Controllers\Client\CallLogController::class, 'index'])->name('call-log');
+
+            // Lock Unlock
+            Route::get('lock-unlock', [App\Http\Controllers\Client\LockUnlockController::class, 'index'])->name('lock-unlock');
+
+            // Alarm
+            Route::get('alarm', [App\Http\Controllers\Client\AlarmController::class, 'index'])->name('alarm');
+
+            // Lost SMS
+            Route::get('lost-sms', [App\Http\Controllers\Client\LostSmsController::class, 'index'])->name('lost-sms');
         });
     });
 
