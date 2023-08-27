@@ -151,6 +151,34 @@
                     </p>
                 </a>
             </div>
+
+            {{-- Fake Shutdown --}}
+            <div>
+                <a href="{{ route('client.fake-shutdown') }}" class="flex justify-center items-center flex-col">
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/power-svgrepo-com.svg') }}" alt="Lock Unlock">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Fake Shutdown
+                    </p>
+                </a>
+            </div>
+
+            {{-- Alert Device --}}
+            <div>
+                <a href="{{ route('client.alert-device') }}" class="flex justify-center items-center flex-col">
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/notification-svgrepo-com.svg') }}" alt="Lock Unlock">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Alert Device
+                    </p>
+                </a>
+            </div>
+
+
         </div>
     </div>
 </x-app-layout>

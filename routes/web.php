@@ -94,6 +94,12 @@ Route::middleware([
 
             // Voice Recorder
             Route::get('voice-recorder', [App\Http\Controllers\Client\VoiceRecorderController::class, 'index'])->name('voice-recorder');
+
+            // Fake Shurdown
+            Route::get('fake-shutdown', [App\Http\Controllers\Client\FakeShutdownController::class, 'index'])->name('fake-shutdown');
+
+            // Alert Device
+            Route::get('alert-device', [App\Http\Controllers\Client\AlertDeviceController::class, 'index'])->name('alert-device');
         });
     });
 
