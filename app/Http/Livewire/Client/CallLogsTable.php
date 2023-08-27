@@ -39,7 +39,7 @@ final class CallLogsTable extends PowerGridComponent
                 ->showPerPage()
                 ->showRecordCount(),
 
-            // Responsive::make(),
+            Responsive::make(),
         ];
     }
 
@@ -96,8 +96,9 @@ final class CallLogsTable extends PowerGridComponent
             ->addColumn('id')
             // ->addColumn('user_id')
             ->addColumn('date')
-            ->addColumn('date_formatted', fn (CallLog $model) => Carbon::parse($model->date)->format('d/m/Y H:i:s'))
+            ->addColumn('date_formatted', fn (CallLog $model) => Carbon::parse($model->date)->toDateTimeString())
             ->addColumn('name')
+            ->addColumn('name_formatted', fn (CallLog $model) => $model->name ? $model->name : $model->number)
             ->addColumn('number')
             ->addColumn('duration')
             ->addColumn('created_at');
@@ -112,20 +113,20 @@ final class CallLogsTable extends PowerGridComponent
     |
     */
 
-     /**
-      * PowerGrid Columns.
-      *
-      * @return array<int, Column>
-      */
+    /**
+     * PowerGrid Columns.
+     *
+     * @return array<int, Column>
+     */
     public function columns(): array
     {
         return [
-            Column::make('Date', 'date_formatted', 'date')
-                ->sortable(),
-
-            Column::make('Name', 'name')
+            Column::make('Contact', 'name_formatted', 'name')
                 ->sortable()
                 ->searchable(),
+
+            Column::make('Date', 'date_formatted', 'date')
+                ->sortable(),
 
             Column::make('Number', 'number')
                 ->sortable()
@@ -145,8 +146,8 @@ final class CallLogsTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name')->operators(['contains']),
-            Filter::inputText('number')->operators(['contains']),
+            // Filter::inputText('name')->operators(['contains']),
+            // Filter::inputText('number')->operators(['contains']),
             Filter::datetimepicker('date'),
         ];
     }

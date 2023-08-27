@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="overflow-hidden py-4">
+    <div class="overflow-hidden py-0">
         @livewire('client.fake-shutdown')
     </div>
 </x-app-layout>

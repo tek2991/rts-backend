@@ -13,9 +13,12 @@ class DeviceStatus extends Component
     public $formatted_device_status;
     public $device_status_updated_at;
 
-    public function mount()
+    public $page;
+
+    public function mount($page)
     {
         $this->refresh();
+        $this->page = $page;
     }
 
     public function refresh()

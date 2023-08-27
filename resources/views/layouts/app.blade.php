@@ -23,20 +23,36 @@
     <x-banner />
 
     <div class="min-h-screen bg-gray-100">
-        @livewire('navigation-menu')
+        @php
+            $name = request()
+                ->route()
+                ->getName();
+            // Get the last segment of the route name, e.g. 'dashboard' from 'client.dashboard'
+            $name = explode('.', $name)[count(explode('.', $name)) - 1];
+            // Capitalize the first letter of the last segment of the route name
+            $page = ucfirst($name);
+        @endphp
+
+        @livewire('jetstream.navigation-menu', ['page' => $page])
 
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
+                @hasrole('client')
+                    @livewire('client.device-status', ['page' => $page])
+                @endhasrole
+
+                @hasanyrole('administrator|manager')
+                    <div class="max-w-7xl mx-auto pb-4 px-4 sm:px-6 lg:px-8 hidden sm:block">
+                        {{ $header }}
+                    </div>
+                @endhasanyrole
             </header>
         @endif
 
         <!-- Page Content -->
         <main>
-            <div class="py-12">
+            <div class="pt-0">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {{ $slot }}
                 </div>

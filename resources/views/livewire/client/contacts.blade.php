@@ -1,5 +1,5 @@
 <div class="pb-12 max-w-7xl mx-auto">
-    @livewire('client.device-status')
+    
 
     <div class="flex items-end justify-end mt-4">
         {{-- Locate Phone Button --}}

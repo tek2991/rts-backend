@@ -1,5 +1,5 @@
 <div class="pb-12 max-w-7xl mx-auto">
-    @livewire('client.device-status')
+    
     {{-- Text to speech form --}}
     <div class="my-8 bg-white rounded-lg shadow-lg p-4">
         <div class="my-4 w-full sm:max-w-xs">

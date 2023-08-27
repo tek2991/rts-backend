@@ -8,5 +8,4 @@
     <div>
         Dashboard goes here
     </div>
-
 </x-app-layout>

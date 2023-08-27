@@ -1,5 +1,5 @@
 <div class="pb-12 max-w-7xl mx-auto">
-    @livewire('client.device-status')
+    
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
         {{-- Start Service --}}

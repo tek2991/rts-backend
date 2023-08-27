@@ -5,8 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="overflow-hidden py-4">
-        <div class="grid grid-cols-4 md:grid-cols-5 gap-6 sm:gap-12 p-4 sm:p-0">
+    <div class="overflow-hidden py-0">
+        <div class="grid grid-cols-4 md:grid-cols-5 gap-6 sm:gap-12 p-4 sm:p-0 sm:mt-12">
 
             {{-- Message --}}
             <div>
@@ -177,8 +177,6 @@
                     </p>
                 </a>
             </div>
-
-
         </div>
     </div>
 </x-app-layout>

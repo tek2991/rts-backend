@@ -18,10 +18,7 @@
 
                     @hasrole('client')
                         <x-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
-                            {{ __('My Subscriptions') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('client.package.index') }}" :active="request()->routeIs('client.package.*')">
-                            {{ __('Buy Subscription') }}
+                            {{ __('Subscriptions') }}
                         </x-nav-link>
                     @endhasrole
 
@@ -78,6 +75,15 @@
                             {{ __('API docs') }}
                         </x-nav-link>
                     @endhasrole
+                </div>
+            </div>
+
+            {{-- Page Name --}}
+            <div class="flex items-center sm:hidden">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-semibold text-gray-700">
+                        {{ $page }}
+                    </h1>
                 </div>
             </div>
 
@@ -216,6 +222,12 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @hasrole('client')
+                <x-responsive-nav-link href="{{ route('client.subscription.index') }}" :active="request()->routeIs('client.subscription.*')">
+                    {{ __('Subscriptions') }}
+                </x-responsive-nav-link>
+            @endhasrole
 
             @hasrole('administrator')
                 {{-- User Management --}}
