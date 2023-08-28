@@ -144,12 +144,13 @@ Route::middleware([
                 'title' => request('title'),
                 'body' => request('body'),
                 'action_to' => request('action_to'),
+                'direct_boot_ok' => request('direct_boot_ok') ==  '1' ? true : false,
             ];
 
             // Send notification to device
             $message = CloudMessage::withTarget('token', $data['device_token'])
                 ->withNotification(Notification::create($data['title'], $data['body']))
-                ->withData(['action_to' => $data['action_to']]);
+                ->withData(['action_to' => $data['action_to'], 'direct_boot_ok' => $data['direct_boot_ok']]);
 
 
             $messaging = app('firebase.messaging');
