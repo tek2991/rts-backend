@@ -86,9 +86,6 @@ Route::middleware([
             // Lock Unlock
             Route::get('lock-unlock', [App\Http\Controllers\Client\LockUnlockController::class, 'index'])->name('lock-unlock');
 
-            // Alarm
-            Route::get('alarm', [App\Http\Controllers\Client\AlarmController::class, 'index'])->name('alarm');
-
             // Lost SMS
             Route::get('lost-sms', [App\Http\Controllers\Client\LostSmsController::class, 'index'])->name('lost-sms');
 
@@ -150,8 +147,29 @@ Route::middleware([
             // Send notification to device
             $message = CloudMessage::withTarget('token', $data['device_token'])
                 ->withNotification(Notification::create($data['title'], $data['body']))
-                ->withData(['action_to' => $data['action_to'], 'direct_boot_ok' => $data['direct_boot_ok']]);
+                ->withData([
+                    'action_to' => $data['action_to'],
+                ])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'direct_boot_ok' => $data['direct_boot_ok'],
+                ]);
 
+            // $message = CloudMessage::fromArray([
+            //     'token' => $data['device_token'],
+            //     'notification' => Notification::fromArray([
+            //         'title' => $data['title'],
+            //         'body' => $data['body'],
+            //     ]),
+            //     'android' => [
+            //         'direct_boot_ok' => $data['direct_boot_ok'],
+            //     ],
+            //     'data' => [
+            //         'action_to' => $data['action_to'],
+            //     ],
+            // ]);
+
+            dd($message);
 
             $messaging = app('firebase.messaging');
 

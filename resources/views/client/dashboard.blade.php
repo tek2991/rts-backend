@@ -126,19 +126,6 @@
                 </a>
             </div>
 
-            {{-- Start /Stop Alarm --}}
-            <div>
-                <a href="{{ route('client.alarm') }}" class="flex justify-center items-center flex-col">
-                    <div
-                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
-                        <img src="{{ asset('icons/alarm-clock-svgrepo-com.svg') }}" alt="Lock Unlock">
-                    </div>
-                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
-                        Alarm
-                    </p>
-                </a>
-            </div>
-
             {{-- Lost SMS --}}
             <div>
                 <a href="{{ route('client.lost-sms') }}" class="flex justify-center items-center flex-col">
