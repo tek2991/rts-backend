@@ -41,6 +41,12 @@ class Permission extends \Spatie\Permission\Models\Permission
             'add subscription',
             'edit subscription',
             'delete subscription',
+
+            // Dealer
+            'view dealer',
+            'add dealer',
+            'edit dealer',
+            'delete dealer',
         ];
     }
 }

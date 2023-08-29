@@ -133,6 +133,9 @@ Route::middleware([
         // activation code
         Route::resource('activation-code', ActivationCodeController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
+        // dealer
+        Route::resource('dealer', App\Http\Controllers\DealerController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+
         // send notification
         Route::post('/send-notification', function () {
             // Get request data
