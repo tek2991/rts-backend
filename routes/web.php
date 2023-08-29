@@ -169,7 +169,7 @@ Route::middleware([
             //     ],
             // ]);
 
-            dd($message);
+            // dd($message);
 
             $messaging = app('firebase.messaging');
 
