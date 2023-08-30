@@ -39,6 +39,10 @@
                             <x-nav-dropdown-item :href="route('role.index')" :active="request()->routeIs('role.*')">
                                 {{ __('Roles') }}
                             </x-nav-dropdown-item>
+                            {{-- dealers --}}
+                            <x-nav-dropdown-item :href="route('dealer.index')" :active="request()->routeIs('dealer.*')">
+                                {{ __('Dealers') }}
+                            </x-nav-dropdown-item>
 
                             {{-- Packages --}}
                             @can('viewAny', App\Models\Package::class)

@@ -11,7 +11,7 @@ class DealerPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user): Response
     {
         // Only administrator role and user with permission "view dealer" can view all dealers
         return $user->hasRole('administrator') || $user->can('view dealer') ?
@@ -22,7 +22,7 @@ class DealerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Dealer $dealer): bool
+    public function view(User $user, Dealer $dealer): Response
     {
         // Only administrator role and user with permission "view dealer" can view the dealer
         return $user->hasRole('administrator') || $user->can('view dealer') ?
@@ -33,7 +33,7 @@ class DealerPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
         // Only administrator role and user with permission "add dealer" can create a dealer
         return $user->hasRole('administrator') || $user->can('add dealer') ?
@@ -44,10 +44,10 @@ class DealerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Dealer $dealer): bool
+    public function update(User $user, Dealer $dealer): Response
     {
         // Only administrator role and user with permission "edit dealer" can update a dealer
-        return ($user->hasRole('administrator') || $user->can('edit dealer')) && $dealer->isValid() ?
+        return ($user->hasRole('administrator') || $user->can('edit dealer')) ?
         Response::allow()
         : Response::deny('You can\'t update this dealer.');
     }
@@ -55,10 +55,10 @@ class DealerPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Dealer $dealer): bool
+    public function delete(User $user, Dealer $dealer): Response
     {
         // Only administrator role and user with permission "delete dealer" can delete a dealer
-        return ($user->hasRole('administrator') || $user->can('delete dealer')) && $dealer->isValid() ?
+        return ($user->hasRole('administrator') || $user->can('delete dealer')) ?
         Response::allow()
         : Response::deny('You can\'t delete this dealer.');
     }
@@ -66,7 +66,7 @@ class DealerPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Dealer $dealer): bool
+    public function restore(User $user, Dealer $dealer): Response
     {
         //
     }
@@ -74,7 +74,7 @@ class DealerPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Dealer $dealer): bool
+    public function forceDelete(User $user, Dealer $dealer): Response
     {
         //
     }
