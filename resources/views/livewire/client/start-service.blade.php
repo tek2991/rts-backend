@@ -25,6 +25,5 @@
                 Stop Service
             </button>
         </div>
-
     </div>
 </div>
