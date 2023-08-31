@@ -17,7 +17,7 @@ final class MessagesTable extends PowerGridComponent
     // use WithExport;
 
     public string $sortField = 'date';
-    
+
     public string $sortDirection = 'desc';
 
     /*
@@ -40,7 +40,7 @@ final class MessagesTable extends PowerGridComponent
                 ->showPerPage()
                 ->showRecordCount(),
 
-            // Responsive::make(),
+            Responsive::make(),
         ];
     }
 
@@ -98,17 +98,17 @@ final class MessagesTable extends PowerGridComponent
             ->addColumn('user_id')
             ->addColumn('device_id')
 
-           /** Example of custom column using a closure **/
+            /** Example of custom column using a closure **/
             ->addColumn('device_id_lower', fn (Message $model) => strtolower(e($model->device_id)))
 
             ->addColumn('message_id')
             ->addColumn('number')
-            ->addColumn('date_formatted', fn (Message $model) => Carbon::parse($model->date)->format('d/m/Y H:i:s'))
+            ->addColumn('date_formatted', fn (Message $model) => Carbon::parse($model->date)->format('d/m/Y H:i'))
             ->addColumn('body')
             ->addColumn('body_formatted', function (Message $model) {
                 // Line breaks on the next space after every 50 characters
                 $body = wordwrap($model->body, 50, "\n", true);
-                
+
                 // Replace the line breaks with <br>
                 $body = nl2br($body);
 
@@ -129,14 +129,21 @@ final class MessagesTable extends PowerGridComponent
     |
     */
 
-     /**
-      * PowerGrid Columns.
-      *
-      * @return array<int, Column>
-      */
+    /**
+     * PowerGrid Columns.
+     *
+     * @return array<int, Column>
+     */
     public function columns(): array
     {
         return [
+            Column::make('Number', 'number')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Date', 'date_formatted', 'date')
+                ->sortable(),
+
             Column::make('Type', 'is_inbox_formatted', 'is_inbox')
                 ->sortable()
                 ->searchable(),
@@ -144,13 +151,6 @@ final class MessagesTable extends PowerGridComponent
             Column::make('Device id', 'device_id')
                 ->sortable()
                 ->searchable(),
-
-            Column::make('Number', 'number')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Date', 'date_formatted', 'date')
-                ->sortable(),
 
             Column::make('Body', 'body_formatted', 'body')
                 ->sortable()
@@ -166,13 +166,12 @@ final class MessagesTable extends PowerGridComponent
     public function filters(): array
     {
         return [
+            // Filter::inputText('number')->operators(['contains']),
+            // Filter::datetimepicker('date'),
             Filter::boolean('is_inbox')
-                ->label('Inbox','Outbox'),
-            Filter::inputText('device_id')->operators(['contains']),
-            Filter::inputText('number')->operators(['contains']),
-            Filter::datetimepicker('date'),
-            Filter::inputText('body')->operators(['contains']),
-            Filter::datetimepicker('created_at'),
+                ->label('Inbox', 'Outbox'),
+            // Filter::inputText('device_id')->operators(['contains']),
+            // Filter::inputText('body')->operators(['contains'])
         ];
     }
 

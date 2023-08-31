@@ -39,7 +39,7 @@ final class ContactsTable extends PowerGridComponent
                 ->showPerPage()
                 ->showRecordCount(),
 
-            // Responsive::make(),
+            Responsive::make(),
         ];
     }
 
@@ -125,10 +125,6 @@ final class ContactsTable extends PowerGridComponent
             Column::make('Number', 'number')
                 ->sortable()
                 ->searchable(),
-
-            Column::make('Date', 'date')
-                ->sortable()
-                ->searchable(),
         ];
     }
 
@@ -140,9 +136,9 @@ final class ContactsTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name')->operators(['contains']),
+            // Filter::inputText('name')->operators(['contains']),
             // Filter::inputText('number')->operators(['contains']),
-            Filter::datetimepicker('created_at'),
+            // Filter::datetimepicker('created_at'),
         ];
     }
 

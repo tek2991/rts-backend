@@ -21,7 +21,11 @@ class SendFcmNotification
         try {
             $message = CloudMessage::withTarget('token', $data['device_token'])
                 ->withNotification(Notification::create($data['title'], $data['body']))
-                ->withData(['action_to' => $data['action_to']]);
+                ->withData(['action_to' => $data['action_to']])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'direct_boot_ok' => true,
+                ]);
 
             $messaging = app('firebase.messaging');
             $messaging->send($message);

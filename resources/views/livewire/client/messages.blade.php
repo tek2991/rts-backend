@@ -1,8 +1,7 @@
-<div class="pb-12 max-w-7xl mx-auto">
-    
-    <div class="flex items-end justify-end mt-4">
+<div class="max-w-7xl mx-auto">
+    <div class="flex items-end justify-end">
         {{-- Locate Phone Button --}}
-        <div class="mt-4 flex items-end justify-end">
+        <div class="flex items-end justify-end mt-3 px-2 sm:p-0">
             <button wire:click="SyncInbox"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -26,7 +25,7 @@
         </div>
     </div>
 
-    <div class="mt-8">
+    <div class="p-2 sm:p-0 sm:mt-1">
         @livewire('client.messages-table', ['user_id' => $user->id])
     </div>
 </div>

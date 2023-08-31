@@ -1,8 +1,6 @@
-<div class="pb-12 max-w-7xl mx-auto">
-    
-
-    <div class="flex items-end justify-end mt-4">
-        <div class="mt-4">
+<div class="max-w-7xl mx-auto">
+    <div class="flex items-end justify-end">
+        <div class="flex items-end justify-end mt-3 px-2 sm:p-0">
             <button wire:click="recordVoice"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -16,11 +14,11 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 sm:p-0 mt-6">
         @forelse ($recordings as $recording)
             <div>
                 <div class="border-2 p-1 rounded-md">
-                    <audio controls>
+                    <audio controls class="w-full">
                         <source src="{{ asset('storage/recordings/' . $recording->filename) }}" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
