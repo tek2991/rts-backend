@@ -29,6 +29,11 @@
                 ->getName();
             // Get the last segment of the route name, e.g. 'dashboard' from 'client.dashboard'
             $name = explode('.', $name)[count(explode('.', $name)) - 1];
+            // If name is index or create or edit, then set it to the previous segment and pluralize it
+            if (in_array($name, ['index', 'create', 'edit'])) {
+                $name = explode('.', request()->route()->getName())[count(explode('.', request()->route()->getName())) - 2];
+                $name = Str::plural($name);
+            }
             // Capitalize the first letter of the last segment of the route name
             $page = ucfirst($name);
         @endphp
