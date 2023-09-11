@@ -187,4 +187,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Recording::class);
     }
+
+    public function screenRecordings()
+    {
+        return $this->hasMany(ScreenRecording::class);
+    }
 }

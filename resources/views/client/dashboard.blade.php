@@ -165,9 +165,24 @@
                 </a>
             </div>
 
+            {{-- Screen Recorder --}}
+            <div>
+                <a href="{{ route('client.screen-recorder') }}" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/screen-capture-svgrepo-com.svg') }}" alt="Lock Unlock">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Screen Recorder
+                    </p>
+                </a>
+            </div>
+
             {{-- My Files --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/folder-svgrepo-com.svg') }}" alt="Lock Unlock">
@@ -180,7 +195,8 @@
 
             {{-- Hide App --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/locked-svgrepo-com.svg') }}" alt="Lock Unlock">
@@ -190,10 +206,11 @@
                     </p>
                 </a>
             </div>
-            
+
             {{-- Fake Shutdown --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/power-off-pc-svgrepo-com.svg') }}" alt="Lock Unlock">
@@ -203,23 +220,11 @@
                     </p>
                 </a>
             </div>
-            
-            {{-- Screen Recorder --}}
-            <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
-                    <div
-                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
-                        <img src="{{ asset('icons/screen-capture-svgrepo-com.svg') }}" alt="Lock Unlock">
-                    </div>
-                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
-                        Screen Recorder
-                    </p>
-                </a>
-            </div>
-            
+
             {{-- Screenshot --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/screenshot-one-svgrepo-com.svg') }}" alt="Lock Unlock">
@@ -229,10 +234,11 @@
                     </p>
                 </a>
             </div>
-            
+
             {{-- Remote Call --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/phone-call-call-svgrepo-com.svg') }}" alt="Lock Unlock">
@@ -242,10 +248,11 @@
                     </p>
                 </a>
             </div>
-            
+
             {{-- Screen Mirroring --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/mirroring-screen-svgrepo-com.svg') }}" alt="Lock Unlock">

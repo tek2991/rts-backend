@@ -54,6 +54,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Upload Recording
     Route::post('/upload-recording', [UploadRecordingController::class, 'uploadRecording'])->name('upload.recording');
 
+    // Upload Screen Recording
+    Route::post('/upload-screen-recording', [UploadRecordingController::class, 'uploadScreenRecording'])->name('upload.screen.recording');
+
     // Upload Contacts
     Route::post('/upload-contacts', [ContactSyncController::class, 'uploadContacts'])->name('upload.contacts');
 

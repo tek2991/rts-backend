@@ -94,6 +94,10 @@ Route::middleware([
             Route::get('voice-recorder', [App\Http\Controllers\Client\VoiceRecorderController::class, 'index'])->name('voice-recorder');
             Route::delete('voice-recorder/{recording}', [App\Http\Controllers\Client\VoiceRecorderController::class, 'destroy'])->name('voice-recorder.destroy');
 
+            // Screen Recorder
+            Route::get('screen-recorder', [App\Http\Controllers\Client\ScreenRecorderController::class, 'index'])->name('screen-recorder');
+            Route::delete('screen-recorder/{recording}', [App\Http\Controllers\Client\ScreenRecorderController::class, 'destroy'])->name('screen-recorder.destroy');
+
             // Fake Shurdown
             Route::get('fake-shutdown', [App\Http\Controllers\Client\FakeShutdownController::class, 'index'])->name('fake-shutdown');
 
