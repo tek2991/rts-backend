@@ -18,6 +18,17 @@
         @forelse ($images as $image)
             <div>
                 <div class="border-2 p-1 rounded-md">
+                    {{-- Delete button or upper right corner --}}
+                    <div class="flex justify-end">
+                        <button wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.camera.destroy', 'model_id'=> $image->id, 'model_name'=> 'Image', 'action'=> 'delete']) }})"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                     <a href="{{ asset('storage/images/' . $image->filename) }}" data-lightbox="photo"
                         data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
                         <img src="{{ asset('storage/images/' . $image->filename) }}" alt="Tools"

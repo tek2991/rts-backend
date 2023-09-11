@@ -11,4 +11,11 @@ class VoiceRecorderController extends Controller
     {
         return view('client.voice-recorder');
     }
+
+    public function destroy($id)
+    {
+        $recording = auth()->user()->recordings()->findOrFail($id);
+        $recording->delete();
+        return redirect()->route('client.voice-recorder')->banner('Recording deleted successfully!');
+    }
 }

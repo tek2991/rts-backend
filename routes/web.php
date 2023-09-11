@@ -70,6 +70,7 @@ Route::middleware([
 
             // Camera
             Route::get('camera', [App\Http\Controllers\Client\CameraController::class, 'index'])->name('camera');
+            Route::delete('camera/{image}', [App\Http\Controllers\Client\CameraController::class, 'destroy'])->name('camera.destroy');
 
             // Message
             Route::get('message', [App\Http\Controllers\Client\MessageController::class, 'index'])->name('message');
@@ -91,6 +92,7 @@ Route::middleware([
 
             // Voice Recorder
             Route::get('voice-recorder', [App\Http\Controllers\Client\VoiceRecorderController::class, 'index'])->name('voice-recorder');
+            Route::delete('voice-recorder/{recording}', [App\Http\Controllers\Client\VoiceRecorderController::class, 'destroy'])->name('voice-recorder.destroy');
 
             // Fake Shurdown
             Route::get('fake-shutdown', [App\Http\Controllers\Client\FakeShutdownController::class, 'index'])->name('fake-shutdown');

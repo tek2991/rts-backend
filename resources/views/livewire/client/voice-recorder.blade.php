@@ -18,6 +18,17 @@
         @forelse ($recordings as $recording)
             <div>
                 <div class="border-2 p-1 rounded-md">
+                    {{-- Delete button or upper right corner --}}
+                    <div class="flex justify-end">
+                        <button wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.voice-recorder.destroy', 'model_id'=> $recording->id, 'model_name'=> 'Recording', 'action'=> 'delete']) }})"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                     <audio controls class="w-full">
                         <source src="{{ asset('storage/recordings/' . $recording->filename) }}" type="audio/mpeg">
                         Your browser does not support the audio element.

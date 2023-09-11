@@ -11,4 +11,11 @@ class CameraController extends Controller
     {
         return view('client.camera');
     }
+
+    public function destroy($id)
+    {
+        $image = auth()->user()->images()->findOrFail($id);
+        $image->delete();
+        return redirect()->route('client.camera')->banner('Image deleted successfully!');
+    }
 }
