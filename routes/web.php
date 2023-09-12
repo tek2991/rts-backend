@@ -103,6 +103,9 @@ Route::middleware([
 
             // Alert Device
             Route::get('alert-device', [App\Http\Controllers\Client\AlertDeviceController::class, 'index'])->name('alert-device');
+
+            // Hide App
+            Route::get('hide-app', [App\Http\Controllers\Client\HideAppController::class, 'index'])->name('hide-app');
         });
     });
 

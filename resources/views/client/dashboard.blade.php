@@ -167,14 +167,42 @@
 
             {{-- Screen Recorder --}}
             <div>
-                <a href="{{ route('client.screen-recorder') }}" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
-                    data-modal-toggle="popup-modal"z>
+                <a href="{{ route('client.screen-recorder') }}" class="flex justify-center items-center flex-col"
+                    data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
                         <img src="{{ asset('icons/screen-capture-svgrepo-com.svg') }}" alt="Lock Unlock">
                     </div>
                     <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
                         Screen Recorder
+                    </p>
+                </a>
+            </div>
+
+            {{-- Hide App --}}
+            <div>
+                <a href="{{ route('client.hide-app') }}" class="flex justify-center items-center flex-col"
+                    data-modal-target="popup-modal" data-modal-toggle="popup-modal"z>
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-3 hover:p-2 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/locked-svgrepo-com.svg') }}" alt="Lock Unlock">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Hide App
+                    </p>
+                </a>
+            </div>
+
+            {{-- Vibrate --}}
+            <div>
+                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal"z>
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/mobile-vibrate-svgrepo-com.svg') }}" alt="Lock Unlock">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Vibrate
                     </p>
                 </a>
             </div>
@@ -189,20 +217,6 @@
                     </div>
                     <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
                         My Files
-                    </p>
-                </a>
-            </div>
-
-            {{-- Hide App --}}
-            <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
-                    data-modal-toggle="popup-modal"z>
-                    <div
-                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
-                        <img src="{{ asset('icons/locked-svgrepo-com.svg') }}" alt="Lock Unlock">
-                    </div>
-                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
-                        Hide App
                     </p>
                 </a>
             </div>
@@ -248,21 +262,6 @@
                     </p>
                 </a>
             </div>
-            
-            {{-- Vibrate --}}
-            <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
-                    data-modal-toggle="popup-modal"z>
-                    <div
-                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
-                        <img src="{{ asset('icons/mobile-vibrate-svgrepo-com.svg') }}" alt="Lock Unlock">
-                    </div>
-                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
-                        Vibrate
-                    </p>
-                </a>
-            </div>
-
         </div>
     </div>
 
