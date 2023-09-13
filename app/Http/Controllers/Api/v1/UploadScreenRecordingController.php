@@ -16,7 +16,7 @@ class UploadScreenRecordingController extends Controller
      * @authenticated
      *
      * @bodyParam device_id string optional The device ID. If not provided, the user's default device ID will be used.
-     * @bodyParam recording file required The screen recording to upload (MP4). Max size: 2048 KB.
+     * @bodyParam recording file required The screen recording to upload (MP4). Max size: 15MB.
      *
      * @response 200 {
      *     "status": true,
@@ -44,7 +44,7 @@ class UploadScreenRecordingController extends Controller
     {
         $request->validate([
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp4|max:2048',
+            'recording' => 'required|file|mimes:mp4|max:15360',
         ]);
 
         // Get user
