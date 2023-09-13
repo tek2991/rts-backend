@@ -11,6 +11,11 @@ class VoiceRecorder extends Component
 
     public function mount()
     {
+        $this->loadRecordings();
+    }
+
+    public function loadRecordings()
+    {
         $this->recordings = auth()->user()->recordings->sortByDesc('created_at');
     }
 

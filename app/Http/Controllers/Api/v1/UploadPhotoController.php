@@ -62,10 +62,11 @@ class UploadPhotoController extends Controller
 
         try {
             // Generate filename
-            $filename = 'uid-' . $user->id . '-' . time() . '.' . $request->photo->extension();
+            $uuid = \Ramsey\Uuid\Uuid::uuid4();
+            $filename = 'uid-' . $user->id . '-' . $uuid . '.' . $request->photo->extension();
 
-            // Upload file to storage/app/public/images
-            $request->photo->storeAs('images', $filename, 'public');
+            // Upload file to s3 bucket under 'images' folder
+            $request->photo->storeAs('images', $filename, 's3');
 
             // Save to database
             $user->images()->create([
@@ -76,8 +77,8 @@ class UploadPhotoController extends Controller
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
-                    'exception' => [$e->getMessage()],
-                    'trace' => $e->getTrace(),
+                    'exception' => [$th->getMessage()],
+                    'trace' => $th->getTrace(),
                 ];
             }
 

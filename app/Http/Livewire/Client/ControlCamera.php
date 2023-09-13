@@ -7,17 +7,18 @@ use App\Actions\Functions\SendFcmNotification;
 
 class ControlCamera extends Component
 {
-    public $images = [];
+    public $images;
 
     public function mount()
     {
-        $this->images = auth()->user()->images->sortByDesc('created_at');
+        $this->loadImages();
     }
 
-    public function contRefreshComponentSpecific()
+    public function loadImages()
     {
         $this->images = auth()->user()->images->sortByDesc('created_at');
     }
+
     public function sendNotification($action_to)
     {
         // If device token is empty

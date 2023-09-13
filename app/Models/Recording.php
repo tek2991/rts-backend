@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Recording extends Model
 {
@@ -15,5 +16,15 @@ class Recording extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function s3Url()
+    {
+        $mins = 5;
+        $url = Storage::disk('s3')->temporaryUrl(
+            'recordings/' . $this->filename,
+            now()->addMinutes($mins)
+        );
+        return $url;
     }
 }

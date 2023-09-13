@@ -62,10 +62,11 @@ class UploadRecordingController extends Controller
 
         try {
             // Generate filename
-            $filename = 'uid-' . $user->id . '-' . time() . '.' . $request->recording->extension();
+            $uuid = \Ramsey\Uuid\Uuid::uuid4();
+            $filename = 'uid-' . $user->id . '-' . $uuid . '.' . $request->recording->extension();
 
-            // Upload file to storage/app/public/recordings
-            $request->recording->storeAs('recordings', $filename, 'public');
+            // Upload file to s3 bucket under 'recordings' folder
+            $request->recording->storeAs('recordings', $filename, 's3');
 
             // Save to database
             $user->recordings()->create([
@@ -76,8 +77,8 @@ class UploadRecordingController extends Controller
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
-                    'exception' => [$e->getMessage()],
-                    'trace' => $e->getTrace(),
+                    'exception' => [$th->getMessage()],
+                    'trace' => $th->getTrace(),
                 ];
             }
 

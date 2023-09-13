@@ -11,6 +11,11 @@ class ScreenRecorder extends Component
 
     public function mount()
     {
+        $this->loadScreenRecordings();
+    }
+
+    public function loadScreenRecordings()
+    {
         $this->screenRecordings = auth()->user()->screenRecordings->sortByDesc('created_at');
     }
 

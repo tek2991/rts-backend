@@ -1,5 +1,16 @@
 <div class="max-w-7xl mx-auto">
-    <div class="flex items-end justify-end">
+    <div class="flex items-end justify-between">
+        <div class="flex items-end justify-end mt-3 px-2 sm:p-0">
+            <button wire:click="loadImages"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 pr-1">
+                    <path fill-rule="evenodd"
+                        d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z"
+                        clip-rule="evenodd" />
+                </svg>
+                Refresh
+            </button>
+        </div>
         <div class="flex items-end justify-end mt-3 px-2 sm:p-0">
             <button wire:click="takePicture"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
@@ -20,19 +31,18 @@
                 <div class="border-2 p-1 rounded-md">
                     {{-- Delete button or upper right corner --}}
                     <div class="flex justify-end">
-                        <button wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.camera.destroy', 'model_id'=> $image->id, 'model_name'=> 'Image', 'action'=> 'delete']) }})"
+                        <button
+                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.camera.destroy', 'model_id' => $image->id, 'model_name' => 'Image', 'action' => 'delete']) }})"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6 18L18 6M6 6l12 12" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
-                    <a href="{{ asset('storage/images/' . $image->filename) }}" data-lightbox="photo"
+                    <a href="{{ $image->s3Url() }}" data-lightbox="photo"
                         data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
-                        <img src="{{ asset('storage/images/' . $image->filename) }}" alt="Tools"
-                            class="w-full h-56 object-contain">
+                        <img src="{{ $image->s3Url() }}" alt="Tools" class="w-full h-56 object-contain">
                     </a>
                     <p class="text-center text-sm pt-2">
                         {{ $image->created_at->format('M d, Y h:i A') }}
@@ -45,14 +55,4 @@
             </div>
         @endforelse
     </div>
-
-
-    {{-- Hidden button to refresh --}}
-    <button wire:click="contRefreshComponentSpecific" class="hidden" id="cont-refresh-component-specific"></button>
-    <script>
-        // Refresh device status every 3 seconds
-        setInterval(function() {
-            document.getElementById('cont-refresh-component-specific').click();
-        }, 3000);
-    </script>
 </div>
