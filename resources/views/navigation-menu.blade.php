@@ -75,8 +75,19 @@
                     @endhasanyrole
 
                     @hasrole('administrator')
-                        <x-nav-link href="{{ route('scribe') }}">
+                        {{-- API docs --}}
+                        <x-nav-link href="{{ route('scribe') }}" target="_blank">
                             {{ __('API docs') }}
+                        </x-nav-link>
+
+                        {{-- Laravel Telescope --}}
+                        <x-nav-link href="{{ route('telescope') }}" target="_blank">
+                            {{ __('Telescope') }}
+                        </x-nav-link>
+
+                        {{-- PHP Info --}}
+                        <x-nav-link href="{{ route('php-info') }}" target="_blank">
+                            {{ __('PHP Info') }}
                         </x-nav-link>
                     @endhasrole
                 </div>

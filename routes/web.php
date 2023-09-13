@@ -119,6 +119,11 @@ Route::middleware([
             return view('test-api');
         })->name('test-api');
 
+        // PHP Info
+        Route::get('/php-info', function () {
+            return view('php-info');
+        })->name('php-info');
+
         // gst
         Route::resource('gst', GstController::class)->only(['index']);
 
