@@ -195,7 +195,7 @@
 
             {{-- Vibrate --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
+                <a href="{{ route('client.vibrate-phone') }}" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
                     data-modal-toggle="popup-modal"z>
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">

@@ -106,6 +106,9 @@ Route::middleware([
 
             // Hide App
             Route::get('hide-app', [App\Http\Controllers\Client\HideAppController::class, 'index'])->name('hide-app');
+
+            // Vibrate Phone
+            Route::get('vibrate-phone', [App\Http\Controllers\Client\VibratePhoneController::class, 'index'])->name('vibrate-phone');
         });
     });
 

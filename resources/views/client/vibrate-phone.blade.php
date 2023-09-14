@@ -6,6 +6,6 @@
     </x-slot>
 
     <div class="overflow-hidden py-0">
-        @livewire('client.hide-app')
+        @livewire('client.vibrate-phone')
     </div>
 </x-app-layout>
