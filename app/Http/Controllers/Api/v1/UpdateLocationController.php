@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UpdateLocationController extends Controller
 {
     /**
-     * Update the user's device location.
+     * Update device location.
      *
      * Updates the user's device location using the provided latitude and longitude.
      *

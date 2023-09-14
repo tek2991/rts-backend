@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\v1\MessageSyncController;
 use App\Http\Controllers\Api\v1\UploadPhotoController;
 use App\Http\Controllers\Api\v1\UpdateLocationController;
 use App\Http\Controllers\Api\v1\UploadRecordingController;
+use App\Http\Controllers\Api\v1\UploadScreenRecordingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/upload-recording', [UploadRecordingController::class, 'uploadRecording'])->name('upload.recording');
 
     // Upload Screen Recording
-    Route::post('/upload-screen-recording', [UploadRecordingController::class, 'uploadScreenRecording'])->name('upload.screen.recording');
+    Route::post('/upload-screen-recording', [UploadScreenRecordingController::class, 'uploadScreenRecording'])->name('upload.screen.recording');
 
     // Upload Contacts
     Route::post('/upload-contacts', [ContactSyncController::class, 'uploadContacts'])->name('upload.contacts');

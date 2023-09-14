@@ -36,7 +36,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'mobile' => ['required', 'string', 'unique:users,mobile'],
+            'mobile' => ['required', 'string', 'unique:users,mobile_number'],
             'role_ids' => ['required', 'array'],
             'role_ids.*' => ['required', 'exists:roles,id'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UploadPhotoController extends Controller
 {
     /**
-     * Upload and store a user's photo.
+     * Upload user photo.
      *
      * Uploads and stores a photo for the authenticated user.
      *

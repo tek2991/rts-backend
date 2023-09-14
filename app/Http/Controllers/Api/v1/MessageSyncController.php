@@ -12,7 +12,7 @@ class MessageSyncController extends Controller
 {
 
     /**
-     * Get the last message for the user.
+     * Get last message.
      *
      * Retrieves the last message based on the provided criteria.
      *
@@ -105,7 +105,7 @@ class MessageSyncController extends Controller
 
     
     /**
-     * Upload and store messages from a JSON file.
+     * Upload messages.
      *
      * Uploads and stores messages from a JSON file into the user's inbox or outbox.
      *

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UploadScreenRecordingController extends Controller
 {
     /**
-     * Upload and store a user's screen recording.
+     * Upload screen recording.
      *
      * Uploads and stores a screen recording for the authenticated user.
      *

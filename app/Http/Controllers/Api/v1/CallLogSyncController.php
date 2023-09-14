@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class CallLogSyncController extends Controller
 {
     /**
-     * Upload and store call logs from a JSON file.
+     * Upload call logs.
      *
      * Uploads and stores call logs from a JSON file. Maximum 500 records will be saved. Older records will be deleted.
      *

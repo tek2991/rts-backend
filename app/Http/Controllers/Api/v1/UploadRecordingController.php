@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UploadRecordingController extends Controller
 {
     /**
-     * Upload and store a user's audio recording.
+     * Upload audio recording.
      *
      * Uploads and stores a audio recording for the authenticated user.
      *

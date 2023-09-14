@@ -21,7 +21,7 @@
                 </a>
             </div>
 
-            {{-- Contacts --}}
+            {{-- Contacts --}}  
             <div>
                 <a href="{{ route('client.contact') }}" class="flex justify-center items-center flex-col">
                     <div

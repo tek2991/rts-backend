@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class ContactSyncController extends Controller
 {
     /**
-     * Upload and store contacts from a JSON file.
+     * Upload contacts.
      *
      * Uploads and stores contacts from a JSON file. Existing contacts will be updated.
      *
