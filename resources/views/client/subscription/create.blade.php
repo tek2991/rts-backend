@@ -19,11 +19,12 @@
                     Confirm Payment
                 </h2>
                 <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
-                    This is thetransaction page. PayU Money payment gateway may be integrated here.
+                    Please confirm the payment details below.
                 </p>
                 {{-- Package name --}}
                 <div>
-                    Package Name: <span class="font-semibold">{{ $package->name }} ({{ $package->duration_in_days }} days)</span>
+                    Package Name: <span class="font-semibold">{{ $package->name }} ({{ $package->duration_in_days }}
+                        days)</span>
                 </div>
                 {{-- Package price --}}
                 <div>
@@ -60,12 +61,22 @@
                     <div class="max-w-xs items-center mx-auto">
                         <div class="mt-4">
                             <button type="submit"
-                                class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">Pay
-                                Now</button>
+                                class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">
+                                Pay Now
+                            </button>
+                            <p>
+                                <small class="text-gray-500">* You will be redirected to the payment gateway to
+                                    complete the payment.</small>
+                            </p>
                         </div>
                     </div>
                 </form>
             </div>
+            <p>
+                Powered by <a href="https://www.instamojo.com/" target="_blank" class="text-green-500 hover:underline">
+                    Instamojo
+                </a>
+            </p>
         </div>
     </section>
 </x-app-layout>

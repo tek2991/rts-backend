@@ -34,4 +34,11 @@ return [
     'google_maps' => [
         'key' => env('GOOGLE_MAPS_API_KEY'),
     ],
+
+    'instamojo' => [
+        'client_id' => env('INSTAMOJO_CLIENT_ID'),
+        'client_secret' => env('INSTAMOJO_CLIENT_SECRET'),
+        'sandbox' => env('INSTAMOJO_SANDBOX', true), // False if you are using live account
+        'auth_type' => env('INSTAMOJO_AUTH_TYPE', 'app'), // 'app' or 'user'
+    ],
 ];

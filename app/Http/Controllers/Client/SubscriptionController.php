@@ -67,7 +67,7 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
         // Check subscription_data in session
         if (!session()->has('subscription_data')) {
@@ -111,12 +111,6 @@ class SubscriptionController extends Controller
             'payment_method' => 'online',
             'status' => 'paid',
         ]);
-
-        // Send notification to admin
-        // $this->sendNotificationToAdmin($subscription);
-
-        // Send notification to client
-        // $this->sendNotificationToClient($subscription);
 
         // Remove subscription_data from session
         session()->forget('subscription_data');

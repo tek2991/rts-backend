@@ -27,6 +27,7 @@ class Subscription extends Model
         'price',
         'payment_method',
         'status',
+        'payment_id',
     ];
 
     protected $casts = [
@@ -65,5 +66,10 @@ class Subscription extends Model
     public function activationCode()
     {
         return $this->belongsTo(ActivationCode::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
     }
 }
