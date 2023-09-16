@@ -15,6 +15,12 @@ class Payment extends Model
         'currency',
         'amount',
         'fees',
+        'taxes',
+        'instrument_type',
+        'billing_instrument',
+        'failure_reason',
+        'failure_message',
+        'bank_reference_number',
         'buyer_name',
         'buyer_email',
         'buyer_phone',
@@ -22,15 +28,14 @@ class Payment extends Model
         'shorturl',
         'longurl',
         'mac',
-        'verified',
-        'webhook_called',
+        'redirected',
         'webhook_verified',
+        'user_id',
     ];
 
     // Casts
     protected $casts = [
-        'verified' => 'boolean',
-        'webhook_called' => 'boolean',
+        'redirected' => 'boolean',
         'webhook_verified' => 'boolean',
         'amount' => 'float',
     ];
@@ -39,6 +44,7 @@ class Payment extends Model
     protected $appends = [
         'amount',
         'fees',
+        'taxes'
     ];
 
     // Relationships
@@ -80,8 +86,29 @@ class Payment extends Model
         );
     }
 
+    /**
+     * Interact with the total_taxes_in_cents column.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function taxes(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => $attributes['taxes_in_cents'] / 100,
+
+            set: fn ($value) => [
+                'taxes_in_cents' => $value * 100,
+            ]
+        );
+    }
+
     public function verified($query)
     {
         return $query->where('verified', true)->where('webhook_verified', true);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

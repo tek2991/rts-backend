@@ -38,6 +38,7 @@ return [
     'instamojo' => [
         'client_id' => env('INSTAMOJO_CLIENT_ID'),
         'client_secret' => env('INSTAMOJO_CLIENT_SECRET'),
+        'private_salt' => env('INSTAMOJO_PRIVATE_SALT'),
         'sandbox' => env('INSTAMOJO_SANDBOX', true), // False if you are using live account
         'auth_type' => env('INSTAMOJO_AUTH_TYPE', 'app'), // 'app' or 'user'
     ],

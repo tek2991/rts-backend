@@ -56,6 +56,11 @@ Route::middleware([
 
         Route::get('activation-code', [ClientActivationCodeController::class, 'start'])->name('activation-code.start');
 
+        Route::post('payment', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('payment.pay');
+        Route::get('payment/success', [App\Http\Controllers\Client\PaymentController::class, 'success'])->name('payment.success');
+        // Route::get('payment/failure', [App\Http\Controllers\Client\PaymentController::class, 'failure'])->name('payment.failure'); // Not used
+        Route::post('payment/webhook', [App\Http\Controllers\Client\PaymentController::class, 'webhook'])->name('payment.webhook');
+
         Route::get('/dashboard', function () {
             return view('client.dashboard');
         })->name('dashboard');
