@@ -41,5 +41,13 @@ return [
         'private_salt' => env('INSTAMOJO_PRIVATE_SALT'),
         'sandbox' => env('INSTAMOJO_SANDBOX', true), // False if you are using live account
         'auth_type' => env('INSTAMOJO_AUTH_TYPE', 'app'), // 'app' or 'user'
+        'enable_webhook' => env('INSTAMOJO_ENABLE_WEBHOOK', true), // False if you don't want to verify webhook call
+    ],
+
+    'textlocal' => [
+        'api_key' => env('TEXTLOCAL_API_KEY'),
+        'sender' => env('TEXTLOCAL_SENDER'),
+        'test_mode' => env('TEXTLOCAL_TEST_MODE', true), // False if you are using live account
+        'send_url' => env('TEXTLOCAL_SEND_SMS_URL', 'https://api.textlocal.in/send/'),
     ],
 ];

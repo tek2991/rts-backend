@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App;
 use Laravel\Sanctum\HasApiTokens;
+use App\Actions\Functions\SendSMS;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -77,6 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendMobileNumberVerificationNotification()
     {
         $otp = rand(100000, 999999);
+        SendSMS::sendOTP($this->mobile_number, $otp);
         $this->otp = $otp;
         $this->save();
         return $otp;

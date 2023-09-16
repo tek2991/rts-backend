@@ -5,47 +5,42 @@ namespace App\Http\Controllers\Client;
 use App\Models\Gst;
 use App\Models\Coupon;
 use App\Models\Package;
-use App\Models\Payment as PaymentModel;
 use Instamojo\Instamojo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\Payment as PaymentModel;
+use App\Actions\Functions\ParseSubscriptionDataFromSession;
 
 class PaymentController extends Controller
 {
     public function pay()
     {
-        // Check subscription_data in session
         if (!session()->has('subscription_data')) {
             return abort(404, 'Package not found.');
         }
 
-        $subscription_data = session('subscription_data');
-        $package = Package::find($subscription_data['package_id']);
-        $coupon = $subscription_data['coupon_id'] ? Coupon::find($subscription_data['coupon_id']) : false;
+        $data = ParseSubscriptionDataFromSession::parse();
+        session()->forget('subscription_data');
 
-        $sgst = Gst::where('name', 'SGST')->first()->rate;
-        $cgst = Gst::where('name', 'CGST')->first()->rate;
-        $tax_rate = $sgst + $cgst;
-
-        $user = auth()->user();
-        $started_at = $user->subscribedUpto() ? Carbon::createFromFormat('Y-m-d', $user->subscribedUpto())->addDay() : now();
-        $expires_at = clone $started_at;
-        $expires_at->addDays($package->duration_in_days);
-
-        $discount_amount = $coupon ? $package->price * $coupon->discount_percentage / 100 : 0;
-        $gross_amount = $package->price - $discount_amount;
-        $tax = $gross_amount * ($tax_rate / (100 + $tax_rate));
-        $net_amount = $gross_amount - $tax;
+        $user = $data['user'];
+        $package = $data['package'];
+        $coupon = $data['coupon'];
+        $discount_amount = $data['discount_amount'];
+        $gross_amount = $data['gross_amount'];
+        $tax = $data['tax'];
+        $net_amount = $data['net_amount'];
+        $started_at = $data['started_at'];
+        $expires_at = $data['expires_at'];
 
         $api = $this->createAPI();
 
         try {
             $uuid = (string) Str::uuid();
-            $response = $api->createPaymentRequest(array(
+            $arr = array(
                 "purpose" => $uuid,
-                "amount" => $gross_amount,
+                "amount" => $data['gross_amount'],
                 // "currency" => "INR", // Only INR is supported
                 "send_email" => false,
                 "email" => $user->email,
@@ -55,7 +50,13 @@ class PaymentController extends Controller
                 "send_sms" => false,
                 "phone" => substr($user->mobile_number, -10), // 10 digit phone number
                 "allow_repeated_payments" => false
-            ));
+            );
+
+            if (config('services.instamojo.enable_webhook')) {
+                $arr['webhook'] = route('client.payment.webhook');
+            }
+
+            $response = $api->createPaymentRequest($arr);
 
             if (array_key_exists('longurl', $response)) {
                 $payment = $user->payments()->create([

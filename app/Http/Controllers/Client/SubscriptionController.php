@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Actions\Functions\ParseSubscriptionDataFromSession;
 use App\Models\Gst;
 use App\Models\Coupon;
 use App\Models\Package;
@@ -34,32 +35,17 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        // Check subscription_data in session
-        if (session()->has('subscription_data')) {
-            $package = Package::find(session('subscription_data.package_id'));
-            $coupon = session('subscription_data.coupon_id') ? Coupon::find(session('subscription_data.coupon_id')) : false;
-            if ($package) {
-                if ($coupon) {
-                    if ($coupon->isExpired()) {
-                        session()->forget('subscription_data');
-                        return redirect()->route('client.subscription.expired');
-                    }
-                }
-            } else {
-                session()->forget('subscription_data');
-                return redirect()->route('client.subscription.expired');
-            }
-            $sgst = Gst::where('name', 'SGST')->first()->rate;
-            $cgst = Gst::where('name', 'CGST')->first()->rate;
-            $tax_rate = $sgst + $cgst;
-            
-            $discount_amount = $coupon ? $package->price * $coupon->discount_percentage / 100 : 0;
-            $gross_amount = $package->price - $discount_amount;
-            $tax = $gross_amount * ($tax_rate / (100 + $tax_rate));
-            $net_amount = $gross_amount - $tax;
-        } else {
+        if (!session()->has('subscription_data')) {
             return abort(404, 'Package not found.');
         }
+        $data = ParseSubscriptionDataFromSession::parse();
+        $package = $data['package'];
+        $coupon = $data['coupon'];
+        $discount_amount = $data['discount_amount'];
+        $gross_amount = $data['gross_amount'];
+        $tax = $data['tax'];
+        $tax_rate = $data['tax_rate'];
+        $net_amount = $data['net_amount'];
 
         return view('client.subscription.create', compact('package', 'coupon', 'discount_amount', 'gross_amount', 'tax', 'tax_rate', 'net_amount'));
     }
@@ -69,53 +55,7 @@ class SubscriptionController extends Controller
      */
     public function store()
     {
-        // Check subscription_data in session
-        if (!session()->has('subscription_data')) {
-            return abort(404, 'Package not found.');
-        }
-        $subscription_data = session('subscription_data');
-        $package = Package::find($subscription_data['package_id']);
-        $coupon = $subscription_data['coupon_id'] ? Coupon::find($subscription_data['coupon_id']) : false;
-
-        $sgst = Gst::where('name', 'SGST')->first()->rate;
-        $cgst = Gst::where('name', 'CGST')->first()->rate;
-        $tax_rate = $sgst + $cgst;
-
-        $user = auth()->user();
-        $started_at = $user->subscribedUpto() ? Carbon::createFromFormat('Y-m-d', $user->subscribedUpto())->addDay() : now();
-        $expires_at = clone $started_at;
-        $expires_at->addDays($package->duration_in_days);
-
-        $discount_amount = $coupon ? $package->price * $coupon->discount_percentage / 100 : 0;
-        $gross_amount = $package->price - $discount_amount;
-        $tax = $gross_amount * ($tax_rate / (100 + $tax_rate));
-        $net_amount = $gross_amount - $tax;
-
-        $subscription = Subscription::create([
-            'user_id' => $user->id,
-            'package_id' => $package->id,
-            'package_name' => $package->name,
-            'coupon_id' => $coupon ? $coupon->id : null,
-            'coupon_code' => $coupon ? $coupon->code : null,
-            'coupon_promoter_name' => $coupon ? $coupon->promoter_name : null,
-            'plan_net_amount' => $package->price,
-            'plan_tax' => $package->tax,
-            'started_at' => $started_at,
-            'expires_at' => $expires_at,
-            'duration_in_days' => $package->duration_in_days,
-            'gross_price' => $package->price,
-            'discount_amount' => $discount_amount,
-            'net_amount' => $net_amount,
-            'tax' => $tax,
-            'price' => $net_amount + $tax,
-            'payment_method' => 'online',
-            'status' => 'paid',
-        ]);
-
-        // Remove subscription_data from session
-        session()->forget('subscription_data');
-
-        return redirect()->route('client.subscription.show', $subscription);
+        //
     }
 
     /**

@@ -50,7 +50,7 @@ Route::middleware([
 
     Route::prefix('client')->name('client.')->group(function () {
         Route::get('subscription/expired', [SubscriptionController::class, 'subscriptionExpired'])->name('subscription.expired');
-        Route::resource('subscription', SubscriptionController::class)->only(['index', 'show', 'create', 'store']);
+        Route::resource('subscription', SubscriptionController::class)->only(['index', 'show', 'create']);
         Route::get('packages', [ClientPackageController::class, 'index'])->name('package.index');
         Route::get('packages/{package}', [ClientPackageController::class, 'show'])->name('package.show');
 
