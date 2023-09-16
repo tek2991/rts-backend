@@ -48,6 +48,6 @@ return [
         'api_key' => env('TEXTLOCAL_API_KEY'),
         'sender' => env('TEXTLOCAL_SENDER'),
         'test_mode' => env('TEXTLOCAL_TEST_MODE', true), // False if you are using live account
-        'send_url' => env('TEXTLOCAL_SEND_SMS_URL', 'https://api.textlocal.in/send/'),
+        'send_sms_url' => env('TEXTLOCAL_SEND_SMS_URL', 'https://api.textlocal.in/send/'),
     ],
 ];

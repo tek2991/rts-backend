@@ -107,7 +107,6 @@
                 @if ($this->otpSent)
                     <p class="mt-2 font-medium text-sm text-green-600">
                         {{ __('A new OTP has been sent to your mobile number.') }}
-                        {{ $currentotp }}
                     </p>
                 @endif
             @endif

@@ -24,7 +24,7 @@ class SendSMS
         }
 
         // Send the POST request with cURL
-        $ch = curl_init(config('services.textlocal.url'));
+        $ch = curl_init(config('services.textlocal.send_sms_url'));
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
