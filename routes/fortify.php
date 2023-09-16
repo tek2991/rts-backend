@@ -78,7 +78,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
     }
 
     // Email Verification...
-    if (Features::enabled(Features::emailVerification())) {
+    // if (Features::enabled(Features::emailVerification())) {
         if ($enableViews) {
             Route::get(RoutePath::for('verification.notice', '/email/verify'), [EmailVerificationPromptController::class, '__invoke'])
                 ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')])
@@ -92,7 +92,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         Route::post(RoutePath::for('verification.send', '/email/verification-notification'), [EmailVerificationNotificationController::class, 'store'])
             ->middleware([config('fortify.auth_middleware', 'auth').':'.config('fortify.guard'), 'throttle:'.$verificationLimiter])
             ->name('verification.send');
-    }
+    // }
 
     // Profile Information...
     if (Features::enabled(Features::updateProfileInformation())) {

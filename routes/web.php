@@ -30,7 +30,7 @@ use App\Http\Controllers\Client\LocatePhoneController;
 // require_once base_path('routes/jetstream.php');
 
 // Import Fortify routes fortify.php
-// require_once base_path('routes/fortify.php');
+require_once base_path('routes/fortify.php');
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -44,7 +44,7 @@ Route::get('/mobile-verification-notice', function () {
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified',
+    // 'verified',
     'verified.mobile',
 ])->group(function () {
 
