@@ -42,7 +42,7 @@ Route::get('/mobile-verification-notice', function () {
 })->middleware(['auth'])->name('mobile-verification-notice');
 
 // Instamojo Webhook
-Route::post('payment/webhook', [App\Http\Controllers\Client\PaymentController::class, 'webhook'])->name('instamojo.payment.webhook');
+Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentController::class, 'webhook'])->name('instamojo.payment.webhook');
 
 Route::middleware([
     'auth:sanctum',
