@@ -32,7 +32,7 @@
                     {{-- Delete button or upper right corner --}}
                     <div class="flex justify-end">
                         <button
-                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.video-recorder.destroy', 'model_id' => $recording->id, 'model_name' => 'Video', 'action' => 'delete']) }})"
+                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.video-recorder.destroy', 'model_id' => $video->id, 'model_name' => 'Video', 'action' => 'delete']) }})"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -45,7 +45,7 @@
                         Your browser does not support the video element.
                     </video>
                     <p class="text-center text-sm pt-2">
-                        {{ $recording->created_at->format('M d, Y h:i A') }}
+                        {{ $video->created_at->format('M d, Y h:i A') }}
                     </p>
                 </div>
             </div>
