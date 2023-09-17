@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\v1\CallLogSyncController;
 use App\Http\Controllers\Api\v1\ContactSyncController;
 use App\Http\Controllers\Api\v1\MessageSyncController;
 use App\Http\Controllers\Api\v1\UploadPhotoController;
+use App\Http\Controllers\Api\v1\UploadVideoController;
 use App\Http\Controllers\Api\v1\UpdateLocationController;
 use App\Http\Controllers\Api\v1\UploadRecordingController;
 use App\Http\Controllers\Api\v1\UploadScreenRecordingController;
@@ -54,6 +55,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Upload Recording
     Route::post('/upload-recording', [UploadRecordingController::class, 'uploadRecording'])->name('upload.recording');
+
+    // Upload Video
+    Route::post('/upload-video', [UploadVideoController::class, 'uploadVideo'])->name('upload.video');
 
     // Upload Screen Recording
     Route::post('/upload-screen-recording', [UploadScreenRecordingController::class, 'uploadScreenRecording'])->name('upload.screen.recording');

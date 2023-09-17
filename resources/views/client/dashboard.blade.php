@@ -21,7 +21,7 @@
                 </a>
             </div>
 
-            {{-- Contacts --}}  
+            {{-- Contacts --}}
             <div>
                 <a href="{{ route('client.contact') }}" class="flex justify-center items-center flex-col">
                     <div
@@ -82,6 +82,19 @@
                     </div>
                     <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
                         Voice Recorder
+                    </p>
+                </a>
+            </div>
+
+            {{-- Video Recording --}}
+            <div>
+                <a href="{{ route('client.video-recorder') }}" class="flex justify-center items-center flex-col">
+                    <div
+                        class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
+                        <img src="{{ asset('icons/video-frame-play-vertical-svgrepo-com.svg') }}" alt="Video Recording Logo">
+                    </div>
+                    <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
+                        Video Recorder
                     </p>
                 </a>
             </div>
