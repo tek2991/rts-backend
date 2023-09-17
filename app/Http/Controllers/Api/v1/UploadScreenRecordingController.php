@@ -44,7 +44,7 @@ class UploadScreenRecordingController extends Controller
     {
         $request->validate([
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp4|max:15360',
+            'recording' => 'required|file|mimes:mp4,mov,ogg,qt|max:15360',
         ]);
 
         // Get user
