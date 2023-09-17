@@ -161,12 +161,11 @@ class PaymentController extends Controller
         $data = $_POST;
 
         if ($this->verifyMAC($data)) {
-            $payment_id = $data['payment_id'];
-            $payment_request_id = $data['payment_request_id'];
+            $purpose = $data['purpose'];
 
             // Check if payment_request_id is valid and is in database
             try {
-                $payment = PaymentModel::where('payment_request_id', $payment_request_id)->where('payment_id', $payment_id)->firstOrFail();
+                $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
 
                 if ($data['status'] == "Credit") {
                     $payment->update([
