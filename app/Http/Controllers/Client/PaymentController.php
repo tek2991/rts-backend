@@ -156,9 +156,9 @@ class PaymentController extends Controller
         }
     }
 
-    public function webhook(Request $request)
+    public function webhook()
     {
-        $data = $request->all();
+        $data = $_POST;
 
         if ($this->verifyMAC($data)) {
             $payment_id = $data['payment_id'];
@@ -212,7 +212,7 @@ class PaymentController extends Controller
         }
         // You can get the 'salt' from Instamojo's developers page(make sure to log in first): https://www.instamojo.com/developers
         // Pass the 'salt' without <>
-        $mac_calculated = hash_hmac("sha1", implode("|", $data), "<YOUR_SALT>");
+        $mac_calculated = hash_hmac("sha1", implode("|", $data), config('services.instamojo.private_salt'));
         if ($mac_provided == $mac_calculated) {
             return true;
         } else {
