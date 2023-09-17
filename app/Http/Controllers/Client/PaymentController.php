@@ -53,7 +53,7 @@ class PaymentController extends Controller
             );
 
             if (config('services.instamojo.enable_webhook')) {
-                $arr['webhook'] = route('client.payment.webhook');
+                $arr['webhook'] = route('instamojo.payment.webhook');
             }
 
             $response = $api->createPaymentRequest($arr);
