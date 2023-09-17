@@ -54,7 +54,8 @@
                 </div>
 
                 {{-- Payment Button --}}
-                <form action="{{ route('client.payment.pay') }}" method="POST">
+                <form action="" method="POST">
+                {{-- <form action="{{ route('client.payment.pay') }}" method="POST"> --}}
                     @csrf
                     <input type="hidden" name="package_id" value="{{ $package->id }}">
                     <input type="hidden" name="coupon_id" value="{{ $coupon->id ?? null }}">
