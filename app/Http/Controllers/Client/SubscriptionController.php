@@ -63,7 +63,8 @@ class SubscriptionController extends Controller
      */
     public function show(Subscription $subscription)
     {
-        return view('client.subscription.show', compact('subscription'));
+        $payment = $subscription->payment;
+        return view('client.subscription.show', compact('subscription', 'payment'));
     }
 
     /**

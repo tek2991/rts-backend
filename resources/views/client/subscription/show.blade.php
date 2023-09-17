@@ -12,7 +12,7 @@
         </a>
     </x-slot>
 
-    <section class="bg-white dark:bg-gray-900">
+    <section class="bg-white dark:bg-gray-900 mt-8">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
                 @if ($subscription->package)
@@ -36,7 +36,9 @@
                         </div>
                     </div>
                 @endif
-                @if ($subscription->activationCode)
+            </div>
+            @if ($subscription->activationCode)
+                <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
                     <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                         {{ $subscription->activationCode->code }}
                     </h2>
@@ -56,47 +58,65 @@
                             Devices: <span class="font-semibold">1</span>
                         </div>
                     </div>
-                @endif
-            </div>
-            <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-                    Payment Details
-                </h2>
-                <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
-                    Here are the payment details of your subscription.
-                </p>
+                </div>
+            @endif
+            @if ($subscription->package)
+                <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                        Payment Details
+                    </h2>
+                    <p class="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                        Here are the payment details of your subscription.
+                    </p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        Payment ID: <span class="font-semibold">###</span>
-                    </div>
-                    <div>
-                        Status: <span class="font-semibold">###</span>
-                    </div>
-                    <div>
-                        Payment Date: <span class="font-semibold">###</span>
-                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            Payment ID: <span class="font-semibold">
+                                {{ $subscription->payment->payment_id ?? 'N/A' }}
+                            </span>
+                        </div>
+                        <div>
+                            Status: <span class="font-semibold">
+                                {{ $subscription->payment->payment_status ?? 'N/A' }}
+                            </span>
+                        </div>
+                        <div>
+                            Payment Date: <span class="font-semibold">
+                                {{ $subscription->payment->updated_at ?? 'N/A' }}
+                            </span>
+                        </div>
 
-                    <div>
-                        Amount: <span class="font-semibold">###</span>
-                    </div>
+                        <div>
+                            Amount Paid: <span class="font-semibold">
+                                Rs. {{ $subscription->payment->amount ?? 'N/A' }}/-
+                            </span>
+                        </div>
 
-                    <div>
-                        Discount: <span class="font-semibold">###</span>
-                    </div>
+                        <div>
+                            Discount: <span class="font-semibold">
+                                Rs. {{ $subscription->discount_amount ?? 'N/A' }}/-
+                            </span>
+                        </div>
 
-                    <div>
-                        Coupon: <span class="font-semibold">###</span>
-                    </div>
+                        <div>
+                            Coupon: <span class="font-semibold">
+                                {{ $subscription->coupon_code ?? 'N/A' }}
+                            </span>
+                        </div>
 
-                    <div>
-                        Start Date: <span class="font-semibold">###</span>
-                    </div>
+                        <div>
+                            Start Date: <span class="font-semibold">
+                                {{ $subscription->started_at ?? 'N/A' }}
+                            </span>
+                        </div>
 
-                    <div>
-                        End Date: <span class="font-semibold">###</span>
+                        <div>
+                            End Date: <span class="font-semibold">
+                                {{ $subscription->expires_at ?? 'N/A' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
 </x-app-layout>
