@@ -165,30 +165,36 @@ class PaymentController extends Controller
             $payment_request_id = $data['payment_request_id'];
 
             // Check if payment_request_id is valid and is in database
-            $payment = PaymentModel::where('payment_request_id', $payment_request_id)->where('payment_id', $payment_id)->firstOrFail();
+            try {
+                $payment = PaymentModel::where('payment_request_id', $payment_request_id)->where('payment_id', $payment_id)->firstOrFail();
 
-            if ($data['status'] == "Credit") {
-                $payment->update([
-                    'mac' => $data['mac'],
-                    'webhook_verified' => true,
-                ]);
+                if ($data['status'] == "Credit") {
+                    $payment->update([
+                        'mac' => $data['mac'],
+                        'webhook_verified' => true,
+                    ]);
 
-                $payment->subscription()->update([
-                    'status' => 'paid',
-                ]);
-            } else {
-                $payment->update([
-                    'payment_status' => 'failed',
-                    'mac' => $data['mac'],
-                    'webhook_verified' => true,
-                ]);
+                    $payment->subscription()->update([
+                        'status' => 'paid',
+                    ]);
+                } else {
+                    $payment->update([
+                        'payment_status' => 'failed',
+                        'mac' => $data['mac'],
+                        'webhook_verified' => true,
+                    ]);
 
-                $payment->subscription()->update([
-                    'status' => 'failed',
-                ]);
+                    $payment->subscription()->update([
+                        'status' => 'failed',
+                    ]);
+                }
+                return response()->json(['success' => true], 200);
+            } catch (\Exception $e) {
+                // Send an email to yourself informing you of invalid webhook call
+
+                // Return error message
+                return response()->json(['error' => $e->getMessage()], 400);
             }
-
-            return response()->json(['success' => true], 200);
         } else {
             // Send an email to yourself informing you of invalid webhook call
 
