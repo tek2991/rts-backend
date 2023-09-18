@@ -10,7 +10,7 @@
             $mobile_number = substr($mobile_number, 0, 2) . '*****' . substr($mobile_number, 7);
         @endphp
         <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification OTP has been sent to ' . $mobile_number) }}
+            {{ __('Verification OTP has been sent to ' . $mobile_number) }}
         </div>
     @endif
 

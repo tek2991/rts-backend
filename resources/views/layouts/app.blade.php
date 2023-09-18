@@ -58,7 +58,7 @@
         <!-- Page Content -->
         <main>
             <div class="pt-0">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-8">
                     {{ $slot }}
                 </div>
             </div>

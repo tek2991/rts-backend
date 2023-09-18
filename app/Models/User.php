@@ -82,7 +82,6 @@ class User extends Authenticatable implements MustVerifyEmail
         SendSMS::sendOTP($this->mobile_number, $otp);
         $this->otp = $otp;
         $this->save();
-        return $otp;
     }
 
     public function verifyMobileNumber($otp)
@@ -93,6 +92,15 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->save();
             return true;
         }
+        return false;
+    }
+
+    public function hasPendingMobileNumberVerification()
+    {
+        if(is_null($this->mobile_number_verified_at) && !is_null($this->otp)) {
+            return true;
+        }
+
         return false;
     }
 

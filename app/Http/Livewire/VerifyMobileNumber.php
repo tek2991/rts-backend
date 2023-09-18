@@ -12,11 +12,9 @@ class VerifyMobileNumber extends Component
 
     public function mount()
     {
-        if (Auth::user()->mobile_number == null) {
-            return redirect()->route('profile.show');
+        if(Auth::user()->hasPendingMobileNumberVerification()) {
+            $this->otpSent = true;
         }
-
-        $this->sendOTP();
     }
 
     /**

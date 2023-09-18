@@ -27,6 +27,11 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
+        // If no subscriptions found then redirect to expired page
+        if(!Auth::user()->hasActiveSubscription()) {
+            return redirect()->route('client.package.index');
+        }
+
         return view('client.subscription.index');
     }
 

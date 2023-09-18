@@ -34,6 +34,9 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
+        // Send OTP to the user
+        $user->sendMobileNumberVerificationNotification();
+
         // Assign client role to the user
         $user->assignRole('client');
 
