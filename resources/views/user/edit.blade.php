@@ -19,7 +19,7 @@
             </div>
             <div>
                 <x-label for="mobile" :value="__('Mobile')" />
-                <x-input id="mobile" class="block mt-1 w-full" type="text" disabled value="{{ $user->mobile }}" />
+                <x-input id="mobile" class="block mt-1 w-full" type="text" disabled value="{{ $user->mobile_number }}" />
             </div>
         </div>
     </div>

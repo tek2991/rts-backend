@@ -15,6 +15,8 @@ class DeviceStatus extends Component
 
     public $page;
 
+    public $tt = null;
+
     public function mount($page)
     {
         $this->refresh();
