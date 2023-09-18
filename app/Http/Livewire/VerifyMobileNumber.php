@@ -10,6 +10,15 @@ class VerifyMobileNumber extends Component
     public $otpSent = false;
     public $otp = '';
 
+    public function mount()
+    {
+        if (Auth::user()->mobile_number == null) {
+            return redirect()->route('profile.show');
+        }
+
+        $this->sendOTP();
+    }
+
     /**
      * Sent the otp.
      *
@@ -17,14 +26,14 @@ class VerifyMobileNumber extends Component
      */
     public function sendOTP()
     {
-        $otp  = Auth::user()->sendMobileNumberVerificationNotification();
+        Auth::user()->sendMobileNumberVerificationNotification();
         $this->otpSent = true;
     }
 
     public function submit()
     {
         $this->validate([
-            'otp' => 'required|numeric',
+            'otp' => 'required|numeric|digits:6',
         ]);
 
         if (Auth::user()->verifyMobileNumber($this->otp)) {
