@@ -166,6 +166,33 @@ class PaymentController extends Controller
             // Check if payment_request_id is valid and is in database
             try {
                 $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
+                $api = $this->createAPI();
+                $response = $api->getPaymentDetails($payment->payment_id);
+
+                if (array_key_exists('status', $response)) {
+                    $payment->update([
+                        'payment_id' => $response['id'],
+                        'payment_status' => $response['status'] === true ? 'success' : 'failed',
+                        'currency' => $response['currency'],
+                        'amount' => $response['amount'],
+                        'fees' => $response['fees'],
+                        'taxes' => $response['total_taxes'],
+                        'instrument_type' => $response['instrument_type'],
+                        'billing_instrument' => $response['billing_instrument'],
+                        'redirected' => true,
+                    ]);
+
+                    if ($response['status'] !== true) {
+                        $payment->update([
+                            'failure_reason' => $response['failure']['reason'],
+                            'failure_message' => $response['failure']['message'],
+                        ]);
+
+                        $payment->subscription()->update([
+                            'status' => 'failed',
+                        ]);
+                    }
+                }
 
                 if ($data['status'] == "Credit") {
                     $payment->update([
