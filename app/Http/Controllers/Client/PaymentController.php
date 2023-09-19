@@ -196,6 +196,7 @@ class PaymentController extends Controller
 
                 if ($data['status'] == "Credit") {
                     $payment->update([
+                        'webhook_payment_id' => $data['payment_id'],
                         'mac' => $data['mac'],
                         'webhook_verified' => true,
                     ]);

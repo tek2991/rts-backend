@@ -10,6 +10,7 @@ class Payment extends Model
     // Fillable
     protected $fillable = [
         'payment_id',
+        'webhook_payment_id',
         'payment_request_id',
         'payment_status',
         'currency',
