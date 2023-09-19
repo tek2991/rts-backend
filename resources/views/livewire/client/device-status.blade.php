@@ -10,10 +10,7 @@
                 </span>
                 @if ($formatted_device_status == null)
                     <span class="text-red-600 font-semibold">
-                        No Device found! <br>
-                        <p class="text-xs">
-                            Please register your device using the app.
-                        </p>
+                        No Device found!
                     </span>
                 @else
                     <span class="text-green-600 font-semibold">
@@ -24,7 +21,7 @@
             </div>
             {{-- Refresh button --}}
             <div class="ml-6">
-                <button type="button" wire:click="refreshDeviceStatus" {{ $formatted_device_status == null ? 'disabled' : '' }}
+                <button type="button" wire:click="refreshDeviceStatus"
                     class="px-2 py-1.5 text-xs font-bold text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:bg-slate-400">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                         class="w-4 h-4 mr-1.5">

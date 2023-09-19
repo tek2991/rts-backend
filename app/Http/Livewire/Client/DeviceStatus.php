@@ -15,12 +15,14 @@ class DeviceStatus extends Component
 
     public $page;
 
-    public $tt = null;
-
     public function mount($page)
     {
         $this->refresh();
         $this->page = $page;
+
+        if(!$this->formatted_device_status) {
+            $this->refreshDeviceStatus();
+        }
     }
 
     public function refresh()

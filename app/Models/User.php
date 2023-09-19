@@ -155,7 +155,14 @@ class User extends Authenticatable implements MustVerifyEmail
         if($this->subscriptions()->count() < 1) {
             return false;
         }
-        $latest_subscription = $this->subscriptions()->orderBy('expires_at', 'desc')->first();
+
+        $latest_subscription = $this->subscriptions()->where('status', 'paid')->orderBy('expires_at', 'desc')->get();
+
+        if($latest_subscription->count() < 1) {
+            return false;
+        }
+
+        $latest_subscription = $latest_subscription->first();
 
         if($current_date < $latest_subscription->expires_at) {
             return $latest_subscription->expires_at->format('Y-m-d');
