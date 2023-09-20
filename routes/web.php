@@ -69,8 +69,12 @@ Route::middleware([
 
         // Client routes protected by verified.client.has.subscription middleware
         Route::middleware(['verified.client.has.subscription'])->group(function () {
+            // apk
+            Route::resource('apk', App\Http\Controllers\AndroidApkController::class)->only(['index']);
+            
             // Control Phone
             Route::get('start-service', [App\Http\Controllers\Client\StartServiceController::class, 'index'])->name('start-service');
+
 
             // Locate Phone
             Route::get('locate-phone', [App\Http\Controllers\Client\LocatePhoneController::class, 'index'])->name('locate-phone');
