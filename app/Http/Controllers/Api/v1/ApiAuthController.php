@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ApiAuthController extends Controller
 {
@@ -60,11 +61,23 @@ class ApiAuthController extends Controller
      */
     public function emailLogin(Request $request)
     {
+
         // Validate the request...
-        $credentials = $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
             'password' => 'required|string',
         ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'Login Failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 401);
+        }
+
+        $credentials = $request->only('email', 'password');
 
         try {
             if (!auth()->attempt($credentials)) {
@@ -72,7 +85,7 @@ class ApiAuthController extends Controller
                     'status' => false,
                     'message' => 'Login Failed',
                     'errors' => (object)[
-                        'email' => ['Invalid email or password'],
+                        'email' => ['Incorrect email or password'],
                     ],
                     'data' => (object)[],
                 ], 401);
@@ -159,9 +172,20 @@ class ApiAuthController extends Controller
     public function mobileOtp(Request $request)
     {
         // Validate the request...
-        $credentials = $request->validate([
+        $validator = Validator::make($request->all(), [
             'mobile_number' => 'required|numeric|exists:users,mobile_number',
         ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'OTP Failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 404);
+        }
+
+        $credentials = $request->only('mobile_number');
 
         try {
             // Check if user with mobile number exists
@@ -269,10 +293,21 @@ class ApiAuthController extends Controller
     public function mobileOtpVerify(Request $request)
     {
         // Validate the request...
-        $credentials = $request->validate([
+        $validator = Validator::make($request->all(), [
             'mobile_number' => 'required|numeric|exists:users,mobile_number',
             'otp' => 'required|string',
         ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'OTP verification failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 401);
+        }
+
+        $credentials = $request->only('mobile_number', 'otp');
 
         try {
             // Check if user with mobile number exists
@@ -382,10 +417,21 @@ class ApiAuthController extends Controller
     public function logout(Request $request)
     {
         // Validate the request...
-        $credentials = $request->validate([
-            'device_id' => 'required|string|exists:users,device_id',
-            'device_token' => 'required|string|exists:users,device_token',
+        $validator = Validator::make($request->all(), [
+            'device_id' => 'required|string',
+            'device_token' => 'required|string',
         ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'Logout Failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 404);
+        }
+
+        $credentials = $request->only('device_id', 'device_token');
 
         try {
             // Check if user with the device id and token exists
