@@ -11,7 +11,7 @@
             Subscription</a>
 
         {{-- Download apk --}}
-        <a href="{{ route('client.package.index') }}"
+        <a href="{{ route('client.apk.index') }}"
             class="py-2 text-sm font-medium text-blue-500 hover:underline hover:text-blue-600 flex">
             {{-- Logo --}}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
