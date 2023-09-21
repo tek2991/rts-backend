@@ -70,7 +70,8 @@ Route::middleware([
         // Client routes protected by verified.client.has.subscription middleware
         Route::middleware(['verified.client.has.subscription'])->group(function () {
             // apk
-            Route::resource('apk', App\Http\Controllers\AndroidApkController::class)->only(['index']);
+            Route::get('apk', [App\Http\Controllers\AndroidApkController::class, 'index'])->name('apk.index');
+            Route::get('apk/download', [App\Http\Controllers\AndroidApkController::class, 'download'])->name('apk.download');
             
             // Control Phone
             Route::get('start-service', [App\Http\Controllers\Client\StartServiceController::class, 'index'])->name('start-service');

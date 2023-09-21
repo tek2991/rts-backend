@@ -9,6 +9,12 @@ class AndroidApkController extends Controller
 {
     public function index()
     {
+        return view('client.android-apk');
+    }
+
+
+    public function download()
+    {
         // If user does not have subscription then redirect to expired page
         if(!Auth::user()->hasActiveSubscription()) {
             return redirect()->route('client.subscription.expired');
