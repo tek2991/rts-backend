@@ -67,11 +67,12 @@ Route::middleware([
             return view('client.dashboard');
         })->name('dashboard');
 
+        // apk
+        Route::get('apk', [App\Http\Controllers\AndroidApkController::class, 'index'])->name('apk.index');
+        Route::get('apk/download', [App\Http\Controllers\AndroidApkController::class, 'download'])->name('apk.download');
+
         // Client routes protected by verified.client.has.subscription middleware
         Route::middleware(['verified.client.has.subscription'])->group(function () {
-            // apk
-            Route::get('apk', [App\Http\Controllers\AndroidApkController::class, 'index'])->name('apk.index');
-            Route::get('apk/download', [App\Http\Controllers\AndroidApkController::class, 'download'])->name('apk.download');
             
             // Control Phone
             Route::get('start-service', [App\Http\Controllers\Client\StartServiceController::class, 'index'])->name('start-service');

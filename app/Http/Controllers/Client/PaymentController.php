@@ -144,7 +144,7 @@ class PaymentController extends Controller
                         'status' => 'failed',
                     ]);
 
-                    return redirect()->route('client.subscription.index')->dangerBanner("Payment failed. Please contact support.");
+                    return redirect()->route('client.apk.index')->dangerBanner("Payment failed. Please contact support.");
                 }
 
                 return redirect()->route('client.subscription.index')->banner("Payment successful. Thank you for subscribing.");
