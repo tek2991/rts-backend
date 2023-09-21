@@ -36,7 +36,7 @@ class UpdateLocationController extends Controller
     public function updateLocation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'device_id' => 'nullabl',
+            'device_id' => 'nullable',
             'lat' => 'required',
             'lng' => 'required',
         ]);

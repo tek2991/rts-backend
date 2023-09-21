@@ -141,9 +141,7 @@ class ApiAuthController extends Controller
      *    "status": true,
      *    "message": "OTP Sent",
      *    "errors": {},
-     *    "data": {
-     *        "otp": "123456"
-     *    }
+     *    "data": {}
      * }
      * 
      * @response 404 {
@@ -203,14 +201,12 @@ class ApiAuthController extends Controller
             }
 
             // Generate OTP
-            $otp = $user->sendMobileNumberVerificationNotification();
+            $user->sendMobileNumberVerificationNotification();
             return response()->json([
                 'status' => true,
                 'message' => 'OTP Sent',
                 'errors' => (object)[],
-                'data' => [
-                    'otp' => $otp,
-                ],
+                'data' => (object)[],
             ]);
         } catch (\Exception $e) {
             $errors = (object)[];
