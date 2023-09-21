@@ -113,7 +113,7 @@ class CalculateActivationCode extends Component
 
         session()->flash('flash.banner', 'Your subscription has been activated successfully.');
 
-        return redirect()->route('client.subscription.show', $subscription);
+        return redirect()->route('client.apk.index');
     }
 
     public function render()
