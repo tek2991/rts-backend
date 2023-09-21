@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UploadPhotoController extends Controller
 {
@@ -42,10 +43,21 @@ class UploadPhotoController extends Controller
      */
     public function uploadPhoto(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to upload photo',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+        
+        $data = $request->only(['device_id', 'photo']);
 
         // Get user
         $user = auth()->user();

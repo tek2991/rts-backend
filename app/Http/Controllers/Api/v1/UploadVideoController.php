@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UploadVideoController extends Controller
 {
@@ -42,10 +43,22 @@ class UploadVideoController extends Controller
      */
     public function uploadVideo(Request $request)
     {
-        $request->validate([
+        // Validate request
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'recording' => 'required|file|mimes:mp4|max:15360',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid request',
+                'errors' => $validator->errors(),
+                'data' => (object)[],
+            ], 400);
+        }
+
+        $data = $request->only(['device_id', 'recording']);
 
         // Get user
         $user = auth()->user();

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UpdateLocationController extends Controller
 {
@@ -34,11 +35,22 @@ class UpdateLocationController extends Controller
      */
     public function updateLocation(Request $request)
     {
-        $request->validate([
-            'device_id' => 'nullable',
+        $validator = Validator::make($request->all(), [
+            'device_id' => 'nullabl',
             'lat' => 'required',
             'lng' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Device location update failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['device_id', 'lat', 'lng']);
 
         // Get user
         $user = auth()->user();

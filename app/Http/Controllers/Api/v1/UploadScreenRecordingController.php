@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UploadScreenRecordingController extends Controller
 {
@@ -16,7 +17,7 @@ class UploadScreenRecordingController extends Controller
      * @authenticated
      *
      * @bodyParam device_id string optional The device ID. If not provided, the user's default device ID will be used.
-     * @bodyParam recording file required The screen recording to upload (MP4). Max size: 15MB.
+     * @bodyParam recording file required The screen recording to upload (MP4, MOV, OGG, QT). Max size: 15MB.
      *
      * @response 200 {
      *     "status": true,
@@ -42,10 +43,21 @@ class UploadScreenRecordingController extends Controller
      */
     public function uploadScreenRecording(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp4,mov,ogg,qt|max:15360',
+            'recording' => 'required|file|mimes:mp4,mov,ogg,qt|max:15000',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to upload screen recording',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['device_id', 'recording']);
 
         // Get user
         $user = auth()->user();

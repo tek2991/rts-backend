@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -54,10 +55,21 @@ class MessageSyncController extends Controller
      */
     public function getLastMessage(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'inbox' => 'required|boolean',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to retrieve last message',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['device_id', 'inbox']);
 
         $user = $request->user();
         $device_id = $data['device_id'] ?? $user->device_id;
@@ -140,11 +152,22 @@ class MessageSyncController extends Controller
      */
     public function uploadMessages(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'inbox' => 'required|boolean',
-            'json_file' => 'required|file',
+            'json_file' => 'required|file|mimes:json,txt|max:10000',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to upload messages',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['device_id', 'inbox', 'json_file']);
 
         $user = $request->user();
         $device_id = $data['device_id'] ?? $user->device_id;

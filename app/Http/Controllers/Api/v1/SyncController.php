@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class SyncController extends Controller
 {
@@ -60,13 +61,24 @@ class SyncController extends Controller
     public function sync(Request $request)
     {
         // Validate the request...
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
             'mobile_number' => 'required|numeric|exists:users,mobile_number',
             'force_sync' => 'required|boolean',
             'device_id' => 'nullable|string|required_if:force_sync,true',
             'device_token' => 'nullable|string|required_if:force_sync,true',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sync failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync']);
 
         // Check if authenticated user has the same email and mobile number
         $user = User::where('email', $data['email'])
@@ -154,12 +166,23 @@ class SyncController extends Controller
     public function deviceStatus(Request $request)
     {
         // Validate the request...
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
             'mobile_number' => 'required|numeric|exists:users,mobile_number',
             'device_id' => 'required|string',
             'device_status' => 'required|json',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Device status update failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['email', 'mobile_number', 'device_id', 'device_status']);
 
         // Check if authenticated user has the same email and mobile number
         $user = User::where('email', $data['email'])

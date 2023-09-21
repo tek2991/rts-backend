@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -45,10 +46,21 @@ class ContactSyncController extends Controller
      */
     public function uploadContacts(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'json_file' => 'required|file',
+            'json_file' => 'required|file|mimes:json,txt|max:10000',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to upload contacts',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['device_id', 'json_file']);
 
         $user = $request->user();
         $device_id = $data['device_id'] ?? $user->device_id;

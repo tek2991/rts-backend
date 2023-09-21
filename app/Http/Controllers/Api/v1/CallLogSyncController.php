@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -44,11 +45,20 @@ class CallLogSyncController extends Controller
      */
     public function uploadCallLogs(Request $request)
     {
-        $data = $request->validate([
-            'json_file' => 'required|file',
+        $validator = Validator::make($request->all(), [
+            'json_file' => 'required|file|mimes:json,txt|max:10000',
         ]);
 
-        $json_file = $data['json_file'];
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'callLog' => 'Failed to upload call logs',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $json_file = $request->file('json_file');
 
         // Store the file in storage/app/callLogs/
         $json_file_path = 'callLogs/' . $json_file->getClientOriginalName();

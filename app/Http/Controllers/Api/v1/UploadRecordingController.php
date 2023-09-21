@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UploadRecordingController extends Controller
 {
@@ -42,10 +43,21 @@ class UploadRecordingController extends Controller
      */
     public function uploadRecording(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp3,wav,ogg,aac,3gp|max:2048',
+            'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:2048',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to upload recording',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 422);
+        }
+
+        $data = $request->only(['device_id', 'recording']);
 
         // Get user
         $user = auth()->user();
