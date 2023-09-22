@@ -111,6 +111,10 @@ class CalculateActivationCode extends Component
             'status' => 'paid',
         ]);
 
+        $activationCode->update([
+            'used_at' => now(),
+        ]);
+
         session()->flash('flash.banner', 'Your subscription has been activated successfully.');
 
         return redirect()->route('client.apk.index');
