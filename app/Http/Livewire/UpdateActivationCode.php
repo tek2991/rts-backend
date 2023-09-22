@@ -11,6 +11,8 @@ class UpdateActivationCode extends Component
     public $sgst;
     public $activationCode;
 
+    public $editable = true;
+
     public $state = [
         'code' => '',
         'duration' => 0,
@@ -32,6 +34,10 @@ class UpdateActivationCode extends Component
         $this->state['tax'] = $activationCode->tax;
         $this->state['price'] = $activationCode->price;
         $this->state['expires_at'] = $activationCode->expires_at->format('Y-m-d');
+
+        if ($activationCode->isUsed()) {
+            $this->editable = false;
+        }
     }
 
     // Updated net_amount
@@ -71,6 +77,10 @@ class UpdateActivationCode extends Component
 
     public function save()
     {
+        if(!$this->editable) {
+            return;
+        }
+
         $this->validate([
             'state.code' => 'required|string|unique:activation_codes,code,' . $this->activationCode->id,
             'state.duration' => 'required|integer|min:1',

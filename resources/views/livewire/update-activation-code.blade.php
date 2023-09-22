@@ -1,5 +1,8 @@
 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
     <h2 class="text-xl font-regular pt-2 pb-4">Activation Code details</h2>
+    @if ($editable !== true)
+        <p class="text-red-500 mb-3">You can't edit this activation code.</p>
+    @endif
     <x-validation-errors class="mb-4" />
         <div class="grid grid-cols-1 md:w-1/2 gap-6">
             {{-- Code --}}

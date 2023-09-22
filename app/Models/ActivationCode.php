@@ -37,4 +37,9 @@ class ActivationCode extends Model
     {
         return $this->used_at === null && $this->expires_at > now() && $this->subscription === null;
     }
+
+    public function isUsed()
+    {
+        return $this->used_at !== null || $this->subscription()->exists();
+    }
 }
