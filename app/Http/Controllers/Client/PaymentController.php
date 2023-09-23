@@ -113,8 +113,6 @@ class PaymentController extends Controller
         $payment_request_id = $request->payment_request_id;
 
         try {
-            $response = $api->getPaymentDetails($payment_id);
-
             // Check if payment_request_id is valid and is in database
             $payment = PaymentModel::where('payment_request_id', $payment_request_id)->firstOrFail();
 
@@ -168,12 +166,13 @@ class PaymentController extends Controller
 
         if ($this->verifyMAC($data)) {
             $purpose = $data['purpose'];
+            $payment_id = $data['payment_id'];
 
             // Check if payment_request_id is valid and is in database
             try {
                 $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
                 $api = $this->createAPI();
-                $response = $api->getPaymentDetails($data['payment_id']);
+                $response = $api->getPaymentDetails($payment_id);
 
                 if (array_key_exists('status', $response)) {
                     $payment->update([
