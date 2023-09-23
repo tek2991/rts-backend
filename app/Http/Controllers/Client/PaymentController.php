@@ -233,7 +233,7 @@ class PaymentController extends Controller
 
 
             // Return a 400 response to caller
-            return response()->json(['error' => 'Invalid webhook call'], 400);
+            return response()->json(['error' => 'Invalid webhook call (MAC)'], 400);
         }
     }
 

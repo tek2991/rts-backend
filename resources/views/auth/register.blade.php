@@ -21,7 +21,7 @@
 
             <div class="mt-4">
                 <x-label for="mobile_number" value="{{ __('Mobile Number (+91)') }}" />
-                <x-input id="mobile_number" class="block mt-1 w-full" type="text" name="mobile_number" :value="old('mobile_number')" required autocomplete="mobile_number" />
+                <x-input id="mobile_number" class="block mt-1 w-full" type="number" name="mobile_number" :value="old('mobile_number')" required autocomplete="mobile_number" length="10" />
             </div>
 
             <div class="mt-4">
@@ -39,7 +39,6 @@
                     <x-label for="terms">
                         <div class="flex items-center">
                             <x-checkbox name="terms" id="terms" required />
-
                             <div class="ml-2">
                                 {!! __('I agree to the :terms_of_service and :privacy_policy', [
                                         'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
