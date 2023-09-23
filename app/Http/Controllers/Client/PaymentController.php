@@ -132,7 +132,7 @@ class PaymentController extends Controller
                     'redirected' => true,
                 ]);
 
-                if ($response['status'] == true) {
+                if ($response['status'] === true) {
                     $subscription = $payment->subscription;
 
                     $subscription->update([
@@ -166,13 +166,12 @@ class PaymentController extends Controller
 
         if ($this->verifyMAC($data)) {
             $purpose = $data['purpose'];
-            $payment_id = $data['payment_id'];
+            $payment_request_id = $data['payment_request_id'];
 
             // Check if payment_request_id is valid and is in database
             try {
+                $response = $this->getLastPayment($payment_request_id);
                 $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
-                $api = $this->createAPI();
-                $response = $api->getPaymentDetails($payment_id);
 
                 if (array_key_exists('status', $response)) {
                     $payment->update([
@@ -187,7 +186,7 @@ class PaymentController extends Controller
                         'redirected' => true,
                     ]);
 
-                    if ($response['status'] === true) {
+                    if ($response['status'] !== true) {
                         $payment->update([
                             'failure_reason' => $response['failure']['reason'],
                             'failure_message' => $response['failure']['message'],
@@ -220,6 +219,7 @@ class PaymentController extends Controller
                         'status' => 'failed',
                     ]);
                 }
+
                 return response()->json(['success' => true], 200);
             } catch (\Exception $e) {
                 // Send an email to yourself informing you of invalid webhook call
@@ -285,5 +285,52 @@ class PaymentController extends Controller
         }
 
         return $api;
+    }
+
+    public function getLastPayment($payment_request_id)
+    {
+        $api = $this->createAPI();
+        $payment_request = $api->getPaymentRequestDetails($payment_request_id);
+        $ps = $payment_request['payments'];
+        $payments = array();
+
+        foreach ($ps as $p) {
+            // Sample
+            $id = $this->getPaymentIdFromLink($p);
+
+            if (!$id) continue; // Skip if payment id is not found (invalid link
+
+            $payment = $api->getPaymentDetails($id);
+            array_push($payments, $payment);
+        }
+
+        // Check if any payment is successful
+        foreach ($payments as $payment) {
+            if ($payment['status'] === true && $payment['failure'] === null) {
+                return $payment;
+            }
+        }
+
+        // If no payment is successful, return the payment with the latest created_at
+        $latest_payment = $payments[0];
+
+        foreach ($payments as $payment) {
+            if (Carbon::parse($payment['created_at']) > Carbon::parse($latest_payment['created_at'])) {
+                $latest_payment = $payment;
+            }
+        }
+
+        return $latest_payment;
+    }
+
+    public function getPaymentIdFromLink($link)
+    {
+        if (preg_match('/\/payments\/(.*?)\//', $link, $matches)) {
+            // $matches[1] contains the captured value
+            $result = $matches[1];
+            return $result;
+        } else {
+            return false;
+        }
     }
 }
