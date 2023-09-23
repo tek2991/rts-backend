@@ -153,6 +153,10 @@ final class PaymentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
+            Column::make('Payment request id', 'payment_request_link',  'payment_request_id')
+                ->sortable()
+                ->searchable(),
+
             // Column::make('Webhook payment id', 'webhook_payment_id')
             //     ->sortable()
             //     ->searchable(),
@@ -215,10 +219,6 @@ final class PaymentTable extends PowerGridComponent
             // Column::make('User id', 'user_id'),
 
             Column::make('Mac', 'mac')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Payment request id', 'payment_request_link',  'payment_request_id')
                 ->sortable()
                 ->searchable(),
 
