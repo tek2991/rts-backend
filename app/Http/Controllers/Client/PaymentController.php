@@ -227,8 +227,8 @@ class PaymentController extends Controller
                 // Return error message
                 return response()->json([
                     'error' => $e->getMessage() . ' - Failed',
-                    'trace' => $e->getTraceAsString(),
-                    'data' => $data,
+                    // 'trace' => $e->getTraceAsString(),
+                    // 'data' => $data,
                 ], 400);
             }
         } else {

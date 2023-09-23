@@ -16,7 +16,6 @@ final class UserTable extends PowerGridComponent
     use WithExport;
 
     public string $sortField = 'id';
-    
     public string $sortDirection = 'desc';
 
     /*

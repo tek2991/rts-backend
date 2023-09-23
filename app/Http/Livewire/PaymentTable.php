@@ -15,6 +15,9 @@ final class PaymentTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
+    public string $sortField = 'id';
+    public string $sortDirection = 'desc';
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
