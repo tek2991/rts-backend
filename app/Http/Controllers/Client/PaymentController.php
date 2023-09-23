@@ -173,7 +173,7 @@ class PaymentController extends Controller
             try {
                 $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
                 $api = $this->createAPI();
-                $response = $api->getPaymentDetails($payment->payment_id);
+                $response = $api->getPaymentDetails($data['payment_id']);
 
                 if (array_key_exists('status', $response)) {
                     $payment->update([
