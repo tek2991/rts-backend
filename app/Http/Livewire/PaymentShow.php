@@ -17,9 +17,8 @@ class PaymentShow extends Component
 
     public function recheckPayment()
     {
-
-
-        if ($this->payment->recheck()) {
+        $rechecked = $this->payment->recheck();
+        if ($rechecked === true) {
             $this->payment = $this->payment->fresh();
             $this->subscription = $this->payment->subscription;
 
@@ -30,7 +29,7 @@ class PaymentShow extends Component
         } else {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
-                'message' => 'Payment recheck failed.',
+                'message' => 'Payment recheck failed: ' . $rechecked,
             ]);
             return;
         }

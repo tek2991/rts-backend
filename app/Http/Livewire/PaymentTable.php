@@ -105,6 +105,7 @@ final class PaymentTable extends PowerGridComponent
 
             // ->addColumn('webhook_payment_id')
             ->addColumn('payment_request_id')
+            ->addColumn('payment_request_link', fn (Payment $model) => '<a href="' . route('payment.show', $model->id) . '" class="text-blue-500 hover:text-blue-600 hover:underline font-semibold">' . $model->payment_request_id .  '</a>')
             ->addColumn('payment_status')
             // ->addColumn('currency')
             // ->addColumn('amount_in_cents')
@@ -217,7 +218,7 @@ final class PaymentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Payment request id', 'payment_request_id')
+            Column::make('Payment request id', 'payment_request_link',  'payment_request_id')
                 ->sortable()
                 ->searchable(),
 

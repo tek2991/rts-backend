@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Instamojo\Instamojo;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -137,9 +138,50 @@ class Payment extends Model
         }
 
         try {
+            $payment_request = $api->getPaymentRequestDetails($this->payment_request_id);
+            $ps = $payment_request['payments'];
+            $payments = array();
 
-            // Get payment details
-            $response = $api->getPaymentDetails($this->payment_id);
+            // If there are no payments, return false
+            if (count($ps) == 0) return "No payments found";
+
+            foreach ($ps as $p) {
+                $id = null;
+
+                // Sample
+                if (preg_match('/\/payments\/(.*?)\//', $p, $matches)) {
+                    // $matches[1] contains the captured value
+                    $id = $matches[1];
+                }
+
+                if (!$id) continue; // Skip if payment id is not found (invalid link)
+
+                $payment = $api->getPaymentDetails($id);
+                array_push($payments, $payment);
+            }
+
+            $latest_payment = null;
+
+            // Check if any payment is successful
+            foreach ($payments as $payment) {
+                if ($payment['status'] === true && $payment['failure'] === null) {
+                    $latest_payment = $payment;
+                    break;
+                }
+            }
+
+            if ($latest_payment === null) {
+                // If no payment is successful, return the payment with the latest created_at
+                $latest_payment = $payments[0];
+
+                foreach ($payments as $payment) {
+                    if (Carbon::parse($payment['created_at']) > Carbon::parse($latest_payment['created_at'])) {
+                        $latest_payment = $payment;
+                    }
+                }
+            }
+
+            $response = $latest_payment;
 
             if (array_key_exists('status', $response)) {
                 $this->update([
@@ -170,15 +212,15 @@ class Payment extends Model
                         'status' => 'failed',
                     ]);
 
-                    return false;
+                    return $response['failure']['message'];
                 }
 
                 return true;
             } else {
-                return false;
+                return "Invalid response";
             }
         } catch (\Exception $e) {
-            return false;
+            return $e->getMessage();
         }
     }
 }

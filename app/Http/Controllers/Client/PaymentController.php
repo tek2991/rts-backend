@@ -171,6 +171,9 @@ class PaymentController extends Controller
             // Check if payment_request_id is valid and is in database
             try {
                 $response = $this->getLastPayment($payment_request_id);
+
+                if(!$response) return response()->json(['error' => 'No payment found'], 400);
+
                 $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
 
                 if (array_key_exists('status', $response)) {
@@ -292,6 +295,9 @@ class PaymentController extends Controller
         $api = $this->createAPI();
         $payment_request = $api->getPaymentRequestDetails($payment_request_id);
         $ps = $payment_request['payments'];
+
+        if (count($ps) == 0) return false;
+
         $payments = array();
 
         foreach ($ps as $p) {
