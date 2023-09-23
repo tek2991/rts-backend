@@ -170,6 +170,10 @@ Route::middleware([
         // dealer
         Route::resource('dealer', App\Http\Controllers\DealerController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
+        // Payment
+        Route::get('payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('payment.index');
+        Route::get('payment/{payment}', [App\Http\Controllers\PaymentController::class, 'show'])->name('payment.show');
+
         // send notification
         Route::post('/send-notification', function () {
             // Get request data

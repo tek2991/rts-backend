@@ -134,7 +134,13 @@ class PaymentController extends Controller
                     'redirected' => true,
                 ]);
 
-                if ($response['status'] !== true) {
+                if ($response['status'] == true) {
+                    $subscription = $payment->subscription;
+
+                    $subscription->update([
+                        'status' => 'paid',
+                    ]);
+                } else {
                     $payment->update([
                         'failure_reason' => $response['failure']['reason'],
                         'failure_message' => $response['failure']['message'],
@@ -182,7 +188,7 @@ class PaymentController extends Controller
                         'redirected' => true,
                     ]);
 
-                    if ($response['status'] !== true) {
+                    if ($response['status'] === true) {
                         $payment->update([
                             'failure_reason' => $response['failure']['reason'],
                             'failure_message' => $response['failure']['message'],

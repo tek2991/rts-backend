@@ -47,6 +47,12 @@ class Permission extends \Spatie\Permission\Models\Permission
             'add dealer',
             'edit dealer',
             'delete dealer',
+
+            // Payment
+            'view payment',
+            'add payment',
+            'edit payment',
+            'delete payment',
         ];
     }
 }

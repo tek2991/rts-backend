@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Instamojo\Instamojo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -53,7 +54,7 @@ class Payment extends Model
     {
         return $this->hasOne(Subscription::class);
     }
-    
+
     // Accessors & Mutators
     /**
      * Interact with the amount_in_cents column.
@@ -111,5 +112,73 @@ class Payment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function recheck()
+    {
+        if (config('services.instamojo.sandbox')) {
+            $api = Instamojo::init(
+                config('services.instamojo.auth_type'),
+                [
+                    "client_id" => config('services.instamojo.client_id'),
+                    "client_secret" => config('services.instamojo.client_secret'),
+                ],
+                True
+            );
+        } else {
+            $api = Instamojo::init(
+                config('services.instamojo.auth_type'),
+                [
+                    "client_id" => config('services.instamojo.client_id'),
+                    "client_secret" => config('services.instamojo.client_secret'),
+                ],
+                False
+            );
+        }
+
+        try {
+
+            // Get payment details
+            $response = $api->getPaymentDetails($this->payment_id);
+
+            if (array_key_exists('status', $response)) {
+                $this->update([
+                    'payment_id' => $response['id'],
+                    'payment_status' => $response['status'] === true ? 'success' : 'failed',
+                    'currency' => $response['currency'],
+                    'amount' => $response['amount'],
+                    'fees' => $response['fees'],
+                    'taxes' => $response['total_taxes'],
+                    'instrument_type' => $response['instrument_type'],
+                    'billing_instrument' => $response['billing_instrument'],
+                    'redirected' => true,
+                ]);
+
+                if ($response['status'] == true) {
+                    $subscription = $this->subscription;
+
+                    $subscription->update([
+                        'status' => 'paid',
+                    ]);
+                } else {
+                    $this->update([
+                        'failure_reason' => $response['failure']['reason'],
+                        'failure_message' => $response['failure']['message'],
+                    ]);
+
+                    $this->subscription()->update([
+                        'status' => 'failed',
+                    ]);
+
+                    return false;
+                }
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

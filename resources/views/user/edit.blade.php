@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mb-12">
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mb-12 mt-8">
         <h2 class="text-xl font-regular pt-2 pb-4">User details</h2>
         <p class="text-sm text-red-500 mb-4">User details cannot be edited.</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

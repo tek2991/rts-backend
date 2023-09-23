@@ -2,25 +2,26 @@
 
 namespace App\Policies;
 
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class PaymentPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('administrator') || $user->hasPermissionTo('view user');
+        return $user->hasRole('administrator') || $user->hasPermissionTo('view payment');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Payment $payment): bool
     {
-        return $user->hasRole('administrator') || $user->hasPermissionTo('view user');
+        //
     }
 
     /**
@@ -28,13 +29,13 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('administrator') || $user->hasPermissionTo('add user');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Payment $payment): bool
     {
         return $user->hasRole('administrator') || $user->hasPermissionTo('edit user');
     }
@@ -42,15 +43,15 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Payment $payment): bool
     {
-        return $user->hasRole('administrator') || $user->hasPermissionTo('delete user');
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Payment $payment): bool
     {
         //
     }
@@ -58,7 +59,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Payment $payment): bool
     {
         //
     }

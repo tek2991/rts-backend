@@ -15,7 +15,7 @@
     </x-slot>
 
 
-    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4 mt-8">
         @livewire('user-table')
     </div>
 

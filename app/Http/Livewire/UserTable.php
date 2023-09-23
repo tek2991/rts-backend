@@ -15,6 +15,10 @@ final class UserTable extends PowerGridComponent
     use ActionButton;
     use WithExport;
 
+    public string $sortField = 'id';
+    
+    public string $sortDirection = 'desc';
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -93,6 +97,8 @@ final class UserTable extends PowerGridComponent
             /** Example of custom column using a closure **/
             ->addColumn('name_lower', fn (User $model) => strtolower(e($model->name)))
 
+            ->addColumn('mobile_number')
+
             ->addColumn('email')
             ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
@@ -114,8 +120,11 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
             Column::make('Name', 'name')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Mobile Number', 'mobile_number')
                 ->sortable()
                 ->searchable(),
 
