@@ -226,7 +226,7 @@ class PaymentController extends Controller
                 // Send an email to yourself informing you of invalid webhook call
 
                 // Return error message
-                return response()->json(['error' => $e->getMessage()], 400);
+                return response()->json(['error' => $e->getMessage() . ' Failed'], 400);
             }
         } else {
             // Send an email to yourself informing you of invalid webhook call
