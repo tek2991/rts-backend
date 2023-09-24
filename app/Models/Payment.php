@@ -217,10 +217,10 @@ class Payment extends Model
 
                 return true;
             } else {
-                return "Invalid response";
+                return "Invalid payment response";
             }
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return $e->getMessage() . " - exception";
         }
     }
 }
