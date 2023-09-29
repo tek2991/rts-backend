@@ -53,6 +53,12 @@ class Permission extends \Spatie\Permission\Models\Permission
             'add payment',
             'edit payment',
             'delete payment',
+
+            // Apk Version
+            'view apk version',
+            'add apk version',
+            'edit apk version',
+            'delete apk version',
         ];
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\v1\UploadVideoController;
 use App\Http\Controllers\Api\v1\UpdateLocationController;
 use App\Http\Controllers\Api\v1\UploadRecordingController;
 use App\Http\Controllers\Api\v1\UploadScreenRecordingController;
+use App\Http\Controllers\Api\v1\CheckApkVersionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,4 +68,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Upload Call Logs
     Route::post('/upload-call-logs', [CallLogSyncController::class, 'uploadCallLogs'])->name('upload.call.logs');
+
+    // Upload Call Logs
+    Route::post('/check-apk-version', [CheckApkVersionController::class, 'checkApkVersion'])->name('check-apk-version');
 });

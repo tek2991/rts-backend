@@ -72,6 +72,13 @@
                                 </x-nav-dropdown-item>
                             @endcan
 
+                            {{-- Apkm Version --}}
+                            @can('update', App\Models\ApkVersion::class)
+                                <x-nav-dropdown-item href="{{ route('apk-version.index') }}" :active="request()->routeIs('apk-version.*')">
+                                    {{ __('Apk Version') }}
+                                </x-nav-dropdown-item>
+                            @endcan
+
                             {{-- Payment --}}
                             @can('viewAny', App\Models\Payment::class)
                                 <x-nav-dropdown-item href="{{ route('payment.index') }}" :active="request()->routeIs('payment.*')">

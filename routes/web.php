@@ -10,6 +10,7 @@ use App\Http\Controllers\PackageController;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use App\Http\Controllers\ActivationCodeController;
+use App\Http\Controllers\ApkVersionController;
 use App\Http\Controllers\Client\SubscriptionController;
 use App\Http\Controllers\Client\ClientPackageController;
 use App\Http\Controllers\Client\ClientActivationCodeController;
@@ -146,6 +147,9 @@ Route::middleware([
 
         // gst
         Route::resource('gst', GstController::class)->only(['index']);
+
+        // Apk Version
+        Route::resource('apk-version', ApkVersionController::class)->only(['index']);
 
         // users
         Route::resource('user', UserController::class);
