@@ -41,6 +41,7 @@ class User extends Authenticatable
         'device_status_updated_at',
         'lat',
         'lng',
+        'pop_up',
     ];
 
     /**
@@ -65,6 +66,7 @@ class User extends Authenticatable
         'mobile_number_verified_at' => 'datetime',
         'device_status' => AsCollection::class,
         'device_status_updated_at' => 'datetime',
+        'pop_up' => 'boolean',
     ];
 
     /**
@@ -165,7 +167,7 @@ class User extends Authenticatable
         $latest_subscription = $latest_subscription->first();
 
         if($current_date < $latest_subscription->expires_at) {
-            return $latest_subscription->expires_at->format('Y-m-d');
+            return $latest_subscription->expires_at;
         }
 
         return false;
@@ -219,5 +221,11 @@ class User extends Authenticatable
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function disablePopUp()
+    {
+        $this->pop_up = false;
+        $this->save();
     }
 }

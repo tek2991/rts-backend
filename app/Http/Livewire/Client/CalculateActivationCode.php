@@ -89,7 +89,7 @@ class CalculateActivationCode extends Component
         }
 
         $user = auth()->user();
-        $started_at = $user->subscribedUpto() ? Carbon::createFromFormat('Y-m-d', $user->subscribedUpto())->addDay() : now();
+        $started_at = $user->subscribedUpto() ? $user->subscribedUpto()->addSecond() : now();
         $expires_at = clone $started_at;
         $expires_at->addDays($activationCode->duration_in_days);
 

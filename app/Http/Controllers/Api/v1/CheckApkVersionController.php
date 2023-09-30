@@ -60,25 +60,17 @@ class CheckApkVersionController extends Controller
         if ($apkVersionModel->version > $data['apk_version']) {
             return response()->json([
                 'status' => false,
-                'message' => 'Apk outdated',
-                'errors' => (object)[
-                    'apk_version' => ['Apk version is out of date.'],
-                ],
-                'data' => (object)[
-                    'latest_version' => $apkVersionModel->version,
-                ],
-            ], 401);
-        } else if($apkVersionModel->version < $data['apk_version']){
+                'message' => 'Update available',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 200);
+        } else if ($apkVersionModel->version < $data['apk_version']) {
             return response()->json([
                 'status' => false,
-                'message' => 'Apk version too high',
-                'errors' => (object)[
-                    'apk_version' => ['Apk version is higher than latest apk in server.'],
-                ],
-                'data' => (object)[
-                    'latest_version' => $apkVersionModel->version,
-                ],
-            ], 401);
+                'message' => 'Out of bounds',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 200);
         }
 
         return response()->json([
