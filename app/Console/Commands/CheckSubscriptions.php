@@ -50,6 +50,8 @@ class CheckSubscriptions extends Command
                             'started_at' => $started_at,
                             'expires_at' => $expires_at
                         ]);
+
+                        $last_date = $expires_at;
                     }
                 }
             }
