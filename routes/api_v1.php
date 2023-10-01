@@ -32,6 +32,9 @@ Route::post('/mobile-otp', [ApiAuthController::class, 'mobileOtp'])->name('mobil
 // Verify mobile OTP and login
 Route::post('/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify'])->name('mobile.otp.verify');
 
+// Dealers
+Route::get('/dealers', [App\Http\Controllers\Api\v1\DealerController::class, 'index'])->name('dealers');
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // Logout
     Route::post('/logout', [ApiAuthController::class, 'logout'])->name('mobile.logout');
