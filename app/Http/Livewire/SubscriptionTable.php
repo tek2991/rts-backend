@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
+use App\Models\Subscription;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
@@ -10,19 +10,10 @@ use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class UserTable extends PowerGridComponent
+final class SubscriptionTable extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
-
-    public string $sortField = 'id';
-    public string $sortDirection = 'desc';
-
-    public $clientsOnly = false;
-    public $withoutSubscription = false;
-    public $withSubscription = false;
-    public $withActiveSubscription = false;
-
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +29,7 @@ final class UserTable extends PowerGridComponent
         return [
             Exportable::make('export')
                 ->striped()
-                ->type(Exportable::TYPE_CSV),
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
@@ -57,31 +48,11 @@ final class UserTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\User>
+     * @return Builder<\App\Models\Subscription>
      */
     public function datasource(): Builder
     {
-        $query = User::query();
-
-        if ($this->clientsOnly == true) {
-            $query->role('client');
-        }
-
-        if ($this->withoutSubscription === true) {
-            $query->whereDoesntHave('subscriptions');
-        }
-
-        if ($this->withSubscription === true) {
-            $query->whereHas('subscriptions');
-        }
-
-        if ($this->withActiveSubscription === true) {
-            $query->whereHas('subscriptions', function ($q) {
-                $q->where('started_at', '<', now())->where('expires_at', '>', now())->where('status', 'paid');
-            });
-        }
-
-        return $query;
+        return Subscription::query()->with('user', 'payment');
     }
 
     /*
@@ -117,12 +88,36 @@ final class UserTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('user_id')
+            ->addColumn('user.name', fn (Subscription $model) => $model->user->name)
+            ->addColumn('user.email', fn (Subscription $model) => $model->user->email)
+            ->addColumn('user.mobile_number', fn (Subscription $model) => $model->user->mobile_number)
+            ->addColumn('package_id')
+            ->addColumn('package_name')
+
             /** Example of custom column using a closure **/
-            ->addColumn('name_lower', fn (User $model) => strtolower(e($model->name)))
-            ->addColumn('mobile_number')
-            ->addColumn('email')
-            ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('package_name_lower', fn (Subscription $model) => strtolower(e($model->package_name)))
+
+            ->addColumn('coupon_id')
+            ->addColumn('coupon_code')
+            ->addColumn('coupon_promoter_name')
+            ->addColumn('activation_code_id')
+            ->addColumn('activation_code')
+            ->addColumn('plan_net_amount')
+            ->addColumn('plan_tax')
+            ->addColumn('started_at_formatted', fn (Subscription $model) => Carbon::parse($model->started_at)->format('d/m/Y H:i:s'))
+            ->addColumn('expires_at_formatted', fn (Subscription $model) => Carbon::parse($model->expires_at)->format('d/m/Y H:i:s'))
+            ->addColumn('duration_in_days')
+            ->addColumn('gross_price')
+            ->addColumn('discount_amount')
+            ->addColumn('net_amount')
+            ->addColumn('tax')
+            ->addColumn('price')
+            ->addColumn('payment_method')
+            ->addColumn('status')
+            ->addColumn('payment_id')
+            ->addColumn('payment.payment_id', fn (Subscription $model) => $model->payment ? $model->payment->payment_id : null)
+            ->addColumn('created_at_formatted', fn (Subscription $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -142,18 +137,34 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Name', 'name')
+            Column::make('User', 'user.name', 'user_id'),
+            Column::make('User email', 'user.email', 'user_id'),
+            Column::make('User mobile number', 'user.mobile_number', 'user_id'),
+
+            Column::make('Package', 'package_name')
+                ->sortable()
+                ->searchable(),
+            Column::make('Coupon code', 'coupon_code')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Mobile Number', 'mobile_number')
+            Column::make('Activation code', 'activation_code')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Email', 'email')
+            Column::make('Duration in days', 'duration_in_days'),
+
+            Column::make('Plan net amount', 'plan_net_amount'),
+            Column::make('Started at', 'started_at_formatted', 'started_at')
+                ->sortable(),
+            Column::make('Expires at', 'expires_at_formatted', 'expires_at')
+                ->sortable(),
+
+            Column::make('Status', 'status')
                 ->sortable()
                 ->searchable(),
 
+            Column::make('Payment id', 'payment.payment_id'),
             Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->sortable(),
 
@@ -168,9 +179,7 @@ final class UserTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name')->operators(['contains']),
-            Filter::inputText('email')->operators(['contains']),
-            Filter::datetimepicker('created_at'),
+
         ];
     }
 
@@ -183,22 +192,30 @@ final class UserTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Buttons.
+     * PowerGrid Subscription Action Buttons.
      *
      * @return array<int, Button>
      */
 
-
+    /*
     public function actions(): array
     {
-        return [
-            Button::make('edit', 'Edit')
-                ->class('bg-indigo-500 cursor-pointer text-white px-2.5 py-1 m-1 rounded text-sm')
-                ->route('user.edit', ['user' => 'id'])
-                ->target(''),
+       return [
+           Button::make('edit', 'Edit')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('subscription.edit', function(\App\Models\Subscription $model) {
+                    return $model->id;
+               }),
+
+           Button::make('destroy', 'Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('subscription.destroy', function(\App\Models\Subscription $model) {
+                    return $model->id;
+               })
+               ->method('delete')
         ];
     }
-
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -209,7 +226,7 @@ final class UserTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Rules.
+     * PowerGrid Subscription Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -221,7 +238,7 @@ final class UserTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
+                ->when(fn($subscription) => $subscription->id === 1)
                 ->hide(),
         ];
     }

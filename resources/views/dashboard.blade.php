@@ -1,11 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight py-4">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
-    <div>
-        Dashboard goes here
-    </div>
+    @livewire('dashboard')
 </x-app-layout>

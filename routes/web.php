@@ -131,9 +131,7 @@ Route::middleware([
     });
 
     Route::middleware(['redirect.if.client', 'role:administrator|manager'])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
         // Test API
         Route::get('/test-api', function () {
