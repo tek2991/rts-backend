@@ -33,8 +33,8 @@ Route::post('/mobile-otp', [ApiAuthController::class, 'mobileOtp'])->name('mobil
 Route::post('/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify'])->name('mobile.otp.verify');
 
 // Dealers
-Route::get('/dealers', [App\Http\Controllers\Api\v1\DealerController::class, 'index'])->name('dealers');
-Route::post('/dealer/submit', [App\Http\Controllers\Api\v1\DealerController::class, 'submit'])->name('dealer.submit');
+// Route::get('/dealers', [App\Http\Controllers\Api\v1\DealerController::class, 'index'])->name('dealers');
+// Route::post('/dealer/submit', [App\Http\Controllers\Api\v1\DealerController::class, 'submit'])->name('dealer.submit');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // Logout
