@@ -44,6 +44,11 @@
                                 {{ __('Dealers') }}
                             </x-nav-dropdown-item>
 
+                            {{-- Dealer Submissions --}}
+                            <x-nav-dropdown-item :href="route('dealer-submission.index')" :active="request()->routeIs('dealer-submission.*')">
+                                {{ __('Dealer Submissions') }}
+                            </x-nav-dropdown-item>
+
                             {{-- Packages --}}
                             @can('viewAny', App\Models\Package::class)
                                 <x-nav-dropdown-item href="{{ route('package.index') }}" :active="request()->routeIs('package.*')">

@@ -45,6 +45,12 @@ Route::get('/mobile-verification-notice', function () {
 // Instamojo Webhook
 Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentController::class, 'webhook'])->name('instamojo.payment.webhook');
 
+// Public Dealers
+
+Route::prefix('public')->name('public.')->group(function () {
+    Route::resource('dealer', App\Http\Controllers\PublicDealerController::class)->only(['index', 'create', 'store']);
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -171,6 +177,9 @@ Route::middleware([
 
         // dealer
         Route::resource('dealer', App\Http\Controllers\DealerController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+
+        // Dealer Submission
+        Route::resource('dealer-submission', App\Http\Controllers\DealerSubmissionController::class)->only(['index']);
 
         // Payment
         Route::get('payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('payment.index');
