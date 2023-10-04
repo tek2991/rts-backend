@@ -23,8 +23,6 @@
     <x-banner />
 
     <div class="min-h-screen bg-gray-100">
-        {{-- @livewire('jetstream.navigation-menu', ['page' => $page]) --}}
-
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
                 <div class="flex justify-between items-center">
@@ -41,7 +39,7 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-8">
                     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                         <div class="overflow-hidden sm:rounded-lg p-4">
-                            <h2 class="text-xl font-regular pt-2 pb-4">Dealer details</h2>
+                            <h2 class="text-xl font-regular pt-2 pb-4">Contact details</h2>
                             <x-validation-errors class="mb-4" />
                             <form action="{{ route('public.dealer.store') }}" method="post">
                                 @csrf
@@ -69,6 +67,15 @@
                                         <x-label for="message" :value="__('Message')" />
                                         <x-text-area id="message" class="block mt-1 w-full" required name="message">
                                             {{ old('message') }} </x-text-area>
+                                    </div>
+                                    {{-- Acknowledgement check box --}}
+                                    <div class="flex">
+                                        <x-checkbox id="acknowledgement" required
+                                        name="acknowledgement" />
+                                        <p class="ml-2 text-sm text-gray-500">
+                                            I do hereby give my consent to receive communication from
+                                            {{ config('app.name', 'Laravel') }} on my given contact details.
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="flex justify-end mt-4">

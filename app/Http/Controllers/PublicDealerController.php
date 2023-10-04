@@ -34,6 +34,7 @@ class PublicDealerController extends Controller
             'email' => ['nullable', 'email'],
             'mobile_number' => ['required', 'digits:10'],
             'message' => ['nullable', 'max:255'],
+            'acknowledgement' => ['required', 'accepted'],
         ]);
 
         // Add blank address

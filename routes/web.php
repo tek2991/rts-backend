@@ -46,7 +46,6 @@ Route::get('/mobile-verification-notice', function () {
 Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentController::class, 'webhook'])->name('instamojo.payment.webhook');
 
 // Public Dealers
-
 Route::prefix('public')->name('public.')->group(function () {
     Route::resource('dealer', App\Http\Controllers\PublicDealerController::class)->only(['index', 'create', 'store']);
 });
