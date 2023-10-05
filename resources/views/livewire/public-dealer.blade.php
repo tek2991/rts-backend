@@ -40,49 +40,35 @@
                     <span class="text-sm text-gray-500">({{ count($dealers) }})</span>
                 </h2>
 
-
-                <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    Dealer name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Email
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Phone
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Address
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($dealers as $dealer)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th scope="row"
-                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $dealer->name }}
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        <a href="mailto:{{ $dealer->email }}" class="text-blue-500 hover:to-blue-600">
-                                            {{ $dealer->email }}
-                                        </a>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <a href="tel:{{ $dealer->phone }}" class="text-blue-500 hover:to-blue-600">
-                                            {{ $dealer->phone }}
-                                        </a>
-                                    </td>
-                                    <td class="px-6 py-4 max-w-xs">
-                                        <p class="text-justify text">{{ $dealer->address }}</p>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:gap-8">
+                    @foreach ($dealers as $dealer)
+                        <div
+                            class="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                {{ $dealer->name }}
+                            </h5>
+                            <p class="font-normal text-gray-700 dark:text-gray-400">
+                                {{ $dealer->address }}
+                            </p>
+                            <p class="font-normal text-gray-700 dark:text-gray-400">
+                                {{ $dealer->district->name }}, {{ $dealer->district->state->name }}
+                            </p>
+                            <p class="font-normal text-gray-700 dark:text-gray-400 mt-1">
+                                <span class="font-normal text-gray-700 dark:text-gray-400">Phone: </span>
+                                <a href="tel:{{ $dealer->phone }}"
+                                    class="font-normal text-blue-500 hover:text-blue-600">
+                                    {{ $dealer->phone }}
+                                </a>
+                            </p>
+                            <p class="font-normal text-gray-700 dark:text-gray-400">
+                                <span class="font-normal text-gray-700 dark:text-gray-400">Email: </span>
+                                <a href="mailto:{{ $dealer->email }}"
+                                    class="font-normal text-blue-500 hover:text-blue-600">
+                                    {{ $dealer->email }}
+                                </a>
+                            </p>
+                        </div>
+                    @endforeach
                 </div>
             @else
                 <div class="text-center mt-8">

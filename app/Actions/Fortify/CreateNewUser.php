@@ -35,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
         // Send OTP to the user
-        $user->sendMobileNumberVerificationNotification();
+        // $user->sendMobileNumberVerificationNotification();
 
         // Assign client role to the user
         $user->assignRole('client');
