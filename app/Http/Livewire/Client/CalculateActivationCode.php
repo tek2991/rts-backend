@@ -83,8 +83,13 @@ class CalculateActivationCode extends Component
             return;
         }
 
+        if($activationCode->isUsed()) {
+            $this->addError('activation_code', 'Activation code is already used.');
+            return;
+        }
+
         if(!$activationCode->isValid()) {
-            $this->addError('activation_code', 'Activation code is invalid.');
+            $this->addError('activation_code', 'Invalid activation code.');
             return;
         }
 
