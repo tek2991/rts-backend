@@ -54,7 +54,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     // 'verified',
-    'verified.mobile',
+    // 'verified.mobile',
 ])->group(function () {
 
     Route::prefix('client')->name('client.')->group(function () {
