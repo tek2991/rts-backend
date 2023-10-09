@@ -13,6 +13,7 @@ class CalculateSubscriptionCost extends Component
     public $coupon = false;
     public $cgst;
     public $sgst;
+    public $is_public = false;
 
     public $discount_amount = 0;
     public $cost;
@@ -20,8 +21,9 @@ class CalculateSubscriptionCost extends Component
     public $net_cost;
     public $tax;
 
-    public function mount($package)
+    public function mount($package, $is_public = false)
     {
+        $this->is_public = $is_public;
         $this->package = $package;
         $this->coupons = Coupon::where('is_active', true)->get();
         $this->sgst = Gst::where('name', 'SGST')->first()->rate;
@@ -116,6 +118,10 @@ class CalculateSubscriptionCost extends Component
         // Save the data to session
         session()->put('subscription_data', $data);
 
+        if ($this->is_public) {
+            // Redirect to public payment page
+            return redirect()->route('public.subscription.create');
+        }
         // Redirect to payment page
         return redirect()->route('client.subscription.create');
     }

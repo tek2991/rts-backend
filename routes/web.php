@@ -9,12 +9,14 @@ use Illuminate\Contracts\Filesystem\Cloud;
 use App\Http\Controllers\PackageController;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
-use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\ApkVersionController;
+use App\Http\Controllers\ActivationCodeController;
+use App\Http\Controllers\Client\LocatePhoneController;
 use App\Http\Controllers\Client\SubscriptionController;
 use App\Http\Controllers\Client\ClientPackageController;
+use App\Http\Controllers\Client\PublicSubscriptionController;
+use App\Http\Controllers\Client\PublicClientPackageController;
 use App\Http\Controllers\Client\ClientActivationCodeController;
-use App\Http\Controllers\Client\LocatePhoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +50,9 @@ Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentCon
 // Public Dealers
 Route::prefix('public')->name('public.')->group(function () {
     Route::resource('dealer', App\Http\Controllers\PublicDealerController::class)->only(['index', 'create', 'store']);
+    Route::get('packages', [PublicClientPackageController::class, 'index'])->name('package.index');
+    Route::get('packages/{package}', [PublicClientPackageController::class, 'show'])->name('package.show');
+    Route::resource('subscription', PublicSubscriptionController::class)->only(['show', 'create']);
 });
 
 Route::middleware([
