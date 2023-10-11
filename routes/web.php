@@ -37,7 +37,7 @@ require_once base_path('routes/fortify.php');
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
+})->name('home');
 
 // Mobile Number Verification...
 Route::get('/mobile-verification-notice', function () {
@@ -70,7 +70,7 @@ Route::middleware([
 
         Route::get('activation-code', [ClientActivationCodeController::class, 'start'])->name('activation-code.start');
 
-        Route::post('payment', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('payment.pay');
+        Route::get('payment', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('payment.pay');
         Route::get('payment/success', [App\Http\Controllers\Client\PaymentController::class, 'success'])->name('payment.success');
         // Route::get('payment/failure', [App\Http\Controllers\Client\PaymentController::class, 'failure'])->name('payment.failure'); // Not used
 

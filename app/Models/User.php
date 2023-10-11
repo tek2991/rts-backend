@@ -5,11 +5,13 @@ namespace App\Models;
 use App;
 use Laravel\Sanctum\HasApiTokens;
 use App\Actions\Functions\SendSMS;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmailWithPassword;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -77,6 +79,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function sendWelcomeEmailWithPassword($password)
+    {
+        Mail::to($this->email)->send(new WelcomeEmailWithPassword($this, $password));
+    }
 
     public function sendMobileNumberVerificationNotification()
     {
