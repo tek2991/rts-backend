@@ -50,9 +50,12 @@ Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentCon
 // Public Dealers
 Route::prefix('public')->name('public.')->group(function () {
     Route::resource('dealer', App\Http\Controllers\PublicDealerController::class)->only(['index', 'create', 'store']);
-    Route::get('packages', [PublicClientPackageController::class, 'index'])->name('package.index');
-    Route::get('packages/{package}', [PublicClientPackageController::class, 'show'])->name('package.show');
-    Route::resource('subscription', PublicSubscriptionController::class)->only(['show', 'create']);
+
+    Route::group(['middleware' => ['guest']], function () {
+        Route::get('packages', [PublicClientPackageController::class, 'index'])->name('package.index');
+        Route::get('packages/{package}', [PublicClientPackageController::class, 'show'])->name('package.show');
+        Route::resource('subscription', PublicSubscriptionController::class)->only(['show', 'create']);
+    });
 });
 
 Route::middleware([
