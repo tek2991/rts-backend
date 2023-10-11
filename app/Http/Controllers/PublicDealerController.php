@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dealer;
-use App\Models\DealerSubmission;
 use Illuminate\Http\Request;
+use App\Models\DealerSubmission;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DealershipRequestSubmitted;
 
 class PublicDealerController extends Controller
 {
@@ -40,7 +42,10 @@ class PublicDealerController extends Controller
         // Add blank address
         $data['address'] = '';
 
-        DealerSubmission::create($data);
+        $dealer_submission = DealerSubmission::create($data);
+
+        // Send email to admin
+        Mail::to(config('app.admin_email'))->send(new DealershipRequestSubmitted($dealer_submission));
 
         return redirect()->route('public.dealer.index')->banner('Dealership request submitted successfully.');
     }
