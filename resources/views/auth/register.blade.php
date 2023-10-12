@@ -71,7 +71,7 @@
             <div class="mt-4">
                 <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
                 <div class="relative">
-                    <input type="text" id="password_confirmation-group-pwd" name="password" required
+                    <input type="text" id="password_confirmation-group-pwd" name="password_confirmation" required
                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full pr-10 p-2.5">
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3.5">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
