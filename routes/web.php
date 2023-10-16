@@ -81,7 +81,7 @@ Route::middleware([
         // Route::get('payment/failure', [App\Http\Controllers\Client\PaymentController::class, 'failure'])->name('payment.failure'); // Not used
 
         Route::get('phonepe', [App\Http\Controllers\Client\PhonepeController::class, 'pay'])->name('payment.pay');
-        Route::get('phonepe/success/', [App\Http\Controllers\Client\PhonepeController::class, 'success'])->name('phonepe.payment.success');
+        Route::get('phonepe/success/{mid}/{mtid}/{shmtid}', [App\Http\Controllers\Client\PhonepeController::class, 'success'])->name('phonepe.payment.success');
 
         Route::get('/dashboard', function () {
             return view('client.dashboard');

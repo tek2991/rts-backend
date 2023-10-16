@@ -62,6 +62,7 @@ return [
         'preprod_url' => env('PHONEPE_PREPROD_URL'),
         'prod_url' => env('PHONEPE_PROD_URL'),
         'pay_endpoint' => env('PHONEPE_PAY_ENDPOINT'),
+        'status_endpoint' => env('PHONEPE_STATUS_ENDPOINT'),
         'production' => env('PHONEPE_PRODUCTION', false),
     ],
 ];

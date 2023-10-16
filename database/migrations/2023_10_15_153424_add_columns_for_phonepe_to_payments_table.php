@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::table('payments', function (Blueprint $table) {
             $table->string('gateway')->nullable()->default('instamojo');
             $table->string('phonepe_order_id')->nullable();
-            // Change long_url to text
-            $table->text('longurl')->nullable()->change();
+            $table->text('phonepe_longurl')->nullable();
+            $table->string('phonepe_transaction_id')->nullable();
+
         });
     }
 
@@ -27,8 +28,8 @@ return new class extends Migration
         Schema::table('payments', function (Blueprint $table) {
             $table->dropColumn('gateway');
             $table->dropColumn('phonepe_order_id');
-            // Change long_url back to string
-            $table->string('longurl')->nullable()->change();
+            $table->dropColumn('phonepe_longurl');
+            $table->dropColumn('phonepe_transaction_id');
         });
     }
 };

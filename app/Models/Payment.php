@@ -34,6 +34,12 @@ class Payment extends Model
         'redirected',
         'webhook_verified',
         'user_id',
+
+        // Phonepe
+        'gateway',
+        'phonepe_order_id',
+        'phonepe_longurl',
+        'phonepe_transaction_id',
     ];
 
     // Casts

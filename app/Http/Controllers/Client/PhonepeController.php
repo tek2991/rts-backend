@@ -37,6 +37,14 @@ class PhonepeController extends Controller
         return $final_x_header;
     }
 
+    public function saltNhash($str)
+    {
+        $salt = config('services.phonepe.salt');
+        $str = $str . $salt . "$@%#^$";
+        $hash = hash('sha256', $str);
+        return $hash;
+    }
+
     public function pay()
     {
         if (!session()->has('subscription_data')) {
@@ -59,13 +67,15 @@ class PhonepeController extends Controller
         try {
             $merchant_transaction_id = (string) Str::uuid();
             $merchant_user_id = $user->id . '_' . $user->mobile_number;
+            $merchant_id = config('services.phonepe.merchant_id');
+            $shmtid = $this->saltNhash($merchant_id . $merchant_transaction_id);
 
             $data = array(
                 'merchantId' => config('services.phonepe.merchant_id'),
                 'merchantTransactionId' => $merchant_transaction_id,
                 'merchantUserId' => $merchant_user_id,
                 'amount' => $gross_amount * 100,
-                'redirectUrl' => route('client.phonepe.payment.success'),
+                'redirectUrl' => route('client.phonepe.payment.success', ['mid' => $merchant_id, 'mtid' => $merchant_transaction_id, 'shmtid' => $shmtid]),
                 'redirectMode' => 'REDIRECT',
                 'callbackUrl' => route('phonepe.payment.webhook'),
                 'mobileNumber' => $user->mobile_number,
@@ -117,7 +127,7 @@ class PhonepeController extends Controller
                 throw new \Exception("Error while creating payment request. success != true");
             }
 
-            if(!isset($response->data->instrumentResponse->redirectInfo->url)) {
+            if (!isset($response->data->instrumentResponse->redirectInfo->url)) {
                 throw new \Exception("Error while creating payment request. paymentUrl not set");
             }
 
@@ -134,8 +144,13 @@ class PhonepeController extends Controller
                     'buyer_phone' => $user->mobile_number,
                     'purpose' => $package->name,
                     'shorturl' => null,
-                    'longurl' => $response->data->instrumentResponse->redirectInfo->url,
+                    'longurl' => null,
                     'mac' => null,
+                    // phonepe
+                    'gateway' => 'phonepe',
+                    'phonepe_order_id' => null,
+                    'phonepe_longurl' => $response->data->instrumentResponse->redirectInfo->url,
+                    'phonepe_transaction_id' => $response->data->merchantTransactionId,
                 ]);
 
                 $user->subscriptions()->create([
@@ -168,18 +183,63 @@ class PhonepeController extends Controller
         }
     }
 
-    public function success(Request $request)
+    public function success(Request $request, $mid, $mtid, $shmtid)
     {
-        dd($request->all());
-
-        
-
         try {
-            // Check if payment_request_id is valid and is in database
-            $payment = PaymentModel::where('payment_request_id', $payment_request_id)->firstOrFail();
+            // Check if shmtid is valid
+            if ($shmtid != $this->saltNhash($mid . $mtid)) {
+                throw new \Exception("Invalid shmtid");
+            }
 
-            // Get payment details
-            $response = $api->getPaymentDetails($payment_id);
+            // Prepare status xheader
+            $salt = config('services.phonepe.salt');
+            $salt_index = config('services.phonepe.salt_index');
+
+            $finalXHeader = hash('sha256', config('services.phonepe.status_endpoint').'/' . $mid . '/' . $mtid . $salt) . '###' . $salt_index;
+
+            $url = config('services.phonepe.production') ? config('services.phonepe.prod_url') : config('services.phonepe.preprod_url');
+            $url .= config('services.phonepe.status_endpoint') . '/' . $mid . '/' . $mtid;
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => [
+                    "Content-Type: application/json",
+                    "accept: application/json",
+                    "X-VERIFY: " . $finalXHeader,
+                    "X-MERCHANT-ID: " . $mid,
+                ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            dd($response, $err);
+
+            if ($err) {
+                throw new \Exception("Error while creating payment request. err: $err");
+            }
+
+            if (!isset($response->success)) {
+                throw new \Exception("Error while creating payment request. success not set");
+            }
+
+            if ($response->success != true) {
+                throw new \Exception("Error while creating payment request. success != true");
+            }
+
+            if (!isset($response->data->instrumentResponse->redirectInfo->url)) {
+                throw new \Exception("Error while creating payment request. paymentUrl not set");
+            }
 
             if (array_key_exists('status', $response)) {
                 $payment->update([
