@@ -47,6 +47,9 @@ Route::get('/mobile-verification-notice', function () {
 // Instamojo Webhook
 Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentController::class, 'webhook'])->name('instamojo.payment.webhook');
 
+// Phonepe Webhook
+Route::post('payment/phonepe/webhook', [App\Http\Controllers\Client\PhonepeController::class, 'webhook'])->name('phonepe.payment.webhook');
+
 // Public Dealers
 Route::prefix('public')->name('public.')->group(function () {
     Route::resource('dealer', App\Http\Controllers\PublicDealerController::class)->only(['index', 'create', 'store']);
@@ -73,9 +76,12 @@ Route::middleware([
 
         Route::get('activation-code', [ClientActivationCodeController::class, 'start'])->name('activation-code.start');
 
-        Route::get('payment', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('payment.pay');
-        Route::get('payment/success', [App\Http\Controllers\Client\PaymentController::class, 'success'])->name('payment.success');
+        // Route::get('payment', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('payment.pay');
+        // Route::get('payment/success', [App\Http\Controllers\Client\PaymentController::class, 'success'])->name('payment.success');
         // Route::get('payment/failure', [App\Http\Controllers\Client\PaymentController::class, 'failure'])->name('payment.failure'); // Not used
+
+        Route::get('phonepe', [App\Http\Controllers\Client\PhonepeController::class, 'pay'])->name('payment.pay');
+        Route::get('phonepe/success/', [App\Http\Controllers\Client\PhonepeController::class, 'success'])->name('phonepe.payment.success');
 
         Route::get('/dashboard', function () {
             return view('client.dashboard');

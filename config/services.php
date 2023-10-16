@@ -54,4 +54,14 @@ return [
     'apk' => [
         'url' => env('APK_URL'),
     ],
+
+    'phonepe' => [
+        'merchant_id' => env('PHONEPE_MERCHANT_ID'),
+        'salt' => env('PHONEPE_SALT'),
+        'salt_index' => env('PHONEPE_SALT_INDEX'),
+        'preprod_url' => env('PHONEPE_PREPROD_URL'),
+        'prod_url' => env('PHONEPE_PROD_URL'),
+        'pay_endpoint' => env('PHONEPE_PAY_ENDPOINT'),
+        'production' => env('PHONEPE_PRODUCTION', false),
+    ],
 ];

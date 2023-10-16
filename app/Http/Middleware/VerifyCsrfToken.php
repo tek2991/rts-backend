@@ -14,5 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         // 'payment/instamojo/webhook',
         'payment/instamojo/webhook',
+        'client/phonepe/success',
     ];
 }
