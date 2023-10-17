@@ -48,9 +48,15 @@
             </button>
         </div>
         <p>
-            Powered by <a href="https://www.instamojo.com/" target="_blank" class="text-green-500 hover:underline">
-                Instamojo
-            </a>
+            @if ($payment_gateway == 'instamojo')
+                Powered by <a href="https://www.instamojo.com/" target="_blank" class="text-green-500 hover:underline">
+                    Instamojo
+                </a>
+            @elseif ($payment_gateway == 'phonepe')
+                Powered by <a href="https://www.phonepe.com/" target="_blank" class="text-green-500 hover:underline">
+                    PhonePe
+                </a>
+            @endif
         </p>
     </div>
 

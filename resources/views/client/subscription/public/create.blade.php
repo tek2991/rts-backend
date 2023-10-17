@@ -13,6 +13,6 @@
     </x-slot>
 
     <div>
-        @livewire('public-confirm-payment')
+        @livewire('public-confirm-payment', ['payment_gateway' => $payment_gateway])
     </div>
 </x-app-alternate-layout>

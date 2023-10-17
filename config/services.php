@@ -65,4 +65,8 @@ return [
         'status_endpoint' => env('PHONEPE_STATUS_ENDPOINT'),
         'production' => env('PHONEPE_PRODUCTION', false),
     ],
+
+    'payment_gateway' => [
+        'default' => env('PAYMENT_GATEWAY', 'instamojo'), // 'instamojo' or 'phonepe
+    ],
 ];

@@ -72,7 +72,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             Payment ID: <span class="font-semibold">
-                                {{ $subscription->payment->payment_id ?? 'N/A' }}
+                                {{ $subscription->payment->payment_id ? $subscription->payment->payment_id : $subscription->payment->phonepe_transaction_id ?? 'N/A' }}
                             </span>
                         </div>
                         <div>
@@ -113,6 +113,11 @@
                         <div>
                             End Date: <span class="font-semibold">
                                 {{ $subscription->expires_at ?? 'N/A' }}
+                            </span>
+                        </div>
+                        <div>
+                            Gateway: <span class="font-semibold">
+                                {{ $subscription->payment->gateway ?? 'N/A' }}
                             </span>
                         </div>
                     </div>

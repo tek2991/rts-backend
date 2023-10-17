@@ -38,11 +38,17 @@ class SubscriptionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         if (!session()->has('subscription_data')) {
             return abort(404, 'Package not found.');
         }
+
+        $payment_gateway = $request->gateway;
+        if($payment_gateway != 'instamojo' && $payment_gateway != 'phonepe') {
+            $payment_gateway = config('services.payment_gateway.default');
+        }
+
         $data = ParseSubscriptionDataFromSession::parse();
         $package = $data['package'];
         $coupon = $data['coupon'];
@@ -51,8 +57,9 @@ class SubscriptionController extends Controller
         $tax = $data['tax'];
         $tax_rate = $data['tax_rate'];
         $net_amount = $data['net_amount'];
+        $payment_route = $payment_gateway == 'instamojo' ? route('client.instamojo.payment.pay') : route('client.phonepe.payment.pay');
 
-        return view('client.subscription.create', compact('package', 'coupon', 'discount_amount', 'gross_amount', 'tax', 'tax_rate', 'net_amount'));
+        return view('client.subscription.create', compact('package', 'coupon', 'discount_amount', 'gross_amount', 'tax', 'tax_rate', 'net_amount', 'payment_route', 'payment_gateway'));
     }
 
     /**

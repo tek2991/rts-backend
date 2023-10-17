@@ -76,11 +76,11 @@ Route::middleware([
 
         Route::get('activation-code', [ClientActivationCodeController::class, 'start'])->name('activation-code.start');
 
-        // Route::get('payment', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('payment.pay');
-        // Route::get('payment/success', [App\Http\Controllers\Client\PaymentController::class, 'success'])->name('payment.success');
+        Route::get('instamojo/pay', [App\Http\Controllers\Client\PaymentController::class, 'pay'])->name('instamojo.payment.pay');
+        Route::get('instamojo/success', [App\Http\Controllers\Client\PaymentController::class, 'success'])->name('instamojo.payment.success');
         // Route::get('payment/failure', [App\Http\Controllers\Client\PaymentController::class, 'failure'])->name('payment.failure'); // Not used
 
-        Route::get('phonepe', [App\Http\Controllers\Client\PhonepeController::class, 'pay'])->name('payment.pay');
+        Route::get('phonepe/pay', [App\Http\Controllers\Client\PhonepeController::class, 'pay'])->name('phonepe.payment.pay');
         Route::get('phonepe/success/{mid}/{mtid}/{shmtid}', [App\Http\Controllers\Client\PhonepeController::class, 'success'])->name('phonepe.payment.success');
 
         Route::get('/dashboard', function () {

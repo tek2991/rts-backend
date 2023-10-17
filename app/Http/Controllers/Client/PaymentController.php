@@ -44,9 +44,9 @@ class PaymentController extends Controller
                 // "currency" => "INR", // Only INR is supported
                 "send_email" => false,
                 "email" => $user->email,
-                "redirect_url" => route('client.payment.success'),
+                "redirect_url" => route('client.instamojo.payment.success'),
                 "buyer_name" => $user->name,
-                // "webhook" => route('client.payment.webhook'),
+                // "webhook" => route('client.instamojo.payment.webhook'),
                 "send_sms" => false,
                 "phone" => substr($user->mobile_number, -10), // 10 digit phone number
                 "allow_repeated_payments" => false

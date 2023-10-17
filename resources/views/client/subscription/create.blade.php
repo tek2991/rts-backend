@@ -55,7 +55,8 @@
 
                 {{-- Payment Button --}}
                 {{-- <form action="" method="POST"> --}}
-                <form action="{{ route('client.payment.pay') }}" method="GET">
+
+                <form action="{{ $payment_route }}" method="GET">
                     {{-- @csrf --}}
                     {{-- <input type="hidden" name="package_id" value="{{ $package->id }}"> --}}
                     {{-- <input type="hidden" name="coupon_id" value="{{ $coupon->id ?? null }}"> --}}
@@ -74,9 +75,17 @@
                 </form>
             </div>
             <p>
-                Powered by <a href="https://www.instamojo.com/" target="_blank" class="text-green-500 hover:underline">
-                    Instamojo
-                </a>
+                @if ($payment_gateway == 'instamojo')
+                    Powered by <a href="https://www.instamojo.com/" target="_blank"
+                        class="text-green-500 hover:underline">
+                        Instamojo
+                    </a>
+                @elseif ($payment_gateway == 'phonepe')
+                    Powered by <a href="https://www.phonepe.com/" target="_blank"
+                        class="text-green-500 hover:underline">
+                        PhonePe
+                    </a>
+                @endif
             </p>
         </div>
     </section>

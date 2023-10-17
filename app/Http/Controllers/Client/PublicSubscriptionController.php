@@ -17,13 +17,19 @@ class PublicSubscriptionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         if (!session()->has('subscription_data')) {
             return abort(404, 'Package not found.');
         }
 
-        return view('client.subscription.public.create');
+        $payment_gateway = $request->gateway;
+        if($payment_gateway != 'instamojo' && $payment_gateway != 'phonepe') {
+            $payment_gateway = config('services.payment_gateway.default');
+        }
+
+
+        return view('client.subscription.public.create', compact('payment_gateway'));
     }
 
     /**

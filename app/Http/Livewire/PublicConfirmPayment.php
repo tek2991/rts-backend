@@ -19,14 +19,18 @@ class PublicConfirmPayment extends Component
     public $tax_rate = null;
     public $net_amount = null;
 
+    public $payment_gateway;
+    public $payment_route;
+
     public $name;
     public $email;
     public $mobile_number;
     public $acknowledgement;
 
 
-    public function mount()
+    public function mount($payment_gateway)
     {
+        $this->payment_gateway = $payment_gateway;
         $this->data = $this->parse();
         $this->package = $this->data['package'];
         $this->coupon = $this->data['coupon'];
@@ -35,6 +39,11 @@ class PublicConfirmPayment extends Component
         $this->tax = $this->data['tax'];
         $this->tax_rate = $this->data['tax_rate'];
         $this->net_amount = $this->data['net_amount'];
+    }
+
+    public function makePaymentRoute()
+    {
+        $this->payment_route = $this->payment_gateway == 'instamojo' ? route('client.instamojo.payment.pay') : route('client.phonepe.payment.pay');
     }
 
     public function parse()
@@ -120,7 +129,7 @@ class PublicConfirmPayment extends Component
         auth()->login($user);
 
         // Redirect to payment page
-        return redirect()->route('client.payment.pay');
+        return redirect($this->payment_route);
     }
 
     public function render()
