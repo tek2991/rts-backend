@@ -41,11 +41,6 @@ class PublicConfirmPayment extends Component
         $this->net_amount = $this->data['net_amount'];
     }
 
-    public function makePaymentRoute()
-    {
-        $this->payment_route = $this->payment_gateway == 'instamojo' ? route('client.instamojo.payment.pay') : route('client.phonepe.payment.pay');
-    }
-
     public function parse()
     {
         $subscription_data = session('subscription_data');
@@ -129,7 +124,11 @@ class PublicConfirmPayment extends Component
         auth()->login($user);
 
         // Redirect to payment page
-        return redirect($this->payment_route);
+        if($this->payment_gateway == 'instamojo') {
+            return redirect()->route('client.instamojo.payment.pay');
+        } else if($this->payment_gateway == 'phonepe') {
+            return redirect()->route('client.phonepe.payment.pay');
+        }
     }
 
     public function render()

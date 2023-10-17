@@ -17,13 +17,14 @@ class PaymentController extends Controller
 {
     public function pay()
     {
+        
         if (!session()->has('subscription_data')) {
             return abort(404, 'Package not found.');
         }
-
+        
         $data = ParseSubscriptionDataFromSession::parse();
         session()->forget('subscription_data');
-
+        
         $user = $data['user'];
         $package = $data['package'];
         $coupon = $data['coupon'];
@@ -33,9 +34,9 @@ class PaymentController extends Controller
         $net_amount = $data['net_amount'];
         $started_at = $data['started_at'];
         $expires_at = $data['expires_at'];
-
+        
         $api = $this->createAPI();
-
+        
         try {
             $uuid = (string) Str::uuid();
             $arr = array(
@@ -51,13 +52,13 @@ class PaymentController extends Controller
                 "phone" => substr($user->mobile_number, -10), // 10 digit phone number
                 "allow_repeated_payments" => false
             );
-
+            
             if (config('services.instamojo.enable_webhook')) {
                 $arr['webhook'] = route('instamojo.payment.webhook');
             }
-
+            
             $response = $api->createPaymentRequest($arr);
-
+            
             if (array_key_exists('longurl', $response)) {
                 $payment = $user->payments()->create([
                     'payment_id' => null,
@@ -95,7 +96,7 @@ class PaymentController extends Controller
                     'payment_id' => $payment->id,
                     'status' => 'pending',
                 ]);
-
+                
                 return redirect($response['longurl']);
             } else {
                 return redirect()->route('client.subscription.index')->dangerBanner("Error while creating payment request.");
