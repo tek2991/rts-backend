@@ -39,7 +39,9 @@ class Payment extends Model
         'gateway',
         'phonepe_order_id',
         'phonepe_longurl',
+        'phonepe_merchant_transaction_id',
         'phonepe_transaction_id',
+        'phonepe_payment_type',
     ];
 
     // Casts

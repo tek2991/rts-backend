@@ -15,8 +15,9 @@ return new class extends Migration
             $table->string('gateway')->nullable()->default('instamojo');
             $table->string('phonepe_order_id')->nullable();
             $table->text('phonepe_longurl')->nullable();
+            $table->string('phonepe_merchant_transaction_id')->nullable();
             $table->string('phonepe_transaction_id')->nullable();
-
+            $table->string('phonepe_payment_type')->nullable();
         });
     }
 
@@ -29,7 +30,9 @@ return new class extends Migration
             $table->dropColumn('gateway');
             $table->dropColumn('phonepe_order_id');
             $table->dropColumn('phonepe_longurl');
+            $table->dropColumn('phonepe_merchant_transaction_id');
             $table->dropColumn('phonepe_transaction_id');
+            $table->dropColumn('phonepe_payment_type');
         });
     }
 };

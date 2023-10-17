@@ -150,7 +150,7 @@ class PhonepeController extends Controller
                     'gateway' => 'phonepe',
                     'phonepe_order_id' => null,
                     'phonepe_longurl' => $response->data->instrumentResponse->redirectInfo->url,
-                    'phonepe_transaction_id' => $response->data->merchantTransactionId,
+                    'phonepe_merchant_transaction_id' => $response->data->merchantTransactionId,
                 ]);
 
                 $user->subscriptions()->create([
@@ -195,7 +195,7 @@ class PhonepeController extends Controller
             $salt = config('services.phonepe.salt');
             $salt_index = config('services.phonepe.salt_index');
 
-            $finalXHeader = hash('sha256', config('services.phonepe.status_endpoint').'/' . $mid . '/' . $mtid . $salt) . '###' . $salt_index;
+            $finalXHeader = hash('sha256', config('services.phonepe.status_endpoint') . '/' . $mid . '/' . $mtid . $salt) . '###' . $salt_index;
 
             $url = config('services.phonepe.production') ? config('services.phonepe.prod_url') : config('services.phonepe.preprod_url');
             $url .= config('services.phonepe.status_endpoint') . '/' . $mid . '/' . $mtid;
@@ -218,12 +218,10 @@ class PhonepeController extends Controller
                 ],
             ]);
 
-            $response = curl_exec($curl);
+            $response = json_decode(curl_exec($curl));
             $err = curl_error($curl);
 
             curl_close($curl);
-
-            dd($response, $err);
 
             if ($err) {
                 throw new \Exception("Error while creating payment request. err: $err");
@@ -233,28 +231,36 @@ class PhonepeController extends Controller
                 throw new \Exception("Error while creating payment request. success not set");
             }
 
-            if ($response->success != true) {
-                throw new \Exception("Error while creating payment request. success != true");
+            if (config('services.phonepe.merchant_id') != $mid) {
+                throw new \Exception("Invalid merchant id");
             }
 
-            if (!isset($response->data->instrumentResponse->redirectInfo->url)) {
-                throw new \Exception("Error while creating payment request. paymentUrl not set");
+            $payment = PaymentModel::where('phonepe_merchant_transaction_id', $mtid)->first();
+
+            if (!$payment) {
+                throw new \Exception("Payment not found");
             }
 
-            if (array_key_exists('status', $response)) {
+            if (isset($response->success)) {
                 $payment->update([
-                    'payment_id' => $response['id'],
-                    'payment_status' => $response['status'] === true ? 'success' : 'failed',
-                    'currency' => $response['currency'],
-                    'amount' => $response['amount'],
-                    'fees' => $response['fees'],
-                    'taxes' => $response['total_taxes'],
-                    'instrument_type' => $response['instrument_type'],
-                    'billing_instrument' => $response['billing_instrument'],
+                    'payment_id' => null,
+                    'payment_status' => $response->success == true ? 'success' : 'failed',
+                    'currency' => "INR",
+                    'amount' => $response->data->amount / 100,
+                    'fees' => null,
+                    'taxes' => null,
+                    'instrument_type' => null,
+                    'billing_instrument' => null,
                     'redirected' => true,
+
+                    // phonepe
+                    'phonepe_order_id' => null,
+                    'phonepe_merchant_transaction_id' => $response->data->merchantTransactionId,
+                    'phonepe_transaction_id' => $response->data->transactionId,
+                    'phonepe_payment_type' => $response->success == true ? $response->data->paymentInstrument->type : null,
                 ]);
 
-                if ($response['status'] === true) {
+                if ($response->success == true) {
                     $subscription = $payment->subscription;
 
                     $subscription->update([
@@ -262,12 +268,12 @@ class PhonepeController extends Controller
                     ]);
                 } else {
                     $payment->update([
-                        'failure_reason' => $response['failure']['reason'],
-                        'failure_message' => $response['failure']['message'],
+                        'failure_reason' => $response->code,
+                        'failure_message' => $response->message,
                     ]);
 
                     $payment->subscription()->update([
-                        'status' => 'failed',
+                        'status' => $response->code == "PAYMENT_PENDING" ? 'pending' : 'failed',
                     ]);
 
                     return redirect()->route('client.subscription.index')->dangerBanner("Payment failed. Please contact support.");
@@ -285,180 +291,126 @@ class PhonepeController extends Controller
     public function webhook()
     {
         $data = $_POST;
+        $headers = getallheaders();
 
-        if ($this->verifyMAC($data)) {
-            $purpose = $data['purpose'];
-            $payment_request_id = $data['payment_request_id'];
+        $XVerify = $headers['X-VERIFY'];
 
-            // Check if payment_request_id is valid and is in database
-            try {
-                $response = $this->getLastPayment($payment_request_id);
+        $salt = config('services.phonepe.salt');
+        $salt_index = config('services.phonepe.salt_index');
 
-                if (!$response) return response()->json(['error' => 'No payment found'], 400);
+        $response = $data['response'];
 
-                $payment = PaymentModel::where('purpose', $purpose)->firstOrFail();
+        $xheader = hash('sha256', $response . $salt) . '###' . $salt_index;
 
-                if (array_key_exists('status', $response)) {
-                    $payment->update([
-                        'payment_id' => $response['id'],
-                        'payment_status' => $response['status'] === true ? 'success' : 'failed',
-                        'currency' => $response['currency'],
-                        'amount' => $response['amount'],
-                        'fees' => $response['fees'],
-                        'taxes' => $response['total_taxes'],
-                        'instrument_type' => $response['instrument_type'],
-                        'billing_instrument' => $response['billing_instrument'],
-                        'redirected' => true,
-                    ]);
+        if ($xheader != $XVerify) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid X-VERIFY',
+            ]);
+        }
 
-                    if ($response['status'] !== true) {
-                        $payment->update([
-                            'failure_reason' => $response['failure']['reason'],
-                            'failure_message' => $response['failure']['message'],
-                        ]);
+        $response = json_decode(base64_decode($response));
 
-                        $payment->subscription()->update([
-                            'status' => 'failed',
-                        ]);
-                    }
-                }
+        try {
+            $mid = $response->data->merchantId;
+            $mtid = $response->data->merchantTransactionId;
 
-                if ($data['status'] == "Credit") {
-                    $payment->update([
-                        'webhook_payment_id' => $data['payment_id'],
-                        'mac' => $data['mac'],
-                        'webhook_verified' => true,
-                    ]);
+            $finalXHeader = hash('sha256', config('services.phonepe.status_endpoint') . '/' . $mid . '/' . $mtid . $salt) . '###' . $salt_index;
 
-                    $payment->subscription()->update([
+            $url = config('services.phonepe.production') ? config('services.phonepe.prod_url') : config('services.phonepe.preprod_url');
+            $url .= config('services.phonepe.status_endpoint') . '/' . $mid . '/' . $mtid;
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => [
+                    "Content-Type: application/json",
+                    "accept: application/json",
+                    "X-VERIFY: " . $finalXHeader,
+                    "X-MERCHANT-ID: " . $mid,
+                ],
+            ]);
+
+            $response = json_decode(curl_exec($curl));
+            $err = curl_error($curl);
+            curl_close($curl);
+
+            if ($err) {
+                throw new \Exception("Error while creating payment request. err: $err");
+            }
+
+            if (!isset($response->success)) {
+                throw new \Exception("Error while creating payment request. success not set");
+            }
+
+            if (config('services.phonepe.merchant_id') != $mid) {
+                throw new \Exception("Invalid merchant id");
+            }
+
+            $payment = PaymentModel::where('phonepe_merchant_transaction_id', $mtid)->first();
+
+            if (!$payment) {
+                throw new \Exception("Payment not found");
+            }
+
+            if (isset($response->success)) {
+                $payment->update([
+                    'payment_id' => null,
+                    'payment_status' => $response->success == true ? 'success' : 'failed',
+                    'currency' => "INR",
+                    'amount' => $response->data->amount / 100,
+                    'fees' => null,
+                    'taxes' => null,
+                    'instrument_type' => null,
+                    'billing_instrument' => null,
+                    'redirected' => true,
+
+                    // phonepe
+                    'phonepe_order_id' => null,
+                    'phonepe_merchant_transaction_id' => $response->data->merchantTransactionId,
+                    'phonepe_transaction_id' => $response->data->transactionId,
+                    'phonepe_payment_type' => $response->success == true ? $response->data->paymentInstrument->type : null,
+                ]);
+
+                if ($response->success == true) {
+                    $subscription = $payment->subscription;
+
+                    $subscription->update([
                         'status' => 'paid',
                     ]);
                 } else {
                     $payment->update([
-                        'payment_status' => 'failed',
-                        'mac' => $data['mac'],
-                        'webhook_verified' => true,
+                        'failure_reason' => $response->code,
+                        'failure_message' => $response->message,
                     ]);
 
                     $payment->subscription()->update([
-                        'status' => 'failed',
+                        'status' => $response->code == "PAYMENT_PENDING" ? 'pending' : 'failed',
                     ]);
                 }
 
-                return response()->json(['success' => true], 200);
-            } catch (\Exception $e) {
-                // Send an email to yourself informing you of invalid webhook call
-
-                // Return error message
                 return response()->json([
-                    'error' => $e->getMessage() . ' - Failed',
-                    // 'trace' => $e->getTraceAsString(),
-                    // 'data' => $data,
-                ], 400);
+                    'success' => true,
+                    'message' => 'Payment status updated',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Payment status not updated',
+                ]);
             }
-        } else {
-            // Send an email to yourself informing you of invalid webhook call
-
-
-            // Return a 400 response to caller
-            return response()->json(['error' => 'Invalid webhook call (MAC)'], 400);
-        }
-    }
-
-    public function verifyMAC($data)
-    {
-        $mac_provided = $data['mac'];  // Get the MAC from the POST data
-        unset($data['mac']);  // Remove the MAC key from the data.
-        $ver = explode('.', phpversion());
-        $major = (int) $ver[0];
-        $minor = (int) $ver[1];
-        if ($major >= 5 and $minor >= 4) {
-            ksort($data, SORT_STRING | SORT_FLAG_CASE);
-        } else {
-            uksort($data, 'strcasecmp');
-        }
-        // You can get the 'salt' from Instamojo's developers page(make sure to log in first): https://www.instamojo.com/developers
-        // Pass the 'salt' without <>
-        $mac_calculated = hash_hmac("sha1", implode("|", $data), config('services.instamojo.private_salt'));
-        if ($mac_provided == $mac_calculated) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function createAPI()
-    {
-        if (config('services.instamojo.sandbox')) {
-            $api = Instamojo::init(
-                config('services.instamojo.auth_type'),
-                [
-                    "client_id" => config('services.instamojo.client_id'),
-                    "client_secret" => config('services.instamojo.client_secret'),
-                ],
-                True
-            );
-        } else {
-            $api = Instamojo::init(
-                config('services.instamojo.auth_type'),
-                [
-                    "client_id" => config('services.instamojo.client_id'),
-                    "client_secret" => config('services.instamojo.client_secret'),
-                ],
-                False
-            );
-        }
-
-        return $api;
-    }
-
-    public function getLastPayment($payment_request_id)
-    {
-        $api = $this->createAPI();
-        $payment_request = $api->getPaymentRequestDetails($payment_request_id);
-        $ps = $payment_request['payments'];
-
-        if (count($ps) == 0) return false;
-
-        $payments = array();
-
-        foreach ($ps as $p) {
-            // Sample
-            $id = $this->getPaymentIdFromLink($p);
-
-            if (!$id) continue; // Skip if payment id is not found (invalid link
-
-            $payment = $api->getPaymentDetails($id);
-            array_push($payments, $payment);
-        }
-
-        // Check if any payment is successful
-        foreach ($payments as $payment) {
-            if ($payment['status'] === true && $payment['failure'] === null) {
-                return $payment;
-            }
-        }
-
-        // If no payment is successful, return the payment with the latest created_at
-        $latest_payment = $payments[0];
-
-        foreach ($payments as $payment) {
-            if (Carbon::parse($payment['created_at']) > Carbon::parse($latest_payment['created_at'])) {
-                $latest_payment = $payment;
-            }
-        }
-
-        return $latest_payment;
-    }
-
-    public function getPaymentIdFromLink($link)
-    {
-        if (preg_match('/\/payments\/(.*?)\//', $link, $matches)) {
-            // $matches[1] contains the captured value
-            $result = $matches[1];
-            return $result;
-        } else {
-            return false;
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 }
