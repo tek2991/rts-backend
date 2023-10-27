@@ -176,9 +176,40 @@
             <div class="">
                 <a class="hover:underline transition text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     href="{{ route('register') }}">
-                    {{ __('Register') }}
+                    {{ __('Need an account? Register') }}
                 </a>
             </div>
+
+            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                <div class="mt-4">
+                    <x-label for="terms">
+                        <div class="flex items-center">
+                            <div class="">
+                                {!! __('Read the :terms_of_service and :privacy_policy and :refund_policy', [
+                                    'terms_of_service' =>
+                                        '<a target="_blank" href="' .
+                                        route('terms.show') .
+                                        '" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                        __('Terms of Service') .
+                                        '</a>',
+                                    'privacy_policy' =>
+                                        '<a target="_blank" href="' .
+                                        route('policy.show') .
+                                        '" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                        __('Privacy Policy') .
+                                        '</a>',
+                                    'refund_policy' =>
+                                        '<a target="_blank" href="' .
+                                        route('refund.show') .
+                                        '" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                        __('Refund Policy') .
+                                        '</a>',
+                                ]) !!}
+                            </div>
+                        </div>
+                    </x-label>
+                </div>
+            @endif
         </div>
     </x-authentication-card>
 </div>
