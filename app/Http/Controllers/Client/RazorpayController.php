@@ -64,7 +64,7 @@ class RazorpayController extends Controller
                 $subscription->update([
                     'status' => 'paid'
                 ]);
-                return redirect()->route('client.subscription.index')->successBanner('Payment successful.');
+                return redirect()->route('client.subscription.index')->banner('Payment successful.');
             } else {
                 return redirect()->route('client.subscription.index')->dangerBanner('Payment failed.');
             }
