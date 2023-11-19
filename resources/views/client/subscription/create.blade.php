@@ -1,4 +1,5 @@
 <x-app-layout>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <x-slot name="header">
         {{-- Back to packages --}}
         <a href="{{ route('client.package.index') }}"
@@ -55,24 +56,7 @@
 
                 {{-- Payment Button --}}
                 {{-- <form action="" method="POST"> --}}
-
-                <form action="{{ $payment_route }}" method="GET">
-                    {{-- @csrf --}}
-                    {{-- <input type="hidden" name="package_id" value="{{ $package->id }}"> --}}
-                    {{-- <input type="hidden" name="coupon_id" value="{{ $coupon->id ?? null }}"> --}}
-                    <div class="max-w-xs items-center mx-auto">
-                        <div class="mt-4">
-                            <button type="submit"
-                                class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">
-                                Pay Now
-                            </button>
-                            <p>
-                                <small class="text-gray-500">* You will be redirected to the payment gateway to
-                                    complete the payment.</small>
-                            </p>
-                        </div>
-                    </div>
-                </form>
+                @livewire('client.payment-button', ['payment_gateway' => $payment_gateway])
             </div>
             <p>
                 @if ($payment_gateway == 'instamojo')
@@ -84,6 +68,11 @@
                     Powered by <a href="https://www.phonepe.com/" target="_blank"
                         class="text-green-500 hover:underline">
                         PhonePe
+                    </a>
+                @elseif ($payment_gateway == 'razorpay')
+                    Powered by <a href="https://www.razorpay.com/" target="_blank"
+                        class="text-green-500 hover:underline">
+                        Razorpay
                     </a>
                 @endif
             </p>

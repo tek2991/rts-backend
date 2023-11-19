@@ -50,6 +50,9 @@ Route::post('payment/instamojo/webhook', [App\Http\Controllers\Client\PaymentCon
 // Phonepe Webhook
 Route::post('payment/phonepe/webhook', [App\Http\Controllers\Client\PhonepeController::class, 'webhook'])->name('phonepe.payment.webhook');
 
+// Razorpay Webhook
+Route::post('payment/razorpay/webhook', [App\Http\Controllers\Client\RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+
 // Public Dealers
 Route::prefix('public')->name('public.')->group(function () {
     Route::resource('dealer', App\Http\Controllers\PublicDealerController::class)->only(['index', 'create', 'store']);
@@ -82,6 +85,9 @@ Route::middleware([
 
         Route::get('phonepe/pay', [App\Http\Controllers\Client\PhonepeController::class, 'pay'])->name('phonepe.payment.pay');
         Route::get('phonepe/success/{mid}/{mtid}/{shmtid}', [App\Http\Controllers\Client\PhonepeController::class, 'success'])->name('phonepe.payment.success');
+
+        Route::get('razorpay/pay', [App\Http\Controllers\Client\RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
+        Route::post('razorpay/success', [App\Http\Controllers\Client\RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
         Route::get('/dashboard', function () {
             return view('client.dashboard');

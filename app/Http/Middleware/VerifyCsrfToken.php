@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
         // 'payment/instamojo/webhook',
         'payment/instamojo/webhook',
         'client/phonepe/success',
+        'client/razorpay/success',
+        'payment/razorpay/webhook',
     ];
 }

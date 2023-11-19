@@ -24,7 +24,7 @@ class PublicSubscriptionController extends Controller
         }
 
         $payment_gateway = $request->gateway;
-        if($payment_gateway != 'instamojo' && $payment_gateway != 'phonepe') {
+        if($payment_gateway != 'instamojo' && $payment_gateway != 'phonepe' && $payment_gateway != 'razorpay') {
             $payment_gateway = config('services.payment_gateway.default');
         }
 

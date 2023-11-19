@@ -19,6 +19,7 @@
         "livewire/livewire": "^2.11",
         "openspout/openspout": "^4.14",
         "power-components/livewire-powergrid": "^4.8",
+        "razorpay/razorpay": "2.*",
         "spatie/laravel-permission": "^5.10",
         "wire-elements/modal": "^1.0"
     },

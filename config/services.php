@@ -66,7 +66,14 @@ return [
         'production' => env('PHONEPE_PRODUCTION', false),
     ],
 
+    'razorpay' => [
+        'key' => env('RAZORPAY_KEY'),
+        'secret' => env('RAZORPAY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+        'hosted_url' => env('RAZORPAY_HOSTED_URL'),
+    ],
+
     'payment_gateway' => [
-        'default' => env('PAYMENT_GATEWAY', 'instamojo'), // 'instamojo' or 'phonepe
+        'default' => env('PAYMENT_GATEWAY', 'instamojo'), // 'instamojo' or 'phonepe' or 'razorpay'
     ],
 ];

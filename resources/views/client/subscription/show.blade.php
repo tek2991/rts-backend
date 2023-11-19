@@ -70,9 +70,29 @@
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        @php
+                            $payment_id = 'NA';
+
+                            if ($subscription->payment) {
+                                // Case 1: Payment gateway is Razorpay
+                                if ($subscription->payment->gateway == 'razorpay') {
+                                    $payment_id = $subscription->payment->razorpay_payment_id;
+                                }
+
+                                // Case 2: Payment gateway is Instamojo
+                                if ($subscription->payment->gateway == 'instamojo') {
+                                    $payment_id = $subscription->payment->payment_id;
+                                }
+
+                                // Case 3: Payment gateway is PhonePe
+                                if ($subscription->payment->gateway == 'phonepe') {
+                                    $payment_id = $subscription->payment->phonepe_transaction_id;
+                                }
+                            }
+                        @endphp
                         <div>
                             Payment ID: <span class="font-semibold">
-                                {{ $subscription->payment->payment_id ? $subscription->payment->payment_id : $subscription->payment->phonepe_transaction_id ?? 'N/A' }}
+                                {{ $payment_id }}
                             </span>
                         </div>
                         <div>

@@ -45,7 +45,7 @@ class SubscriptionController extends Controller
         }
 
         $payment_gateway = $request->gateway;
-        if($payment_gateway != 'instamojo' && $payment_gateway != 'phonepe') {
+        if($payment_gateway != 'instamojo' && $payment_gateway != 'phonepe' && $payment_gateway != 'razorpay') {
             $payment_gateway = config('services.payment_gateway.default');
         }
 
@@ -57,9 +57,9 @@ class SubscriptionController extends Controller
         $tax = $data['tax'];
         $tax_rate = $data['tax_rate'];
         $net_amount = $data['net_amount'];
-        $payment_route = $payment_gateway == 'instamojo' ? route('client.instamojo.payment.pay') : route('client.phonepe.payment.pay');
+        $payment_route = '';
 
-        return view('client.subscription.create', compact('package', 'coupon', 'discount_amount', 'gross_amount', 'tax', 'tax_rate', 'net_amount', 'payment_route', 'payment_gateway'));
+        return view('client.subscription.create', compact('package', 'coupon', 'discount_amount', 'gross_amount', 'tax', 'tax_rate', 'net_amount', 'payment_gateway'));
     }
 
     /**

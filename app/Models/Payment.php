@@ -42,6 +42,11 @@ class Payment extends Model
         'phonepe_merchant_transaction_id',
         'phonepe_transaction_id',
         'phonepe_payment_type',
+
+        // Razorpay
+        'razorpay_order_id',
+        'razorpay_payment_id',
+        'razorpay_signature',
     ];
 
     // Casts
