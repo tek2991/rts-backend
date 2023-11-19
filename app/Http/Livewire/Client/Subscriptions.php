@@ -20,6 +20,7 @@ class Subscriptions extends Component
             ->with('package')
             ->with('coupon')
             ->with('activationCode')
+            ->orderBy('id', 'desc')
             ->paginate();
             
         return view('livewire.client.subscriptions', compact('subscriptions'));
