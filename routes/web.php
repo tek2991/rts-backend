@@ -30,7 +30,7 @@ use App\Http\Controllers\Client\ClientActivationCodeController;
 */
 
 // Import Jetstream routes jetsream.php
-// require_once base_path('routes/jetstream.php');
+require_once base_path('routes/jetstream.php');
 
 // Import Fortify routes fortify.php
 require_once base_path('routes/fortify.php');

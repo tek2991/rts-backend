@@ -14,6 +14,9 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
     if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
         Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
         Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
+
+        // Refund policy...
+        Route::get('/refund-policy', [App\Http\Controllers\RefundPolicyController::class, 'show'])->name('refund.show');
     }
 
     $authMiddleware = config('jetstream.guard')
