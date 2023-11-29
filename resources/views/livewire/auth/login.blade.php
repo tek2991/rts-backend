@@ -210,12 +210,6 @@
                     </x-label>
                 </div>
             @endif
-
-            <div class="fixed bottom-4 left-4">
-                <p class="text-sm text-gray-600 ">
-                    This website is managed by Privatech Garden LLP
-                </p>
-            </div>
         </div>
     </x-authentication-card>
 </div>

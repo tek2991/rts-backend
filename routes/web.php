@@ -39,6 +39,16 @@ Route::get('/', function () {
     return redirect()->route('login');
 })->name('home');
 
+// About us
+Route::get('/about-us', function () {
+    return view('about-us');
+})->name('about-us');
+
+// Contact us
+Route::get('/contact-us', function () {
+    return view('contact-us');
+})->name('contact-us');
+
 // Mobile Number Verification...
 Route::get('/mobile-verification-notice', function () {
     return view('auth.verify-mobile-number');
