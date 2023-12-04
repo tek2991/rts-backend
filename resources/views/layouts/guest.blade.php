@@ -16,10 +16,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-gray-100">
     {{-- If route is not login or register --}}
     @if (!in_array(Route::currentRouteName(), ['login', 'register']))
-        <div class="fixed top-4 px-4 w-full flex justify-center">
+        <div class="px-4 mb-8 mt-4 w-full flex justify-center">
             <a href="{{ route('login') }}" class="hover:underline">
                 login
             </a>
@@ -32,12 +32,15 @@
     @endif
 
     <div class="font-sans text-gray-900 antialiased">
-        {{ $slot }}
+        <div>
+            {{ $slot }}
+        </div>
     </div>
-    <div class="fixed bottom-0 px-4 w-full bg-black text-gray-50">
-        <div class="sm:flex sm:justify-between mx-auto max-w-7xl sm:px-4 md:px-6 lg:px-8 py-4 text-center sm:text-start font-semibold">
+    <div class="px-4 w-full bg-black text-gray-50 mt-8">
+        <div
+            class="sm:flex sm:justify-between mx-auto max-w-7xl sm:px-4 md:px-6 lg:px-8 py-4 text-center sm:text-start font-semibold">
             <p class="text-sm">
-                This website is managed by Merabow LLP
+                This website is managed by Privatech Garden LLP
             </p>
             <p class="text-sm pt-2 sm:pt-0">
                 <a href="{{ route('contact-us') }}" class="hover:underline">
