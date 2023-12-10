@@ -30,7 +30,10 @@ class ActivationCode extends Model
 
     public function user()
     {
-        return $this->hasOneThrough(User::class, Subscription::class);
+        if($this->subscription()->exists()) {
+            return $this->subscription->user();
+        }
+        return null;
     }
 
     public function isValid()
