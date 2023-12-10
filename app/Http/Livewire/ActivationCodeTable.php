@@ -174,6 +174,11 @@ final class ActivationCodeTable extends PowerGridComponent
                ->route('activation-code.edit',['activation_code' => 'id'])
                ->target(''),
 
+           Button::make('show', 'View')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('activation-code.show',['activation_code' => 'id'])
+               ->target(''),
+
         //    Button::make('destroy', 'Delete')
         //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
         //        ->route('activation-code.destroy', function(\App\Models\ActivationCode $model) {
