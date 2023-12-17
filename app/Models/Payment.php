@@ -278,7 +278,7 @@ class Payment extends Model
                 ]);
                 return true;
             } else {
-                return "Payment failed";
+                return "Payment failed, Status: " . $order->status . ", Attempts: " . $order->attempts;
             }
         } catch (\Exception $e) {
             return $e->getMessage();
