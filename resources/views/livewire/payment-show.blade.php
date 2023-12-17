@@ -26,16 +26,65 @@
             @endif
             @if ($subscription->package)
                 <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-8">
-                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                    <h2 class="mb-1 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                         Payment Details
                     </h2>
+                    <p class="mb-4 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                        Payment Gateway: {{ $payment->gateway ?? 'N/A' }}
+                    </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div>
-                            Payment ID: <span class="font-semibold">
-                                {{ $payment->payment_id ?? 'N/A' }}
-                            </span>
-                        </div>
+                        @if ($payment->gateway == 'instamojo')      
+                            <div>
+                                Payment ID: <span class="font-semibold">
+                                    {{ $payment->payment_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                            <div class="sm:col-span-3 text-left flex justify-between">
+                                Payment Request ID: <span class="font-semibold">
+                                    {{ $payment->payment_request_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                            <div class="sm:col-span-3 text-left  flex justify-between">
+                                Purpose: <span class="font-semibold">
+                                    {{ $payment->purpose ?? 'N/A' }}
+                                </span>
+                            </div>
+                            <div class="sm:col-span-3 text-left  flex justify-between">
+                                Mac: <span class="font-semibold">
+                                    {{ $payment->mac ?? '' }}
+                                </span>
+                            </div>
+                        @endif
+                        @if ($payment->gateway == 'phonepe')
+                            <div>
+                                Order ID: <span class="font-semibold">
+                                    {{ $payment->phonepe_order_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                            <div class="sm:col-span-3 text-left flex justify-between">
+                                Transaction ID: <span class="font-semibold">
+                                    {{ $payment->phonepe_transaction_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                            <div class="sm:col-span-3 text-left flex justify-between">
+                                Merchant Transaction ID: <span class="font-semibold">
+                                    {{ $payment->phonepe_merchant_transaction_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                        @endif
+                        @if ($payment->gateway == 'razorpay')
+                            <div>
+                                Order ID: <span class="font-semibold">
+                                    {{ $payment->razorpay_order_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                            <div class="sm:col-span-3 text-left flex justify-between">
+                                Payment ID: <span class="font-semibold">
+                                    {{ $payment->razorpay_payment_id ?? 'N/A' }}
+                                </span>
+                            </div>
+                        @endif
                         <div>
                             Redirected: <span class="font-semibold">
                                 {{ $payment->redirected ? 'Yes' : 'No' }}
@@ -44,21 +93,6 @@
                         <div>
                             Webhook Verified: <span class="font-semibold">
                                 {{ $payment->webhook_verified ? 'Yes' : 'No' }}
-                            </span>
-                        </div>
-                        <div class="sm:col-span-3 text-left flex justify-between">
-                            Payment Request ID: <span class="font-semibold">
-                                {{ $payment->payment_request_id ?? 'N/A' }}
-                            </span>
-                        </div>
-                        <div class="sm:col-span-3 text-left  flex justify-between">
-                            Purpose: <span class="font-semibold">
-                                {{ $payment->purpose ?? 'N/A' }}
-                            </span>
-                        </div>
-                        <div class="sm:col-span-3 text-left  flex justify-between">
-                            Mac: <span class="font-semibold">
-                                {{ $payment->mac ?? '' }}
                             </span>
                         </div>
                         <div>
