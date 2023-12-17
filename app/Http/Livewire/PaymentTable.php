@@ -98,19 +98,19 @@ final class PaymentTable extends PowerGridComponent
             ->addColumn('id')
             ->addColumn('payment_id')
 
-            ->addColumn('payment_link', fn (Payment $model) => '<a href="' . route('payment.show', $model->id) . '" class="text-blue-500 hover:text-blue-600 hover:underline font-semibold">' . $model->payment_id .  '</a>')
+            ->addColumn('payment_link', fn(Payment $model) => '<a href="' . route('payment.show', $model->id) . '" class="text-blue-500 hover:text-blue-600 hover:underline font-semibold">' . $model->payment_id . '</a>')
 
             /** Example of custom column using a closure **/
             // ->addColumn('payment_id_lower', fn (Payment $model) => strtolower(e($model->payment_id)))
 
             // ->addColumn('webhook_payment_id')
             ->addColumn('payment_request_id')
-            ->addColumn('payment_request_link', fn (Payment $model) => '<a href="' . route('payment.show', $model->id) . '" class="text-blue-500 hover:text-blue-600 hover:underline font-semibold">' . $model->payment_request_id .  '</a>')
+            ->addColumn('payment_request_link', fn(Payment $model) => '<a href="' . route('payment.show', $model->id) . '" class="text-blue-500 hover:text-blue-600 hover:underline font-semibold">' . $model->payment_request_id . '</a>')
             ->addColumn('payment_status')
             // ->addColumn('currency')
             // ->addColumn('amount_in_cents')
             ->addColumn('amount')
-            ->addColumn('amount_formatted', fn (Payment $model) => '₹ ' . number_format($model->amount, 2, ',', '.'))
+            ->addColumn('amount_formatted', fn(Payment $model) => '₹ ' . number_format($model->amount, 2, ',', '.'))
             ->addColumn('instrument_type')
             ->addColumn('billing_instrument')
             ->addColumn('failure_reason')
@@ -124,11 +124,12 @@ final class PaymentTable extends PowerGridComponent
             // ->addColumn('longurl')
             ->addColumn('mac')
             ->addColumn('redirected')
-            ->addColumn('redirected_formatted', fn (Payment $model) => $model->redirected ? 'Yes' : 'No')
+            ->addColumn('redirected_formatted', fn(Payment $model) => $model->redirected ? 'Yes' : 'No')
             ->addColumn('webhook_verified')
-            ->addColumn('webhook_verified_formatted', fn (Payment $model) => $model->webhook_verified ? 'Yes' : 'No')
+            ->addColumn('webhook_verified_formatted', fn(Payment $model) => $model->webhook_verified ? 'Yes' : 'No')
             ->addColumn('user_id')
-            ->addColumn('created_at_formatted', fn (Payment $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn(Payment $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+            ->addColumn('gateway');
     }
 
     /*
@@ -149,13 +150,13 @@ final class PaymentTable extends PowerGridComponent
     {
         return [
             // Column::make('Id', 'id'),
-            Column::make('Payment', 'payment_link', 'payment_id')
-                ->sortable()
-                ->searchable(),
+            // Column::make('Payment', 'payment_link', 'payment_id')
+            //     ->sortable()
+            //     ->searchable(),
 
-            Column::make('Payment request id', 'payment_request_link',  'payment_request_id')
-                ->sortable()
-                ->searchable(),
+            // Column::make('Payment request id', 'payment_request_link',  'payment_request_id')
+            //     ->sortable()
+            //     ->searchable(),
 
             // Column::make('Webhook payment id', 'webhook_payment_id')
             //     ->sortable()
@@ -164,6 +165,9 @@ final class PaymentTable extends PowerGridComponent
             // Column::make('Currency', 'currency')
             //     ->sortable()
             //     ->searchable(),
+            Column::make('Gateway', 'gateway')
+                ->sortable()
+                ->searchable(),
 
             Column::make('Amount', 'amount_formatted', 'amount')
                 ->sortable()
@@ -201,8 +205,7 @@ final class PaymentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->sortable(),
+            Column::make('Created at', 'created_at_formatted', 'created_at')->sortable(),
 
             Column::make('Purpose', 'purpose')
                 ->sortable()
@@ -218,18 +221,17 @@ final class PaymentTable extends PowerGridComponent
 
             // Column::make('User id', 'user_id'),
 
-            Column::make('Mac', 'mac')
-                ->sortable()
-                ->searchable(),
+            // Column::make('Mac', 'mac')
+            //     ->sortable()
+            //     ->searchable(),
 
-            Column::make('Instrument', 'instrument_type')
-                ->sortable()
-                ->searchable(),
+            // Column::make('Instrument', 'instrument_type')
+            //     ->sortable()
+            //     ->searchable(),
 
-            Column::make('Failure reason', 'failure_reason')
-                ->sortable()
-                ->searchable(),
-
+            // Column::make('Failure reason', 'failure_reason')
+            //     ->sortable()
+            //     ->searchable(),
         ];
     }
 
@@ -240,11 +242,7 @@ final class PaymentTable extends PowerGridComponent
      */
     public function filters(): array
     {
-        return [
-            Filter::boolean('redirected'),
-            Filter::boolean('webhook_verified'),
-            Filter::datetimepicker('created_at'),
-        ];
+        return [Filter::boolean('redirected'), Filter::boolean('webhook_verified'), Filter::datetimepicker('created_at')];
     }
 
     /*
@@ -261,25 +259,24 @@ final class PaymentTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('payment.edit', function(\App\Models\Payment $model) {
-                    return $model->id;
-               }),
+        return [
+            Button::make('show', 'Show')
+                ->class('bg-indigo-500 cursor-pointer text-white px-2.5 py-1 m-1 rounded text-sm')
+                ->route('payment.show', ['payment' => 'id'])
+                ->target(''),
 
+            /*
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
                ->route('payment.destroy', function(\App\Models\Payment $model) {
                     return $model->id;
                })
                ->method('delete')
+               */
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------
