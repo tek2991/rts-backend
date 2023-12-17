@@ -29,7 +29,7 @@ class RazorpayController extends Controller
                 return redirect()->route('client.subscription.index')->dangerBanner('Invalid order id.');
             }
 
-            // Check if order id exists in database
+            // Check if order exists in database
             $order = Payment::where('razorpay_order_id', $request->razorpay_order_id)->first();
 
             if (!$order) {
@@ -52,9 +52,7 @@ class RazorpayController extends Controller
 
                 $payment->update([
                     'payment_status' => 'success',
-
                     'redirected' => true,
-
                     'razorpay_payment_id' => $request->razorpay_payment_id,
                     'razorpay_signature' => $request->razorpay_signature,
                 ]);

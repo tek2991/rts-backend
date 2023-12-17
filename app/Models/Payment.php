@@ -35,8 +35,9 @@ class Payment extends Model
         'webhook_verified',
         'user_id',
 
-        // Phonepe
         'gateway',
+
+        // Phonepe
         'phonepe_order_id',
         'phonepe_longurl',
         'phonepe_merchant_transaction_id',
@@ -128,8 +129,7 @@ class Payment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function recheck()
-    {
+    public function recheck_instamojo(){
         if (config('services.instamojo.sandbox')) {
             $api = Instamojo::init(
                 config('services.instamojo.auth_type'),
@@ -234,6 +234,66 @@ class Payment extends Model
             }
         } catch (\Exception $e) {
             return $e->getMessage() . " - exception";
+        }
+    }
+
+    public function recheck_phonepe(){
+    }
+
+    public function recheck_razorpay(){
+        $key = config('services.razorpay.key');
+        $secret = config('services.razorpay.secret');
+
+        try {
+            $api = new Razorpay\Api\Api($key, $secret);
+
+            $order = $api->order->fetch($this->razorpay_order_id);
+
+            // If order status is paid
+            if ($order->status == 'paid') {
+                $razorpay_payments = $order->payments();
+                $successfull_paymenmt = null;
+                foreach ($razorpay_payments->items as $payment) {
+                    if ($payment->status == 'captured') {
+                        $successfull_paymenmt = $payment;
+                        break;
+                    }
+                }
+
+                if ($successfull_paymenmt == null) {
+                    return "No successful payment found";
+                }
+
+                $this->update([
+                    'payment_status' => 'success',
+                    'redirected' => true,
+                    'razorpay_payment_id' => $successfull_paymenmt->id,
+                ]);
+
+                $subscription = $payment->subscription;
+
+                $subscription->update([
+                    'status' => 'paid'
+                ]);
+                return true;
+            } else {
+                return "Payment failed";
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function recheck()
+    {
+        if ($this->gateway == 'instamojo') {
+            return $this->recheck_instamojo();
+        } else if ($this->gateway == 'phonepe') {
+            // return $this->recheck_phonepe();
+        } else if ($this->gateway == 'razorpay') {
+            return $this->recheck_razorpay();
+        } else {
+            return "Invalid gateway";
         }
     }
 }
