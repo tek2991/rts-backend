@@ -6,6 +6,7 @@ use Instamojo\Instamojo;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Razorpay\Api\Api as RazorpayApi;
 
 class Payment extends Model
 {
@@ -245,7 +246,7 @@ class Payment extends Model
         $secret = config('services.razorpay.secret');
 
         try {
-            $api = new Razorpay\Api\Api($key, $secret);
+            $api = new RazorpayApi($key, $secret);
 
             $order = $api->order->fetch($this->razorpay_order_id);
 
