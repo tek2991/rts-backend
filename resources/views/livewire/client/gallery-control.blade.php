@@ -32,7 +32,7 @@
                     {{-- Delete button or upper right corner --}}
                     <div class="flex justify-end">
                         <button
-                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $image->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
+                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $item->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -55,7 +55,7 @@
                     {{-- Delete button or upper right corner --}}
                     <div class="flex justify-end">
                         <button
-                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $image->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
+                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $item->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
