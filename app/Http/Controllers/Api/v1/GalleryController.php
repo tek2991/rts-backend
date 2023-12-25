@@ -114,6 +114,7 @@ class GalleryController extends Controller
      * @bodyParam device_id string optional The device ID. If not provided, the user's default device ID will be used.
      * @bodyParam photo_id string required The ID of the photo to upload to.
      * @bodyParam photo file required The photo to upload (JPEG, PNG, JPG, GIF, SVG). Max size: 2048 KB.
+     * @bodyParam overwrite boolean optional If true, the photo will be overwritten if it already exists. Default: false.
      *
      * @response 200 {
      *     "status": true,
@@ -136,7 +137,9 @@ class GalleryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'device_id' => 'required',
+            'photo_id' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'overwrite' => 'nullable|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -157,6 +160,25 @@ class GalleryController extends Controller
         $user = auth()->user();
         $device_id = $data['device_id'] ?? $user->device_id;
 
+        $exists = GalleryItem::where('device_gallery_id', $request->photo_id)
+            ->where('device_id', $device_id)
+            ->where('user_id', $user->id)
+            ->exists();
+
+        if(!$request->overwrite) {
+            if ($exists) {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => 'Photo already exists',
+                        'errors' => (object) [],
+                        'data' => (object) [],
+                    ],
+                    406,
+                );
+            }
+        }
+
         if (!$device_id) {
             return response()->json(
                 [
@@ -170,6 +192,23 @@ class GalleryController extends Controller
         }
 
         try {
+            if($request->overwrite && $exists) {
+                $model = GalleryItem::where('device_gallery_id', $request->photo_id)
+                    ->where('device_id', $device_id)
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                
+                // Delete from s3 bucket
+                $exists = \Storage::disk('s3')->exists('gallery/images/' . $model->media_url);
+                if ($exists) {
+                    \Storage::disk('s3')->delete('gallery/images/' . $model->media_url);
+                }
+                
+                // Delete from database
+                $model->delete();
+            }
+            
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();

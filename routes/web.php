@@ -162,6 +162,10 @@ Route::middleware([
 
             // Vibrate Phone
             Route::get('vibrate-phone', [App\Http\Controllers\Client\VibratePhoneController::class, 'index'])->name('vibrate-phone');
+
+            // Gallery
+            Route::get('gallery', [App\Http\Controllers\Client\GalleryController::class, 'index'])->name('gallery');
+            Route::delete('gallery/{gallery-item-id}', [App\Http\Controllers\Client\GalleryController::class, 'destroy'])->name('gallery.destroy');
         });
     });
 

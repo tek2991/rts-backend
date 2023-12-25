@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryItem extends Model
 {
@@ -16,5 +17,16 @@ class GalleryItem extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function s3Url()
+    {
+        $mins = 5;
+        $type = $this->media_type == 'image' ? 'images/' : 'videos/';
+        $url = Storage::disk('s3')->temporaryUrl(
+            'gallery/' . $type . $this->filename,
+            now()->addMinutes($mins)
+        );
+        return $url;
     }
 }
