@@ -165,7 +165,7 @@ Route::middleware([
 
             // Gallery
             Route::get('gallery', [App\Http\Controllers\Client\GalleryController::class, 'index'])->name('gallery');
-            Route::delete('gallery/{gallery-item-id}', [App\Http\Controllers\Client\GalleryController::class, 'destroy'])->name('gallery.destroy');
+            Route::delete('gallery/{id}', [App\Http\Controllers\Client\GalleryController::class, 'destroy'])->name('gallery.destroy');
         });
     });
 
