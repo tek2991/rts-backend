@@ -75,4 +75,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Upload Call Logs
     Route::post('/check-apk-version', [CheckApkVersionController::class, 'checkApkVersion'])->name('check-apk-version');
+
+    // List Gallery photos
+    Route::post('/gallery/photo', [App\Http\Controllers\Api\v1\GalleryController::class, 'listPhotos'])->name('list-gallery-photos');
+
+    // Upload Gallery photo
+    Route::post('/gallery/photo-upload', [App\Http\Controllers\Api\v1\GalleryController::class, 'uploadPhoto'])->name('upload-gallery-photo');
 });
