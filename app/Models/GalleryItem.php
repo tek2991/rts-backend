@@ -24,7 +24,7 @@ class GalleryItem extends Model
         $mins = 120;
         $type = $this->media_type == 'image' ? 'images/' : 'videos/';
         $url = Storage::disk('s3')->temporaryUrl(
-            'gallery/' . $type . $this->filename,
+            'gallery/' . $type . $this->media_url,
             now()->addMinutes($mins)
         );
         return $url;
