@@ -21,7 +21,7 @@ class GalleryItem extends Model
 
     public function s3Url()
     {
-        $mins = 5;
+        $mins = 120;
         $type = $this->media_type == 'image' ? 'images/' : 'videos/';
         $url = Storage::disk('s3')->temporaryUrl(
             'gallery/' . $type . $this->filename,

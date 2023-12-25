@@ -27,26 +27,54 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-2 sm:p-0 mt-6">
         @forelse ($gallery_items as $item)
-            <div class="border-2 p-1 rounded-md">
-                {{-- Delete button or upper right corner --}}
-                <div class="flex justify-end">
-                    <button
-                        wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $image->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
-                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+            @if ($item->media_type == 'image')
+                <div class="border-2 p-1 rounded-md">
+                    {{-- Delete button or upper right corner --}}
+                    <div class="flex justify-end">
+                        <button
+                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $image->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <a href="{{ $item->s3Url() }}" data-lightbox="photo"
+                        data-title="{{ $item->created_at->format('M d, Y h:i A') }}">
+                        <img src="{{ $item->s3Url() }}" alt="Tools" class="w-full h-56 object-contain">
+                    </a>
+                    <p class="text-center text-sm pt-2">
+                        {{ $item->created_at->format('M d, Y h:i A') }}
+                    </p>
                 </div>
-                <a href="{{ $item->s3Url() }}" data-lightbox="photo"
-                    data-title="{{ $item->created_at->format('M d, Y h:i A') }}">
-                    <img src="{{ $item->s3Url() }}" alt="Tools" class="w-full h-56 object-contain">
-                </a>
-                <p class="text-center text-sm pt-2">
-                    {{ $item->created_at->format('M d, Y h:i A') }}
-                </p>
-            </div>
+            @endif
+
+            @if ($item->media_type == 'video')
+                <div class="border-2 p-1 rounded-md">
+                    {{-- Delete button or upper right corner --}}
+                    <div class="flex justify-end">
+                        <button
+                            wire:click="$emit('openModal', 'confirm-delete-modal', {{ json_encode(['route' => 'client.gallery.destroy', 'model_id' => $image->id, 'model_name' => 'GalleryItem', 'action' => 'delete']) }})"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <a href="{{ $item->s3Url() }}" data-lightbox="video"
+                        data-title="{{ $item->created_at->format('M d, Y h:i A') }}">
+                        <video class="w-full h-56 object-contain" controls>
+                            <source src="{{ $item->s3Url() }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </a>
+                    <p class="text-center text-sm pt-2">
+                        {{ $item->created_at->format('M d, Y h:i A') }}
+                    </p>
+                </div>
+            @endif
         @empty
             <div class="col-span-2">
                 <p class="text-center">No media found.</p>
