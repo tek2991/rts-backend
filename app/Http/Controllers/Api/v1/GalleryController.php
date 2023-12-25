@@ -175,7 +175,7 @@ class GalleryController extends Controller
             $filename = 'uid-' . $user->id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
 
             // Upload file to s3 bucket under 'images' folder
-            $path = $request->photo->storeAs('test', $filename, 's3');
+            $path = $request->photo->storeAs('gallery/images', $filename, 's3');
 
             // Save to database
             $gallery_item = GalleryItem::create([
