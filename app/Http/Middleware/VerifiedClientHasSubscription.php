@@ -15,7 +15,6 @@ class VerifiedClientHasSubscription
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
         // If user has administrator or manager role, let them through
         if ($request->user()->hasAnyRole('administrator', 'manager')) {
             return $next($request);
