@@ -113,7 +113,7 @@ class GalleryController extends Controller
      *
      * @bodyParam device_id string optional The device ID. If not provided, the user's default device ID will be used.
      * @bodyParam photo_id string required The ID of the photo to upload to.
-     * @bodyParam photo file required The photo to upload (JPEG, PNG, JPG, GIF, SVG). Max size: 2048 KB.
+     * @bodyParam photo file required The photo to upload (JPEG, PNG, JPG, GIF, SVG). Max size: 25 MB.
      * @bodyParam overwrite boolean optional If true, the photo will be overwritten if it already exists. Default: false.
      *
      * @response 200 {
@@ -138,7 +138,7 @@ class GalleryController extends Controller
         $validator = Validator::make($request->all(), [
             'device_id' => 'required',
             'photo_id' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'overwrite' => 'nullable|boolean',
         ]);
 
