@@ -51,6 +51,9 @@ class ControlGallery extends Component
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
             ]);
         }
+
+        // Reload images
+        $this->loadImages();
     }
 
     public function syncGallery()

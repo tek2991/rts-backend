@@ -235,14 +235,13 @@
 
             {{-- My Files --}}
             <div>
-                <a href="#" class="flex justify-center items-center flex-col" data-modal-target="popup-modal"
-                    data-modal-toggle="popup-modal"z>
+                <a href="{{ route('client.gallery') }}" class="flex justify-center items-center flex-col">
                     <div
                         class="bg-white shadow-sm rounded-3xl w-16 sm:w-20 aspect-square p-2 hover:p-1 hover:shadow-md transition-all">
-                        <img src="{{ asset('icons/folder-svgrepo-com.svg') }}" alt="Lock Unlock">
+                        <img src="{{ asset('icons/gallery-svgrepo-com.svg') }}" alt="Lock Unlock">
                     </div>
                     <p class="sm:text-lg text-center leading-none font-semibold text-gray-700 dark:text-gray-200 pt-2">
-                        My Files
+                        Sync Gallery
                     </p>
                 </a>
             </div>
